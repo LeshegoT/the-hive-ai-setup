@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+    <mat-select [formControl]="selectedEntities" [compareWith]="compareCompanyEntities" multiple>
+      <mat-checkbox color="primary"
+        [checked]="areAllCompanyEntitiesSelected()"
+        (change)="toggleAllCompanyEntitySelection()"
+        class="toggle-all-checkbox">
+        {{ toggleAllEntitySelectionText }}
+      </mat-checkbox>
+      <mat-divider></mat-divider>
+      @for (entity of companyEntities; track entity) {
+        <mat-option [value]="entity">
+          {{ entity.description }}
+        </mat-option>
+      }
+    </mat-select>
+</mat-form-field>

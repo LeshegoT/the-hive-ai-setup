@@ -1,0 +1,9 @@
+<mat-card appearance="outlined" id="card">
+    <p id="title">Save a Graph DB Export</p>
+    <p id="message" [ngClass]="exportState">
+        {{message}}</p>
+    <button mat-button id="export-button" (click)="exportDB()" matTooltip="Export">
+        Run Export
+        <mat-icon>save</mat-icon>
+    </button>
+</mat-card>

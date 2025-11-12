@@ -1,0 +1,24 @@
+<svg id="Layer_1" data-name="Layer 1" 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 245.89 350.07">
+    <defs>
+        <style>
+            .pattern-2-1{fill:#d7d7d7;}
+            .pattern-2-2{fill:url(#_160);}
+            .pattern-2-3{fill:url(#_160-2);}
+        </style>
+        <radialGradient id="_160" cx="132.51" cy="123.46" r="16.99" gradientUnits="userSpaceOnUse">
+            <stop offset="0.01" stop-color="#22577e"/>
+            <stop offset="0.25" stop-color="#204f77"/>
+            <stop offset="0.63" stop-color="#1c3b62"/>
+            <stop offset="1" stop-color="#162048"/>
+        </radialGradient>
+        <radialGradient id="_160-2" cx="135.73" cy="135.16" r="9.62" xlink:href="#_160"/>
+    </defs>
+    <title>small robot</title>
+    <g id="pattern-2">
+        <polygon class="pattern-2-1" points="151.69 118.33 149.3 129.25 126.09 125.49 122.07 112.07 121.22 111.89 125.41 125.89 125.47 126.11 149.91 130.07 152.45 118.48 151.69 118.33"/>
+        <path class="pattern-2-2" d="M112.57,110.06l10.07,26.8s11.13-10.33,25.87,0l3.94-18.37-7.78-1.57-2.31,9s-6-2.94-16.27-.38l-4-13.42Z"/>
+        <path class="pattern-2-3" d="M148.08,138.89l.73-3.41s-15-9.95-26.17,1.38C122.64,136.86,134.22,128.29,148.08,138.89Z"/>
+    </g>
+</svg>

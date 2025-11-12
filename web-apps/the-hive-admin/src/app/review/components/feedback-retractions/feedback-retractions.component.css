@@ -1,0 +1,12 @@
+#selectComponentPanel{
+    background-color: #D9D9D9;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.5em;
+    padding-left: 2em;
+}
+
+#selectComponentPanel mat-form-field {
+    width: 50%;
+}

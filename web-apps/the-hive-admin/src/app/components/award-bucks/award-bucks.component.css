@@ -1,0 +1,53 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+mat-form-field {
+    display: block;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+table {
+  width: 100%;
+}
+
+.buttons {
+    display: block;
+    margin-left: 3em;
+    margin-right: 3em;
+    width: 10%;
+}
+
+.highlight{
+  background: #b1b2b3;
+}
+
+.dropColumns {
+    width: 10%;
+    padding-right: 1%;
+}
+
+@media (min-width: 700px) {
+    .form-container {
+        flex-direction: row;
+    }
+
+    mat-form-field {
+        display: inline;
+        margin-right: 0;
+    }
+
+    .buttons {
+        display: inline;
+        margin-right: 0;
+    }
+}
+
+.mat-elevation-z8 tr td th {
+    white-space: nowrap;
+}
+.mat-column-startDate, .mat-column-endDate, .mat-column-lastHeroActivityDate{
+    padding-right: 1rem;
+}

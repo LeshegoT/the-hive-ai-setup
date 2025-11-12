@@ -1,0 +1,50 @@
+<div class="full-width">
+  <h3>Manage Group: {{ group.groupName }}</h3>
+  <form [formGroup]="groupForm" (submit)="updateGroup()">
+    <mat-form-field class="full-width">
+      <mat-label>Group Name*</mat-label>
+      <input matInput formControlName="groupName" [errorStateMatcher]='matcher'/>
+    </mat-form-field>
+    <div class="full-witdh mat-elevation-z8 members-table">
+      <table mat-table #table matSort [dataSource]="memberData">
+        <ng-container matColumnDef="member">
+          <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Member</th>
+          <td class="content" mat-cell *matCellDef="let member">
+            {{ member }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+          <td class="content" mat-cell *matCellDef="let member; let i = index">
+            <button  mat-raised-button color="warn" type="button" (click)="removeMember(i)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let member; columns: columns;"></tr>
+      </table>
+    </div>
+    <div class="add-members">
+     
+    <mat-form-field>
+      <mat-label>Members*</mat-label>
+      <input type="email" matInput [formControl]="memberControl" ngModel email 
+[matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" >
+        <mat-option *ngFor="let option of filteredOptions | async " [value]="option" >
+          {{option}}
+       </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+      
+      <button class="add-button" mat-raised-button color="primary" type="button" (click)="addMember()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+  
+</div>

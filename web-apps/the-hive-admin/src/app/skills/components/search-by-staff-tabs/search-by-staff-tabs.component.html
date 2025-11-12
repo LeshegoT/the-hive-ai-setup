@@ -1,0 +1,19 @@
+<mat-tab-group> 
+    @if(displaySkillsSearchByStaffTabs) {
+        <mat-tab label="Profile overview">
+            <app-skills-profiles [selectedStaffMember]="selectedStaffMember"></app-skills-profiles>
+        </mat-tab>
+    } @else {
+        <!-- Profile overview is not enabled -->
+    }
+    <mat-tab label="Profile">
+        <app-staff-attributes [selectedStaffMember]="selectedStaffMember"></app-staff-attributes>
+    </mat-tab>
+    @if(displaySkillsSearchByStaffTabs) {
+        <mat-tab label="Work experience">
+            <app-work-experience [selectedStaffMember]="selectedStaffMember"></app-work-experience>
+        </mat-tab>
+    } @else {
+        <!-- Work experience is not enabled -->
+    }
+</mat-tab-group>

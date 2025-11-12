@@ -1,0 +1,23 @@
+export const selectAllFeedbackTags = (state) => state.peerFeedback.all;
+export const selectPeerFeedbackTagsForMessage = (state, messageId) =>
+  state.peerFeedback.peerTags.filter((tag) => tag.messageId === messageId);
+export const selectPublishedFeedbackMessages = (state) => state.peerFeedback.messages; 
+export const selectTagRatings = (state) => state.peerFeedback.tagRating;
+export const selectAllMatchedEmails = (state) => state.peerFeedback.all;
+export const selectValidEmail = (state) => state.peerFeedback.valid;
+export const selectSearchValidationMessage = (state) => state.peerFeedback.message;
+export const selectFeedbackState = (state) => state.peerFeedback.feedbackState;
+export const selectFeedbackMessages = (state) => state.peerFeedback.feedback;
+export const selectUserAssignedFeedbacks = (state) => state.peerFeedback.feedbacksAssignedToUser;
+export const selectUserToBeReviewed = (state) => state.peerFeedback.userToBeReviewed;
+export const selectUserDisplayName = (state) => state.peerFeedback.userDisplayName;
+export const selectUserTeamMembers = (state) => state.peerFeedback.userTeamMembers;
+export const selectAssignedSelfReviewQuestions = (state) => state.peerFeedback.assignedSelfReviewQuestions;
+export const selectSelfAssignedFeedbackState = (state) => state.peerFeedback.assignedSelfFeedbackState;
+export const selectSelfAssignedFeedbackTemplate = (state) => state.peerFeedback.template;
+export const selectFeedbackPositiveComment= (state) => state.peerFeedback.positiveComment;
+export const selectFeedbackConstructiveComment = (state) => state.peerFeedback.constructiveComment;
+export const selectFeedbackQuestionsAndAnswers = (state) => state.peerFeedback.answers;
+export const selectFeedbackAssignmentID = (state) => state.peerFeedback.assignmentId ; 
+export const selectFeedbackLoadingLock = (state) => state.peerFeedback.lock; 
+export const selectFeedbackRetractionReasons = (state) => state.peerFeedback.retractionReasons; 

@@ -1,0 +1,97 @@
+<h2 mat-dialog-title>Review Audit History for {{ data.revieweeDisplayName }}</h2>
+<mat-dialog-content>
+
+  @let auditDataResponse = auditDataResponse$ | async;
+  @if (auditDataResponse.status === 'error') {
+    <app-error-card
+      [title]="'Error loading audit data'"
+      (retry)="loadReviewAuditData()">
+      <p>Something went wrong when trying to load the audit data. Please try again or contact <a [href]="generateSupportEmail(auditDataResponse.error)">The Hive Support</a></p>
+
+      <details>
+        <summary>Error details</summary>
+        <p>{{ auditDataResponse.error }}</p>
+      </details>
+    </app-error-card>
+  } @else if (auditDataResponse.status === 'success') {
+    <div class="audit-table-container">
+      <div class="filter-row">
+        <app-filter-drop-down-options
+          [control]="filterForm.controls.auditActions"
+          [options]="auditActions"
+          displayProperty="name"
+          label="Audit Actions"
+          (blurEvent)="onFilterSelectionComplete()">
+        </app-filter-drop-down-options>
+
+        <app-filter-drop-down-options
+          [control]="filterForm.controls.auditUsers"
+          [options]="auditUsers"
+          displayProperty="name"
+          label="Users"
+          (blurEvent)="onFilterSelectionComplete()">
+        </app-filter-drop-down-options>
+      </div>
+      <table mat-table class="mat-elevation-z8 full-width-table audit-table" [dataSource]="auditDataResponse.data">
+
+        <ng-container matColumnDef="auditType">
+          <th mat-header-cell *matHeaderCellDef>Action Type</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-chip disableRipple>
+              {{ row.auditType }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actionTime">
+          <th mat-header-cell *matHeaderCellDef>Action Date</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.actionTime | dateFormat }} {{ row.actionTime | timeFormat }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actionUser">
+          <th mat-header-cell *matHeaderCellDef>User</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.actionUserDisplayName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="auditDescription">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.auditDescription }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      @if (auditDataResponse.data.length === 0) {
+        <div>
+          <mat-icon>history</mat-icon>
+          <p>No audit history available for this review.</p>
+        </div>
+      }
+    </div>
+  } @else {
+   <mat-spinner></mat-spinner>
+  }
+
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions" align="end">
+  <div class="paginator-left">
+    <mat-paginator
+      [length]="pagination().resultSetSize"
+      [pageIndex]="pagination().pageNumber"
+      [pageSize]="pagination().pageSize"
+      [pageSizeOptions]="tableService.getPageSizeOptions()"
+      [showFirstLastButtons]="tableService.getShowFirstLastButtons()"
+      [hidePageSize]="tableService.getHidePageSize()"
+      (page)="pageChanged($event)">
+    </mat-paginator>
+  </div>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
+

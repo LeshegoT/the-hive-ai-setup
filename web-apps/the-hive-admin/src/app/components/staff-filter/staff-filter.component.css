@@ -1,0 +1,16 @@
+.staffFilter{
+    display: flex;
+    flex-direction: row;
+}
+
+.multiline-mat-option.mat-mdc-option {
+  white-space: normal;
+  line-height: normal;
+}
+
+.autoCompleteExtendedDetails{
+    font-size: small;
+    color:grey;
+    display: flex;
+    flex-direction: column;
+}

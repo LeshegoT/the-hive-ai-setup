@@ -1,0 +1,37 @@
+{
+  "started": "2023-01-01",
+  "end": "2023-01-01",
+  "durationMinutes": "1",
+  "items": {
+    "dev/rudolphe@bbd.co.za": [],
+    "dev/annas@bbd.co.za": [
+      {
+        "type": "internal",
+        "assignmentId": "6277",
+        "blob": {
+          "name": "dev/annas@bbd.co.za/feedback-6277.json",
+          "nameInFolder": "feedback-6277.json"
+        },
+        "result": "Assignment still in progress, won't delete"
+      },
+      {
+        "type": "internal",
+        "assignmentId": "6361",
+        "blob": {
+          "name": "dev/annas@bbd.co.za/feedback-6361.json",
+          "nameInFolder": "feedback-6361.json"
+        },
+        "result": "Assignment still in progress, won't delete"
+      },
+      {
+        "type": "external",
+        "assignmentToken": "00000000-0000-0000-0000-000000000000",
+        "blob": {
+          "name": "dev/annas@bbd.co.za/feedback-6361.json",
+          "nameInFolder": "feedback-6361.json"
+        },
+        "result": "Assignment still in progress, won't delete"
+      }
+    ]
+  }
+}

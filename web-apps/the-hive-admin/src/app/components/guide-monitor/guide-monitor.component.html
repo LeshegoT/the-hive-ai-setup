@@ -1,0 +1,177 @@
+<div class="component">
+  <app-title iconName="usage" title="Guide Monitor"></app-title>
+
+  <mat-tab-group>
+    <mat-tab label="Guides">
+      <div class="filter">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+        </mat-form-field>
+
+        <button [disabled]="selectedGuide !== undefined" class="buttons" mat-raised-button color="primary" title="Create New Guide" (click)="selectGuide({})">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <section class="guides-container">
+        <section class="guides-list">
+          @if (guides !== undefined) {
+            @if (guides.data.length > 0) {
+              <table mat-table class="full-width-table" [dataSource]="guides" matSort #guideSort="matSort">
+                <ng-container matColumnDef="userPrincipleName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Guide</th>
+                  <td mat-cell *matCellDef="let row">
+                    <a href="guide/{{ encode(row.userPrincipleName) }}">{{
+                      row.userPrincipleName
+                    }}</a>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="specialisations">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialisations</th>
+                  <td mat-cell *matCellDef="let row">{{ row.specialisations }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="heroes">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Heroes</th>
+                  <td mat-cell *matCellDef="let row">{{ row.heroes }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="guideStatus">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
+                  <td mat-cell *matCellDef="let row" [ngClass]="getGuideStatusColour(row)">
+                      {{ row.guideStatus }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastGuideActivityDate">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Active</th>
+                  <td mat-cell *matCellDef="let row">
+                    {{ row.lastGuideActivityDate | dateFormat }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="controls">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let row">
+                    <section class="button-container">
+                      @if (row.guideStatus === 'pending-delete') {
+                        <button (click)="updateGuideStatus(row, 'active', $event)" class="reviewActionButton actionBtnSmall" title="Set to Active"><mat-icon>play_arrow</mat-icon></button>
+                        @if (row.heroes === 0) {
+                          <button (click)="updateGuideStatus(row, 'deleted', $event)" class="cancelBtnSmall reviewActionButton" title="Delete"><mat-icon>delete_outline</mat-icon></button>
+                        } @else {
+                          <!-- The delete button is not shown -->
+                        }
+                      } @else {
+                        @if (row.guideStatus === 'active') {
+                          <button (click)="updateGuideStatus(row, 'pending-delete', $event)" class="reviewActionButton releaseBtnSmall" title="Set to Pending-delete"><mat-icon>pause</mat-icon></button>
+                        } @else {
+                          <!-- No buttons are displayed -->
+                        }
+                      }
+                    </section>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="guidesColumns; sticky: true"></tr>
+                <tr [ngClass]="{ 'selected': row === selectedGuide }" class="selectable-row" mat-row *matRowDef="let row; columns: guidesColumns" (click)="selectGuide(row)"></tr>
+              </table>
+
+              <mat-paginator
+                #guidePaginator
+                [pageSize]="this.tableService.getPageSize()"
+                [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+                [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+                [hidePageSize]="this.tableService.getHidePageSize()">
+              </mat-paginator>
+            } @else {
+              <p class="no-data-text">Currently, there are no guides available.</p>
+            }
+          } @else {
+            <mat-spinner class="spinner"></mat-spinner>
+          }
+        </section>
+        @if (selectedGuide !== undefined) {
+            <app-edit-specialisations class="guide-form"
+              [guideUserPrincipleName]="selectedGuide.userPrincipleName"
+              (guideSaved)="handleGuideSaved()"
+              (clear)="unselectGuide()">
+            </app-edit-specialisations>
+        } @else {
+          <!-- Form is not shown because no guide is selected. -->
+        }
+      </section>
+    </mat-tab>
+
+    <mat-tab label="Guide Applications">
+      <section class="filter">
+        <mat-form-field>
+          <input matInput (keyup)="applyNewGuideRequestFilter($event.target.value)" placeholder="Filter" />
+        </mat-form-field>
+      </section>
+      @if (newGuideRequests !== undefined) {
+        @if (newGuideRequests.data.length > 0) {
+          <table mat-table class="full-width-table" [dataSource]="newGuideRequests"
+            matSort #newGuideRequestsSort="matSort"
+            matSortActive="dateRequested"
+            matSortDirection="desc">
+            <ng-container matColumnDef="upn">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Name</th>
+              <td mat-cell *matCellDef="let row">{{ row.upn }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="specialisation">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialisation</th>
+              <td mat-cell *matCellDef="let row">{{ row.specialisation }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRequested">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Requested</th>
+              <td mat-cell *matCellDef="let row">{{ row.dateRequested | date }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="requestStatusType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td mat-cell *matCellDef="let row">
+                <section [ngClass]="getNewGuideRequestStatusColour(row)">
+                  {{ row.requestStatusType }}
+                </section>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="bio">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Bio</th>
+              <td mat-cell *matCellDef="let row">{{ row.bio }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="controls">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+              <td mat-cell *matCellDef="let row">
+                <section class="button-container" *ngIf="canUpdateGuideRequestStatus(row)">
+                  <button (click)="updateNewGuideRequestStatus(row, 'ACCEPTED')" class="actionBtnSmall reviewActionButton" title="Approve"><mat-icon>check_circle</mat-icon></button>
+                  <button (click)="updateNewGuideRequestStatus(row, 'REJECTED')" class="cancelBtnSmall reviewActionButton" title="Decline"><mat-icon>highlight_off</mat-icon></button>
+                </section>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="newGuideRequestColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: newGuideRequestColumns"></tr>
+          </table>
+          <mat-paginator
+            #newGuideRequestsPaginator
+            [pageSize]="this.tableService.getPageSize()"
+            [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+            [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+            [hidePageSize]="this.tableService.getHidePageSize()">
+          </mat-paginator>
+        } @else {
+          <p class="no-data-text">Currently, there are no guide applications available.</p>
+        }
+      } @else {
+        <mat-spinner class="spinner"></mat-spinner>
+      }
+    </mat-tab>
+    <mat-tab label="Reassign Guide's Heroes">
+      <app-reassign-guides-heroes></app-reassign-guides-heroes>
+    </mat-tab>
+  </mat-tab-group>
+</div>

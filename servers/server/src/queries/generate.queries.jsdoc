@@ -1,0 +1,27 @@
+/**
+ * Module exposing queries to allow automatic generation of simple queries for 
+ * CRUD operations.
+ * 
+ * @module queries/generate-queries
+ * @see {@link module:shared/standard-api}
+ */
+
+/**
+ * @typedef TableColumnDescription
+ * @type {object}
+ * @property {string} tableName the name of the table the column belongs to
+ * @property {string} columnName the name of the column
+ * @property {number} typeName the type of the column
+ * @property {boolean} colIsIdentity whether this is an identity column
+ */
+
+/**
+ * @typedef {TableColumnDescription[]} TableDescription
+ */
+
+/**
+ * @typedef QueryByIDResult
+ * @type {object}
+ * @property {string} query the raw select statement with where clause
+ * @property {string} idColumnName the name of the variable to specify
+ */

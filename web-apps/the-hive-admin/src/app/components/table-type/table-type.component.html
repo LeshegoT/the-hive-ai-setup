@@ -1,0 +1,88 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter(filter)" #filterInput [(ngModel)]="filter">
+  <button mat-button *ngIf="filter" matSuffix mat-icon-button aria-label="Clear" (click)="filter=''; applyFilter(filter)">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <table mat-table multiTemplateDataRows #table matSort matSortDirection="asc" matSortActive="id" [dataSource]="typeData">
+    <ng-container matColumnDef="id">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td class="content" mat-cell *matCellDef="let typeName">
+        {{ typeName.id }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td class="content" mat-cell *matCellDef="let typeName">
+        {{ typeName.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="code">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+      <td class="content" mat-cell *matCellDef="let typeName">
+        {{ typeName.code }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="icon">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Icon</th>
+      <td class="content" mat-cell *matCellDef="let typeName">
+        {{ typeName.icon | removeIconPath }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th class="head" mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let typeName">
+        <div [matTooltip]="toolTipMessage(typeName)" matTooltipShowDelay="300">
+          <button [disabled]="checkDelete(typeName)" mat-raised-button color="warn" type="button" (click)="deleteType(typeName)" >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let typeName" [attr.colspan]="columns.length">
+        <div class="type-detail" 
+        [@detailExpand]="checkDetailExpand(tpyeName)"
+        *ngIf="typeName == expandedType">
+          <app-manage-type [contentType]="contentType" [imageMethod]="imageMethod" (onSave)="onSave($event)" [typeName]='typeName' (cancel)="cancelCreate()"></app-manage-type>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="createType">
+      <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length">
+        <div class="type-detail" 
+        [@detailExpand]="checkCreateExpand()"
+        *ngIf="creating">
+          <app-manage-type [contentType]="contentType" [imageMethod]="imageMethod" (onSave)="onSave($event)"
+            [typeName]='newTypeValues' (cancel)="cancelCreate()"></app-manage-type>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let typeName; columns: columns"
+      class="type-row"
+      (click)="updateSelected(typeName)"
+      [class.expanded-type-row]="expandedType === typeName">
+    </tr>
+    <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']" class="detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="['createType']" class="detail-row"></tr>
+  </table>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-raised-button [disabled]="creating" color="primary" type="button" (click)="newType()" matTooltip="Add New Side Quest Type" matTooltipShowDelay="1000">
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-paginator 
+      class="paginator" 
+      (page)="cancelCreate()" 
+      [pageSize]="this.tableService.getPageSize()" 
+      [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+      [hidePageSize]="this.tableService.getHidePageSize()"></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

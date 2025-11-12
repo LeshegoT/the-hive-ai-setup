@@ -1,0 +1,44 @@
+<mat-card class="core-tech-card">
+    <mat-card-title>
+        <div class="core-tech-card-title">
+        {{ this.userAttribute.attribute.canonicalName }} 
+        @let skillPathCanonicalName = findTopLevelSkillPathCanonicalNameForAttribute(this.userAttribute);
+        @if(skillPathCanonicalName){
+            <mat-chip>{{ skillPathCanonicalName }}</mat-chip>
+        }@else {
+            <mat-chip>unknown</mat-chip>
+        }
+        </div>
+        <button 
+            [matTooltip]="makeToolTipMessage()"
+            matTooltipPosition="right"
+            matTooltipHideDelay="200"
+            [class.delete-core-tech]="isCoreTech"
+            [class.make-core-tech]="!hasReachedCoreTechLimit && !isCoreTech"
+            [class.disabled-core-tech]="hasReachedCoreTechLimit && !isCoreTech"
+            [disabled]="hasReachedCoreTechLimit && !isCoreTech"
+            (click)="userAttributeSelected.emit(userAttribute)">
+            <mat-icon>{{ isCoreTech ? 'delete' : 'add' }}</mat-icon>
+        </button>
+    </mat-card-title>
+    <mat-card-content>
+        @for(fieldValue of this.userAttribute.fieldValues; track fieldValue){
+            @let displayValue = lookupDisplayValue(fieldValue.standardizedName);
+            @if(!displayValue){
+                <!-- field values are still being prepared -->
+            } @else if(isDisplayValueError(displayValue)){
+                <p class="message">
+                    {{ displayValue.message }} for '{{ lookupFieldLabel(fieldValue.standardizedName) }}'. 
+                    Try refreshing the page, or
+                    <a [href]="generateSupportEmail(displayValue)">contact support</a> if the issue persists.
+                </p>
+            } @else{
+                <article>
+                    <label>{{ lookupFieldLabel(fieldValue.standardizedName) }}</label>
+                    :
+                    <p>{{ displayValue }}</p>
+                </article>
+            }
+        }
+    </mat-card-content>
+</mat-card>

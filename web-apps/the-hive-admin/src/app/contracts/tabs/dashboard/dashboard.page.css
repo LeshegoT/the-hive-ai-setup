@@ -1,0 +1,18 @@
+#dashboard {
+  padding: var(--standard-padding);
+}
+
+.chip-title {
+  font-weight: bolder;
+}
+
+#status-summary-section {
+  display: flex;
+  align-items: start;
+  gap: var(--standard-gap);
+  width: 100%;
+}
+
+.status-summary-section-content {
+  flex: 1;
+}

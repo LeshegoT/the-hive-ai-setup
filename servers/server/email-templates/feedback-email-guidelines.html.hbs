@@ -1,0 +1,41 @@
+<html>
+  <body>
+    {{{ textContentTemplate }}}
+    <p>
+      <b>
+        Please note:
+      </b>
+    </p>
+    <ul>
+      <li style='margin-bottom:20px;'>
+        If you can't complete your feedback in one sitting, you can click the save
+        for later button.
+      </li>
+      <li style='margin-bottom:20px;'>
+        When you're done with your feedback, make sure you click the submit
+        button.
+      </li>
+      <li style='margin-bottom:30px;'>
+        {{#if dueDate}}
+          Please complete your feedback
+          <b>before</b>
+          {{dueDate}}
+        {{else}}
+          Please complete your feedback
+          <b>before</b>
+          the due date
+        {{/if}}
+      </li>
+    </ul>
+    <p style='font-size:12pt;font-weight:500;margin-bottom:30px;'>
+      For any questions, contact:
+      <br />
+      <a
+        href='mailto:hr@bbdsoftware.com'
+        style='color:#C72026;font-weight:700;'
+      >
+        hr@bbdsoftware.com
+      </a>
+    </p>
+  </body>
+</html>

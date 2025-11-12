@@ -1,0 +1,10 @@
+<article class="search-result-card">
+  <section class="staff-member-details">
+    <app-profile [selectedUpn]="this.upn()"></app-profile>
+    <div>
+      <span class="staff-member-name">{{ this.staffMember().displayName }}</span>
+      <span>{{ this.upn() }}</span>
+    </div>
+  </section>
+  <ng-content select="[trailer]"></ng-content>
+</article>

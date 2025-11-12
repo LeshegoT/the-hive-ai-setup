@@ -1,0 +1,78 @@
+.warning{
+    color: var(--app-warning-font-color);
+}
+
+.info{
+    color: var(--app-warning-font-color);
+}
+
+
+.xxsmall-subtext-label{
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.xsmall-subtext-label{
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.small-subtext-label{
+  font-weight: 300;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-subtext-label{
+  font-weight: 300;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-subtext-label{
+  font-weight: 300;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.925531914893617rem + 0.6382978723404256vw, 1.5rem);
+}
+
+.small-label{
+  font-weight: 500;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-label{
+  font-weight: 500;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-label{
+  font-weight: 500;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.925531914893617rem + 0.6382978723404256vw, 1.5rem);
+}
+
+.small-heading{
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-heading{
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-heading{
+  font-weight: 600;
+  font-size: 1rem;
+  font-size: clamp(1rem, 0.7340425531914894rem + 0.851063829787234vw, 1.5rem);
+}
+
+.xlarge-heading{
+  font-weight: 600;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.526595744680851rem + 1.9148936170212765vw, 2.25rem);
+}

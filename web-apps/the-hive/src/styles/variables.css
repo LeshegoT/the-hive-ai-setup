@@ -1,0 +1,141 @@
+:host {
+  --app-drawer-width: max-content;
+  display: block;
+  --app-max-width: 1000px;
+  --app-primary-color: #c72326;
+  --app-secondary-color: #293237;
+  --app-tertiary-color: rgb(150, 150, 150);
+  --app-dashboard-color: #0a1027;
+  --app-dashboard-panel: #fff;
+  --app-dashboard-background:#e0e0e0;
+  --app-dashboard-shadow: #999;
+  --app-border-color:#eee;
+  --app-done-color: #047E09;
+  --app-dark-text-color: var(--app-secondary-color);
+  --app-lighter-text-color: #c8c8c8;
+  --app-light-text-color: white;
+  --app-section-even-color: #f7f7f7;
+  --app-section-odd-color: white;
+  --app-header-background-color: white;
+  --app-header-text-color: var(--app-dark-text-color);
+  --app-header-selected-color: var(--app-primary-color);
+  --app-drawer-background-color: var(--app-secondary-color);
+  --app-drawer-text-color: var(--app-light-text-color);
+  --app-drawer-selected-color: #78909c;
+  --md-sys-color-primary: var(--app-primary-color);
+  --readable-font-size: 14pt;
+  --app-assign-feedback-button-color: #373f5b;
+  --app-assign-feedback-button-hover-color: #2cb84a;
+  --app-assign-feedback-gold-color: #ffff00;
+  --app-assign-feedback-dark-color: #302e2d;
+  --app-assign-feedback-urgent-color: #AF2D2D;
+  --app-assign-feedback-urgent-hover-color : #F05454;
+  --app-assign-feedback-urgent-hover-text-color: #FFF6DA;
+
+  --app-feedback-publish-color: #FDC2C2;
+  --app-feedback-unpublish-color: #D9FADB;
+
+  --app-review-header-text-color: #212121;
+  --app-review-sub-header-text-color: #323a46;
+  --app-review-primary-text-color: #000000;
+  --app-review-input-border-color: #f3f5f8;
+  --app-review-divider-color: #b8bacc ;
+
+  --app-success-background-color: #E5FFE4;
+  --app-success-font-color: #29810B ;
+  --app-warning-background-color: #FFC8C8;
+  --app-warning-font-color: #C72026;
+  --app-darker-warning-font-color:#af1b20;
+  --app-warning-background-color-secondary: #E59C9F;
+  --app-warning-font-color-secondary: #8B171F;
+  --app-info-font-color: #2081C7;
+  --app-info-background-color: #E9F2F9;
+  --app-disabled-button-color: #4B5768 ;
+  
+  --bbd-red-contrast: white;
+  --light-grey: lightgrey;
+  --event-social-color: #E18416;
+  --accepted-color: #09f069;
+  --small-border-size: 1px;
+  --medium-border-size: 5px;
+  --light-grey-border: var(--small-border-size) solid var(--light-grey);
+  --page-top-padding: 6rem;
+  --small-padding: 5px;
+  --large-padding: 20px;
+  --standard-padding: 10px;
+  --standard-margin: 10px;
+  --small-radius: 4px;
+  --medium-radius: 10px;
+  --large-radius: 15px;
+  --small-gap: 0.1rem;
+  --medium-gap:0.625rem;
+  --large-gap: 1rem;
+  --small-grid-gap:1.5em;
+  --medium-grid-gap:2.5em;
+  --large-grid-gap:3.75em;
+  --rsvp-small-gap: 1rem;
+  --small-font-size: 0.5em;
+  --medium-font-size: 1em;
+
+  --app-button-color: var(--app-assign-feedback-button-color);
+  --app-form-box-shadow: 4px 4px 25px rgba(0, 0, 0, 0.15);
+  --app-large-border-radius: 20px;
+  --app-small-border-radius: 5px;
+  --app-form-padding: 2rem;
+  --app-form-margin: 2rem;
+  --app-button-padding: 0.5rem;
+  --grey-border: 2px solid var(--app-section-even-color);
+  
+  --event-hr-color: var(--app-primary-color);
+  --event-admin-color: var(--app-disabled-button-color);
+  --event-carwash-color: #f64146;
+  --event-lunch-color: hotpink;
+  --event-company-color: #b4dcd1;
+  --event-learning-color: var(--app-info-font-color);
+  --event-community-color: #e18416;
+  --event-sporting-color: #8f6dd3;
+  
+  --image-grid-gap: 1.5rem;
+
+  --highlighted-border: 2px solid var(--app-info-font-color);
+  --event-card-max-width: 15rem;
+  --shadow:0 0.25em 1.25em var(--shadow-color);
+  --app-card-min-height:8.75em;
+
+  --max-box-width: 10em;
+  --z-index-notification: 1000;
+  --z-index-info: 999;
+  --z-index-overlay: 998;
+  --z-index-lists: 997;
+
+  --light-font-weight: 300;
+  --regular-font-weight: 400;
+  --medium-font-weight: 500;
+  --semi-bold-font-weight: 600;
+  --bold-font-weight: 700;
+
+  --font-size-extra-tiny: 0.75em;
+  --font-size-tiny: 0.875em;
+  --font-size-small: 1em;
+  --font-size-medium-small: 1.125em;
+  --font-size-medium: 1.25em;
+  --font-size-large: 1.5em;
+  --font-size-extra-large: 2.25em;
+
+  --small-margin: 0.3em;
+  --icon-size: 1.5em;
+
+  --primary-red-color: #c72026;
+  --neutral-grey-color: #64748b;
+  --neutral-grey-medium-color:#B8C0CC;
+  --neutral-light-grey-color: #e7eaee;
+  --hive-logo-grey-color: #32323c;
+  --light-red-color: #fdeaeb;
+  --secondary-blue-color: #2081c7;
+  --warning-color : #FFC98B;
+  --info-color:#B4DCD1;
+  --error-color:#FC999C;
+  --success-color:#A7E7A6;
+  --shadow-color:rgba(0, 0, 0, 0.25);
+  --expires-soon-color: #f98700;
+}

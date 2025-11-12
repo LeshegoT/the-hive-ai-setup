@@ -1,0 +1,6 @@
+.mat-mdc-no-data-row > td {
+  height: auto;
+  width: 100%;
+  padding: var(--standard-padding);
+  text-align: center;
+}

@@ -1,0 +1,111 @@
+<section class="staff-attributes-section">
+  @if(personSearchResults()) {
+    @if(isError(personSearchResults())){
+      <p class="message">{{personSearchResults().message}}. Try refreshing the page, or
+        <a [href]="generateSupportEmail(personSearchResults())">contact support</a> if the issue persists.
+      </p>
+    } @else if(personSearchResults().length > 0){
+       <div class="staff-attributes-container">
+        @for(attributeType of staffAddedAttributeTypes; track attributeType){
+          @let userAttributes = filterByAttributeType(personSearchResults(), attributeType);
+          <mat-expansion-panel [expanded]="true" class="mat-elevation-z0" >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>{{ lookupCanonicalNameForTopLevelTag(attributeType)??'Unknown' }} ({{ userAttributes.length }})</h3>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <section class="user-attributes">
+              @for(userAttribute of userAttributes; track userAttribute){
+                <mat-card class="user-skill-card">
+                  <mat-card-title>{{ userAttribute.attribute.canonicalName }}</mat-card-title>
+                  <mat-card-content>
+                    @for(fieldValue of userAttribute.fieldValues; track fieldValue){
+                      <p class="attribute-details">
+                        @let fieldLabel = lookupFieldLabel(userAttribute.attribute.standardizedName, fieldValue.standardizedName);
+                        @let displayValue = lookupDisplayValue(userAttribute.attribute.standardizedName, fieldValue.standardizedName);
+                        @if(!fieldLabel || !displayValue){
+                          <!-- field values are still being prepared -->
+                        }@else if(isDisplayValueError(displayValue)){
+                          <p class="message">{{displayValue.message}} for '{{fieldLabel}}'. Try refreshing the page, or
+                            <a [href]="generateSupportEmail(displayValue)">contact support</a> if the issue persists.
+                          </p>
+                        }@else if(fieldValue.standardizedName !== proofFieldName){
+                          <span>{{ fieldLabel }} </span>
+                        :
+                        <span>{{ displayValue }}</span>
+                        } @else{
+                          <!-- detail contains file upload info and will be shown on card's footer -->
+                        }
+                      </p>
+                    }
+                  </mat-card-content>
+                  @if(hasProofField(userAttribute.fieldValues)){
+                    <mat-card-footer class="inline-flex-items">
+                      @let proofFieldValue = lookupDisplayValue(userAttribute.attribute.standardizedName, proofFieldName);
+                      @if(!hasPendingProof(userAttribute.fieldValues) && proofFieldValue){
+                        <mat-icon
+                          class="clickable-icon"
+                          title="download file"
+                          (click)="
+                            downloadProof(proofFieldValue, userAttribute.attribute.canonicalName)
+                          "
+                          >attachment
+                        </mat-icon>
+                        @if(displayValidationPendingChip){
+                          @if(hasPendingValidation(userAttribute.fieldValues)){
+                            <mat-chip>
+                              <p>Pending Validation</p>
+                            </mat-chip>
+                          }@else {
+                            <!--Nothing to display on card-->
+                          }
+                        }@else{
+                          <!--Do not display anything, hidden by flag-->
+                        }
+                      } @else{
+                        @let obtainedFrom = lookupDisplayValue(userAttribute.attribute.standardizedName, obtainedFromFieldName);
+                        @let obtainedFromEmailText = obtainedFrom ? ' from ' + obtainedFrom + '.%0D%0A%0D%0A' : "";
+                        <mat-chip [color]="primary">Proof:
+                          <a [href]="'mailto:' + selectedStaffMember.userPrincipleName +
+                              '?subject=Request for supporting documents' +
+                              '&body=Hello ' + selectedStaffMember.displayName + ',%0D%0A%0D%0A' +
+                              'Please kindly provide us with the necessary proof of your ' + userAttribute.attribute.attributeType + ': ' + userAttribute.attribute.canonicalName +
+                              obtainedFromEmailText +
+                              'As part of our ongoing efforts to maintain accurate records, we require the relevant supporting documents.%0D%0A%0D%0A' +
+                              'Please upload the required proof on the Hive using the following link:%0D%0A' +
+                              'https://the-hive.bbd.co.za/skills/%0D%0A%0D%0A' +
+                              'Feel free to reach out if you have any questions or need assistance.%0D%0A%0D%0A' +
+                              'Thank you.%0D%0A%0D%0A'">
+                            Request proof
+                          </a>
+                        </mat-chip>
+                        
+                      }
+                    </mat-card-footer>
+                  } @else{
+                    <!-- userAttribute has no upload field so there's nothing to show on the footer-->
+                  }
+                </mat-card>
+              }
+            </section>
+          </mat-expansion-panel>
+        }
+      </div>
+    } @else {
+      <p class="empty-results">
+        <a [href]="'mailto:' + selectedStaffMember.userPrincipleName +
+                        '?subject=Please fill out your skills portfolio' +
+                        '&body=Hi ' + selectedStaffMember.displayName + ',%0D%0A%0D%0A' +
+                        'Please update your portfolio on The Hive.%0D%0A%0D%0A' +
+                        'This is where you can showcase your skills, qualifications, certifications, industry knowledge and unique qualities that YOU bring to BBD.%0D%0A%0D%0A' +
+                        'We will use this information to identify exciting opportunities within our client base whilst building your career at BBD.%0D%0A%0D%0A' +
+                        'Please fill out your portfolio on the-hive:%0D%0A' +
+                        'https://the-hive.bbd.co.za/skills/'">
+          {{ selectedStaffMember.displayName }}
+        </a>&nbsp;has no items added to their portfolio
+      </p>
+    }
+  } @else {
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  }
+</section>

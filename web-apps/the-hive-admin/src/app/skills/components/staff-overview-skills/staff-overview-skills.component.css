@@ -1,0 +1,14 @@
+app-loading-indicator {
+  width: 4em;
+}
+#staff-skills-filter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.message{
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+}

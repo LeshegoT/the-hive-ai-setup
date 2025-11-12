@@ -1,0 +1,80 @@
+@let retrieveStatusSummaryErrorMessage = retrieveStatusSummaryErrorMessage$ | async;
+@let dataSource = dataSource$ | async;
+
+@if (retrieveStatusSummaryErrorMessage) {
+  <mat-card appearance="outlined" class="error-card">
+    <mat-card-content class="error-card-content">
+      <mat-icon>error_outline</mat-icon> 
+      {{ retrieveStatusSummaryErrorMessage }}
+    </mat-card-content>
+  </mat-card>
+}
+@else if (!dashboardFilter || !fieldNames || !dataSource) {
+  <mat-spinner></mat-spinner>
+}
+@else {
+
+    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" (matSortChange)="announceSortChange($event)">
+
+      <!-- only the first column -->
+      <ng-container *ngFor="let column of fieldNames.slice(0,1)" [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef class="header-row"> {{ column }} </th>
+        <td mat-cell *matCellDef="let element" class="category">
+          <button
+            mat-icon-button
+            [style.visibility]="!element.expandable ? 'hidden' : ''"
+            [style.marginLeft.px]="element.groupingDepth * 32"
+            (click)="treeControl.toggle(element)"
+            >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(element) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          {{element.groupName}}
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="footer-row"> {{''}} </td>
+      </ng-container>
+
+      <!-- the rest of the columns (date columns) -->
+      <ng-container *ngFor="let column of fieldNames.slice(1)" [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef class="header-row"> {{ column | date}} </th>
+        @let selectedStatusSummaryTableItem = selectedStatusSummaryTableItem$ | async;
+        <td mat-cell *matCellDef="let element" [class.selected]="isSelectedStatusSummaryTableItem(element, column) && selectedStatusSummaryTableItem.selectedItemType === 'numberOfReviews'">
+          @let totalNumberOfReviewsForGroupAndDate = getTotalNumberOfReviewsForGroupAndDate(element, column);
+          @if (treeControl.isExpandable(element)) {
+            <b class="sub-total">{{totalNumberOfReviewsForGroupAndDate}}</b>
+          } @else {
+            <a (click)="setSelectedStatusSummaryTableItem(element, column, 'numberOfReviews')" class="number-of-reviews-link">{{totalNumberOfReviewsForGroupAndDate}}</a>
+            @let unchangedItemsCountResult = retrieveNumberOfReviewsWithUnchangedStatusAndLateness(element, column) | async;
+            @if (!unchangedItemsCountResult) {
+              <mat-spinner class="loading-spinner" mode="indeterminate" diameter="20" strokeWidth="2"></mat-spinner>
+            }@else if (unchangedItemsCountResult.type === 'success' && unchangedItemsCountResult.data > 0) {
+              <warning-badge 
+                [selected]="isSelectedStatusSummaryTableItem(element, column) && selectedStatusSummaryTableItem.selectedItemType === 'numberOfUnchangedReviews'"
+                [total]="unchangedItemsCountResult.data" 
+                (click)="setSelectedStatusSummaryTableItem(element, column, 'numberOfUnchangedReviews')">
+              </warning-badge>
+            } @else if (unchangedItemsCountResult.type === 'error'){
+              <mat-icon color="warn" class="refetch-icon" matTooltip="Failed to load reviews with unchanged status. Please try again" (click)="refetchUnchangedStatusItems(element, column)">refresh</mat-icon>
+            } @else {
+              <!-- No reviews with unchanged status and lateness -->
+            }
+            
+          }     
+        </td>
+        <td mat-footer-cell *matFooterCellDef class="footer-row"> {{getTotalForDate(column, dataSource.data)}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="fieldNames; sticky: true"></tr>
+      <tr 
+        mat-row *matRowDef="let row; columns: fieldNames;"
+        [class.primary-row]="row.expandable"
+      >
+      </tr>
+      <tr mat-footer-row *matFooterRowDef="fieldNames"></tr>
+      <tr *matNoDataRow>
+        <td class="mat-cell">No data was found for the selected filters.</td>
+      </tr>
+    </table>
+
+}

@@ -1,0 +1,65 @@
+
+:host {
+  --close-icon-color: black;
+}
+.action-buttons {
+  display: flex;
+  justify-content: end;
+  gap: var(--standard-gap);
+}
+
+.spinner {
+  margin-block: var(--standard-gap);
+  margin-inline: auto;
+}
+
+.next-review-type-field {
+  display: flex;
+}
+
+button[mat-icon-button] {
+  color: var(--app-button-text);
+}
+
+.mat-contract-review-button {
+  background-color: var(--app-review-button);
+}
+
+.mat-renew-button {
+  background-color: var(--app-review-green-button);
+}
+
+.mat-terminate-button {
+  background-color: var(--app-cancel-button);
+}
+
+.mat-make-permanent-button {
+  background-color: var(--primary-color);
+}
+
+.mat-contract-release-hold-button {
+  background-color: var(--app-release-button);
+}
+
+.mat-disabled-button {
+  background-color: var(--hover-over-color);
+}
+
+.close-icon {
+  color: var(--close-icon-color);
+}
+
+.close-icon:hover {
+  background-color: red
+}
+
+.no-recommendations {
+  text-align: center;
+  font-size: large;
+  padding: var(--standard-padding);
+}
+
+.mat-more-options-button {
+  background-color: var(--primary-color);
+}
+

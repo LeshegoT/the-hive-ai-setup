@@ -1,0 +1,169 @@
+<mat-expansion-panel id='sections-panel' expanded="true"
+  *ngIf="!managingQuestions && sections && sections.length" hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Sections
+    </mat-panel-title>
+    <mat-panel-description>
+      Sections will be added in the below order
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="sections-table mat-elevation-z8">
+    <table mat-table class="content-table" [dataSource]="sectionDataSource">
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef> Section code </th>
+        <td mat-cell *matCellDef="let section"> {{ section.code }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Section name </th>
+        <td mat-cell *matCellDef="let section"> {{ section.name }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="path">
+        <th mat-header-cell *matHeaderCellDef> Section path </th>
+        <td mat-cell *matCellDef="let section" [ngClass]="!section.fileExists ? 'error' : undefined"> {{ section.pathToMarkdown }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="averageTime">
+        <th mat-header-cell *matHeaderCellDef> Avg. Time Spent on Section </th>
+        <td mat-cell *matCellDef="let section"> {{ section.averageTimeSection	 }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="order">
+        <th mat-header-cell *matHeaderCellDef> Change Order </th>
+        <td mat-cell *matCellDef="let section">
+          <button mat-stroked-button color="primary" (click)="changeSectionOrderUp(section.code)"
+            type="button">&#8593;</button>
+          <button mat-stroked-button color="primary" (click)="changeSectionOrderDown(section.code)"
+            type="button">&#8595;</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let section">
+          <button mat-stroked-button color="error" (click)="deleteSection(section.code)" type="button">Delete</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="questions">
+        <th mat-header-cell *matHeaderCellDef># Questions </th>
+        <td mat-cell *matCellDef="let section">
+          <span 
+            *ngIf="section.questions && section.questions.length>0; else elseBlock">{{section.questions.length}}</span>
+          <ng-template #elseBlock>No questions.</ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="manage-questions">
+        <th mat-header-cell *matHeaderCellDef> Questions </th>
+        <td mat-cell *matCellDef="let section">
+          <button mat-stroked-button (click)="manageQuestions(section.code)" type="button">Manage Questions</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedSectionColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedSectionColumns;"></tr>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel id='questions-panel' expanded="true" *ngIf="managingQuestions" hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Questions
+    </mat-panel-title>
+    <mat-panel-description>
+      Manage questions for the section {{section.name}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <question-editor (questionDone) = "onQuestionDone($event)" [questions]='questions' [parentFormGroup]="sectionGroup"></question-editor>
+  <div class="buttons">
+    <button mat-raised-button color="primary" (click)="questionsDone()" type="button">Back to Sections</button>
+  </div>
+</mat-expansion-panel>
+
+<mat-expansion-panel id='suggested-sections-panel' expanded="true" togglePosition="before">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Suggested Sections
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="full-width addContentBlock">
+    <table mat-table class="content-table" [dataSource]="suggestedSectionDataSource">
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let section"> {{ section.code }} </td>
+      </ng-container>
+      <ng-container matColumnDef="folderName">
+        <th mat-header-cell *matHeaderCellDef>Folder Name</th>
+        <td mat-cell *matCellDef="let section"> {{ section.folderName }} </td>
+      </ng-container>
+      <ng-container matColumnDef="filePath">
+        <th mat-header-cell *matHeaderCellDef>File Path</th>
+        <td mat-cell *matCellDef="let section"> {{ section.filePath }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sectionName">
+        <th mat-header-cell *matHeaderCellDef>Section Name</th>
+        <td mat-cell *matCellDef="let section">
+          <mat-form-field class="form-input">
+            <mat-label>Section name</mat-label>
+            <input matInput [(ngModel)]="section.sectionName">
+          </mat-form-field>
+        </td>
+          
+      </ng-container>
+      <ng-container matColumnDef="addSection">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let section">
+          <button mat-raised-button color="primary" class="addButton" (click)="addSuggestedSection(section)" type="button" >Add</button>
+        </td>
+          
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedSuggestedSectionColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedSuggestedSectionColumns;"></tr>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+
+<mat-expansion-panel id='add-section-panel' expanded="true" togglePosition="before">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Add More Sections
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="full-width addContentBlock addSection" [formGroup]="sectionGroup">
+    <mat-form-field class="form-input">
+      <mat-label>Section code</mat-label>
+      <input matInput formControlName="sectionCode" [errorStateMatcher]="matcher" />
+      <mat-hint align="end">Lower case letters, one word or hyphenated, max 50 characters</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-input">
+      <mat-label>Section name</mat-label>
+      <input matInput formControlName="sectionName" [errorStateMatcher]="matcher" />
+    </mat-form-field>
+
+    <mat-form-field class="form-input">
+      <mat-label>Course Folder*</mat-label>
+      <mat-select formControlName="coursePrefix" [(ngModel)]="selectedOption" (ngModelChange)="onValueChanged($event)">
+        <mat-option [value]="prefix" *ngFor="let prefix of coursePrefix$ | async">{{ prefix }}</mat-option>
+      </mat-select>
+      <mat-hint align="end">Please select the initial route to your .md folder.</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="form-input">
+      <mat-label>Path to section*</mat-label>
+      <mat-select formControlName="sectionPath">
+        <mat-option [value]="path.path" *ngFor="let path of paths$ | async">{{ path.path }}</mat-option>
+      </mat-select>
+      <mat-hint align="end">Please select your course(.md) folder.</mat-hint>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="addButton" (click)="addSection()" type="button">{{button}}</button>
+  </div>
+</mat-expansion-panel>

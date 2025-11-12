@@ -1,0 +1,28 @@
+<mat-card class="staff-member-update-form-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Update {{selectedStaffMember().displayName}}'s office</mat-card-title>
+    <mat-card-subtitle>Enter the new office for {{selectedStaffMember().displayName}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="officeCorrectionsForm">
+
+      <mat-form-field class="staff-member-update-form-fields">
+        <mat-label>Select office</mat-label>
+        <mat-select [formControl]="officeCorrectionsForm.controls.office" required>
+          @for (office of allOffices$ | async; track office) {
+            <mat-option [value]="office">{{office.officeName}}</mat-option>
+          }
+        </mat-select>
+        @if (officeCorrectionsForm.controls.office.errors?.['required'] && officeCorrectionsForm.controls.office.touched) {
+          <mat-error>Please select an office</mat-error>
+        } @else {
+          <!-- User has not interacted with the form yet or the form is valid, do not show the error -->
+        }
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="button" [disabled]="officeCorrectionsForm.invalid" (click)="submit()" matTooltip="Submit">
+        Submit <mat-icon>check_circle</mat-icon>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

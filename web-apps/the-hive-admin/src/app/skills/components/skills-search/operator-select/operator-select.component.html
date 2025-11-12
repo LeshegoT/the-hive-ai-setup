@@ -1,0 +1,10 @@
+<section>
+    <mat-form-field id="input-container" appearance="outline">
+        <mat-label>Parameter type:</mat-label>
+        <mat-select [disabled]="disabled" [formControl]="inputSelected" (selectionChange)="onOptionSelected($event)">
+            <mat-option *ngFor="let option of dropDownValues" [value]="option">
+                {{ option.displayComparison }}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+</section>

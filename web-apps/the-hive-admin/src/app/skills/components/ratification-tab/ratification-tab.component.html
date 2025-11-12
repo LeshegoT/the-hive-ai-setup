@@ -1,0 +1,119 @@
+<section class="container">
+  @let ratificationSummary = ratificationSummary$ | async;
+  @let selectedStandardizedName = selectedStandardizedName$ | async;
+  @let selectedAttribute = selectedAttribute$ | async;
+  @let selectedTopLevelTag = getTopLevelTagForStandardizedName(selectedStandardizedName);
+  <nav class="sidenav">
+    <ul class="sidenav-list">
+      @for (topLevelTag of topLevelTags; track topLevelTag) {
+        <li
+          class="sidenav-item"
+          [class.active]="selectedStandardizedName === topLevelTag.standardizedName"
+          (click)="setActiveStandardizedName(topLevelTag.standardizedName)">
+          <p class="sidenav-label">{{ topLevelTag.canonicalName }}</p>
+          @if (!ratificationSummary) {
+            <mat-spinner diameter="16"></mat-spinner>
+          } @else if (getRatificationCountForStandardizedName(topLevelTag.standardizedName, ratificationSummary) === undefined) {
+            <mat-icon matTooltip="Unable to retrieve count for this topLevelTag" color="warn">error</mat-icon>
+          } @else {
+            <p class="sidenav-count">{{ getRatificationCountForStandardizedName(topLevelTag.standardizedName, ratificationSummary) }}</p>
+          }
+        </li>
+      }
+      <li
+        class="sidenav-item"
+        [class.active]="selectedStandardizedName === 'available-at'"
+        (click)="setActiveStandardizedName('available-at')">
+        <p class="sidenav-label">Available At</p>
+        @if (!ratificationSummary) {
+          <mat-spinner diameter="16"></mat-spinner>
+        } @else if (getRatificationCountForStandardizedName('available-at', ratificationSummary) === undefined) {
+          <mat-icon matTooltip="Unable to retrieve count for unratified 'Available At' edges" color="warn">error</mat-icon>
+        } @else {
+          <p class="sidenav-count">{{ getRatificationCountForStandardizedName('available-at', ratificationSummary) }}</p>
+        }
+      </li>
+    </ul>
+  </nav>
+
+  @if(isStandardizedNameTopLevelTag(selectedStandardizedName) && ratificationSummary && !isError(selectedTopLevelTag)) {
+    <section class="table">
+      <app-attribute-ratification-table
+        [affectedStaffMembers]="affectedStaffMembers?.affectedMembers ?? []"
+        [topLevelTag]="selectedTopLevelTag"
+        [selectedAttribute]="selectedAttribute"
+        (ratificationActionAndCanonicalNameDetails)="handleRatificationActionAndCanonicalNameDetails($event)"
+        (invokeAffectedStaffMembersView)="invokeAffectedStaffMembersView($event)"
+      >
+      </app-attribute-ratification-table>
+
+      <section class="affected-staff-members-and-confirmation">
+        @if(selectedAttribute && selectedTopLevelTag.standardizedName !== 'institution') {
+          <app-affected-staff-members
+            [attributeCanonicalNameDetails]="selectedAttribute"
+            [skillsFields]="this.skillsFields"
+            [jsTypes]="this.jsTypes"
+            [jsTypeScales]="this.jsTypeScales"
+            (closeAffectedStaffMembersView)="closeAffectedStaffMembersView()"
+          ></app-affected-staff-members>
+        } @else {
+          <!--No attribute is selected so no affected staff members or the selected attribute is an institution-->
+        }
+
+        @if (skillsEntityAndRatificationAction$.value) {
+          <app-ratification-action-confirmation
+            [skillsEntityAndRatificationAction]="skillsEntityAndRatificationAction$.value"
+            [topLevelTag]="selectedTopLevelTag"
+            [affectedStaffMembers]="affectedStaffMembers?.affectedMembers ?? []"
+            (actionCompleted)="onActionCompletedForAttribute($event, ratificationSummary)"
+          >
+          </app-ratification-action-confirmation>
+        } @else {
+          <!--No ratification action has been selected-->
+        }
+      </section>
+    </section>
+  }@else if(selectedStandardizedName === 'available-at' && ratificationSummary){
+    <section class="table">
+      <app-available-at-ratification-table
+        [unratifiedAvailableAtCount]="getRatificationCountForStandardizedName(selectedStandardizedName, ratificationSummary)"
+        [selectedAttribute]="selectedAttribute"
+        (invokeAffectedStaffMembersView)="invokeAffectedStaffMembersView($event)"
+        (ratificationActionAndCanonicalNameDetails)="handleRatificationActionAndAvailableAt($event)"
+      >
+      </app-available-at-ratification-table>
+
+      <section class="affected-staff-members-and-confirmation">
+        @if(selectedAttribute && selectedTopLevelTag.standardizedName !== 'institution') {
+          <app-affected-staff-members
+            [attributeCanonicalNameDetails]="selectedAttribute"
+            [skillsFields]="this.skillsFields"
+            [jsTypes]="this.jsTypes"
+            [jsTypeScales]="this.jsTypeScales"
+            (closeAffectedStaffMembersView)="closeAffectedStaffMembersView()"
+          ></app-affected-staff-members>
+        } @else {
+          <!--No attribute is selected so no affected staff members or the selected attribute is an institution-->
+        }
+
+        @if(ratificationActionAndCanonicalNameDetails$.value) {
+          <app-available-at-ratification-action-confirmation
+            [ratificationActionAndCanonicalNameDetails]="ratificationActionAndCanonicalNameDetails$.value"
+            (actionCompleted)="onActionCompletedForAvailableAt($event, ratificationSummary)"
+          >
+          </app-available-at-ratification-action-confirmation>
+        } @else {
+          <!--No ratification action has been selected-->
+        }
+      </section>
+    </section>
+  }@else if(isError(selectedTopLevelTag)) {
+    <mat-error>
+      An unexpected error occurred.
+      Try refreshing the page, or
+      <a [href]="generateSupportEmail(selectedTopLevelTag)">contact support</a> if the issue persists. 
+    </mat-error>
+  } @else{
+    <mat-spinner></mat-spinner>
+  }
+</section>

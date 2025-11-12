@@ -1,0 +1,104 @@
+<div #dashboard [ngClass]="{ componentClass:true }"  id="dashboard">
+  <h1>Dashboard</h1>
+    <app-dashboard-filter (filterChange)="setDashboardFilterValue($event)" [statuses]="statuses"/>
+    <h2>
+      Reviews Summary
+    </h2>
+    @if (dashboardFilter) {
+    <section id="status-summary-section">
+      <review-status-summary-table [dashboardFilter]="dashboardFilter" (selectedStatusSummaryTableItem)="setSelectedStatusSummaryTableItem($event)" class="status-summary-section-content"/>
+      <aside class="status-summary-section-content">
+        <h3>Reviews</h3>
+        
+        @let selectedLatenessAndStatus = selectedStatusSummaryTableItem$ | async;
+        @let reviewListItems = reviewListItems$ | async;
+
+        @if (selectedLatenessAndStatus && reviewListItems === undefined) {
+          <mat-spinner></mat-spinner>
+        } @else {
+          <main>
+            @if (selectedLatenessAndStatus) {
+              <mat-chip-set>
+
+                @if (selectedLatenessAndStatus.selectedItemType === 'numberOfUnchangedReviews') {
+                  <mat-chip>
+                    <mat-icon matChipAvatar>warning</mat-icon>
+                    Reviews with unchanged status
+                  </mat-chip>
+                } @else {
+                  <!-- If the item type is not numberOfUnchangedReviews, we don't need to show the chip -->
+                }
+
+                @if (selectedLatenessAndStatus.lateness) {
+                  <mat-chip>
+                    <span class="chip-title">Ageing:</span> {{selectedLatenessAndStatus.lateness}}
+                  </mat-chip>
+                } @else {
+                  <!-- No lateness was selected, don't show undefined -->
+                }
+
+                @if (selectedLatenessAndStatus.status) {
+                  <mat-chip>
+                    <span class="chip-title">Status:</span> {{selectedLatenessAndStatus.status}}
+                  </mat-chip>
+                } @else {
+                  <!-- No status was selected, don't show undefined -->
+                }
+
+                @if (selectedLatenessAndStatus.hrRep) {
+                  <mat-chip>
+                    <span class="chip-title">Hr Rep:</span> {{selectedLatenessAndStatus.hrRep ?? "(Not assigned)"}}
+                  </mat-chip>
+                } @else {
+                  <!-- No HR Rep was selected, don't show undefined -->
+                }
+
+                @if (selectedLatenessAndStatus.templateName) {
+                  <mat-chip>
+                    <span class="chip-title">Review type:</span> {{selectedLatenessAndStatus.templateName}}
+                  </mat-chip>
+                } @else {
+                  <!-- No template name was selected, don't show undefined -->
+                }
+
+                <mat-chip>
+                  <span class="chip-title">As at:</span> {{selectedLatenessAndStatus.asAtEndOf | date}}
+                </mat-chip>
+              </mat-chip-set>
+            } @else {
+              <!-- No lateness and status was selected, we should not show undefined values -->
+            }
+            <app-review-list
+                #reviewList
+                [reviewData]="reviewListItems"
+                [reviewColumns]="staffReviewColumns"
+                [isRowSelectable]="true"
+                (selectedRow)="setSelectedReviewListItem($event.review)"
+              >
+            </app-review-list>
+
+            @let feedbackAssignmentsForSelectedReview = feedbackAssignmentsForSelectedReview$ | async; 
+            @let selectedReviewListItem = selectedReviewListItem$ | async;
+            @if (selectedReviewListItem && !feedbackAssignmentsForSelectedReview) {
+              <mat-spinner></mat-spinner>
+            } @else if (selectedReviewListItem && feedbackAssignmentsForSelectedReview) {
+              <h4>Feedback Assignments</h4>
+              <p>Feedback Assignments for {{selectedReviewListItem.displayName}}'s review</p>
+
+              <app-feedback-list class="transgressor-detail"
+                [assignmentData]="feedbackAssignmentsForSelectedReview"
+                [assignmentColumns]="feedbackAssignmentListColumns"
+              >
+              </app-feedback-list>
+            } @else {
+              <!-- No selection has been made yet -->
+            }
+          </main>
+        }
+
+      </aside>
+    </section>
+    } @else {
+      <mat-spinner></mat-spinner>
+    }
+</div>

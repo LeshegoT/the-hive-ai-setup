@@ -1,0 +1,40 @@
+<div>
+    <app-title iconName="usage" title="Employee Performance Review"></app-title>
+    <mat-tab-group>
+        <mat-tab label="To Do">
+            <ng-template matTabContent>
+                <app-review-to-do></app-review-to-do>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Dashboard" *ngIf="hrDashboardEnabled">
+            <ng-template matTabContent>
+                <app-review-dashboard></app-review-dashboard>
+            </ng-template>
+        </mat-tab>
+        @if (!limitedReviewUsers.includes(currentUpn)) {
+          <mat-tab label="Staff Overview">
+              <ng-template matTabContent>
+                  <app-staff-overview></app-staff-overview>
+              </ng-template>
+          </mat-tab>
+          <mat-tab label="Transgressors">
+              <ng-template matTabContent>
+                  <app-assignment-tracking></app-assignment-tracking>
+              </ng-template>
+          </mat-tab>
+          <mat-tab label="Reviews">
+              <ng-template matTabContent>
+                  <app-reviews></app-reviews>
+              </ng-template>
+          </mat-tab>
+          <mat-tab label="View Review Feedback">
+              <ng-template matTabContent>
+                  <app-stats-individual-view></app-stats-individual-view>
+              </ng-template>
+          </mat-tab>
+        } @else {
+          <!-- This user has limited access to the review system and thus should not be able to see the above tabs -->
+        }
+  </mat-tab-group>
+
+</div>

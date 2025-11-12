@@ -1,0 +1,23 @@
+<form class="staffFilter">
+    <mat-form-field >
+        <mat-label>{{searchLabel}}</mat-label>
+        <input type="text" matInput [formControl]="employeeSearchControl" [matAutocomplete]="auto" (keydown.enter)="clearField($event)">
+        @if (employeeSearchControl.hasError('email') && employeeSearchControl.touched){
+          <mat-error>Please provide a valid email</mat-error>
+        } @else if (employeeSearchControl.hasError('bbdEmail')) {
+          <mat-error>Please select a staff member from the list or enter an external (non-BBD) email</mat-error>
+        }
+        <button mat-icon-button matSuffix (click)="clearField($event)" [disabled]="!employeeSearchControl.value || employeeSearchControl.hasError('email') || employeeSearchControl.hasError('bbdEmail')">
+            <mat-icon >{{searchType}}</mat-icon>
+        </button>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayOnlyUPN"  (optionSelected)="onPersonSelected($event)" >
+            <mat-option *ngFor="let p of filteredPeopleOptions | async" [value]="p" class="multiline-mat-option">
+                <div>{{p.displayName}}</div>
+                <div class="autoCompleteExtendedDetails">
+                  <span>[{{p.office}}] {{p.department}} - {{p.userPrincipleName}}</span>
+                  <span>[{{p.entityAbbreviation}}] - {{p.entityDescription}}</span>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>

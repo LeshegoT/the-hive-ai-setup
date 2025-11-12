@@ -1,0 +1,21 @@
+{
+  "name": "@the-hive/lib-core",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "@azure/msal-node": "^2.13.1",
+    "@azure/storage-blob": "^12.10.0",
+    "@the-hive/lib-shared": "0.0.1",
+    "applicationinsights": "^1.4.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.21",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "pino": "^8.19.0",
+    "pino-http": "^6.6.0",
+    "tslib": "^2.8"
+  }
+}

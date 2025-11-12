@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: var(--standard-padding);
+  background-color: var(--app-search-bar);
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: row;
+  gap: var(--standard-gap);
+}
+
+.create-all-recommendations-button, .hr-dropdown {
+  margin-inline-start: auto;
+}
+
+.selected-filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: var(--standard-gap);
+}
+
+.checkboxes-container {
+  display: flex;
+  flex-direction: column;
+}

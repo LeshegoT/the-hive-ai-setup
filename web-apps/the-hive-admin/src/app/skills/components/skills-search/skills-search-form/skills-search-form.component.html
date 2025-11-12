@@ -1,0 +1,489 @@
+<div class = "skill-search-form">
+<section class = "skill-search-content">
+<section class="skills-search-form-container">
+  <h2 class="filters-title">
+    <mat-icon>filter_list</mat-icon>
+    Search Filters
+  </h2>
+    @if(topLevelTags === undefined ){
+      <mat-spinner></mat-spinner>
+    }@else{
+      <section class="search-input-section">
+      <select-company-entity (entitySelected)="onCompanyEntitySelected($event)" [label]="'Filter by company entity'"></select-company-entity>
+      <select-office (officeSelected)="onOfficeSelected($event)" [label]="'Filter by office'"></select-office>
+        <mat-form-field appearance="outline">
+          <mat-label>Attribute Type</mat-label>
+          <mat-select [formControl]="searchAttributeType">
+            <mat-option [value]="'all'">All</mat-option>
+            @for (topLevelTag of topLevelTags | keyvalue; track topLevelTag.key) {
+              <mat-option [value]="topLevelTag.key">{{topLevelTag.value}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <app-skills-search-bar class="search-bar" (searchOptionSelected)="onSearchOptionSelected($event)" [attributeType$]="searchAttributeType.valueChanges"></app-skills-search-bar>
+        @if(searchAttributeType.value === 'certification' || searchAttributeType.value === 'qualification'){
+          <mat-checkbox color="primary" #checkboxRef
+          (change)="attributeTypeFilterChecked($event)"
+          [(ngModel)]="isAttributeTypeFilter"
+          >Any {{topLevelTags[searchAttributeType.value]}}</mat-checkbox>
+        }@else{
+
+        }
+      </section>
+      <mat-checkbox color="primary" (change)="toggleFilterForStaffOnSupply($event)">Filter by staff on supply</mat-checkbox>
+
+    }
+
+  @if(isLoading){
+    <mat-spinner></mat-spinner>
+  }@else{
+
+  }
+  @let editAttribute = editAttribute$ | async;
+  @if(fieldFormatters !== undefined && requiredFields !== undefined){
+    @if(!itemAlreadyAddedToSearch(requiredFields.attribute || requiredFields.topLevelTag) || editAttribute){
+    <section class="form-section">
+      <mat-divider></mat-divider>
+          <h2>{{ topLevelTags[requiredFields.type]}} selected: {{requiredFields.canonicalName || requiredFields.topLevelTag}}</h2>
+      <div class="attribute-explanation-card">
+        <mat-icon class="attribute-explanation-icon">info</mat-icon>
+        <div class="attribute-explanation-content">
+          <p class="attribute-explanation-text">
+            Now that you have selected an attribute, search for people with the attribute given the following criteria, or search for everybody with the attribute regardless of the fields.
+          </p>
+        </div>
+      </div>
+      <section class="skill-search-form-field-container">
+        @for(field of fieldFormatters | keyvalue; track field){
+          <!-- last used -->
+          @if(field.value.fieldName === skillsService.skillFieldNames.lastUsed.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)" >
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-date-picker
+                  [format]="'YYYY-MM'"
+                  [attributeType]="field.value.javaScriptType"
+                  [hasCheckBox]="true"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  (dateUpdated)="onAttributeFieldChanged($event)">
+                </skills-search-date-picker>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display last used as it does not have this field -->
+          }
+
+           @if(field.value.fieldName === skillsService.skillFieldNames.expiryDate.name){
+            <section class="field-container">
+              <mat-checkbox
+                color="primary"
+                #checkboxRef>{{field.value.fieldLabel}}
+                <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)" >
+                  help_outline
+                </mat-icon>
+              </mat-checkbox>
+              @if (checkboxRef.checked) {
+                <skills-search-date-picker
+                  [format]="'YYYY-MM'"
+                  [attributeType]="field.value.javaScriptType"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  (dateUpdated)="onAttributeFieldChanged($event)">
+                </skills-search-date-picker>
+              } @else {
+                <!-- checkboxRef for expiry date is not checked, so no need to display the date picker -->
+              }
+            </section>
+          }@else{
+            <!-- don't display expiry date filter, because the attribute does not have an expiryDate field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.dateOfGraduation.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)">
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-date-picker
+                  [format]="'YYYY'"
+                  [attributeType]="field.value.javaScriptType"
+                  [hasCheckBox]="false"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  (dateUpdated)="onAttributeFieldChanged($event)"></skills-search-date-picker>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display date Of Graduation as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.achievedDate.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)">
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-date-picker
+                  [format]="'YYYY-MM'"
+                  [attributeType]="field.value.javaScriptType"
+                  [hasCheckBox]="false"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  (dateUpdated)="onAttributeFieldChanged($event)"></skills-search-date-picker>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display achieved Date as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.obtainedFrom.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)" >
+                  help_outline
+                </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-drop-down
+                  [name]="field.value.fieldLabel"
+                  [dropDownValues]="institutions"
+                  (valueChange)="onAttributeFieldChanged($event)"
+                  [index]="false"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  [multiSelect]="true"
+                ></skills-search-drop-down>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display obtained from as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.yearsExperience.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)" >
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-number-input
+                [min]="this.minimumAllowedYearsOfExperience"
+                [max]="this.maximumAllowedYearsOfExperience"
+                [range]="false"
+                [labelName]="field.value.fieldLabel"
+                [fieldName]="field.value.fieldName"
+                [placeholder]="field.value.fieldLabel"
+                (valueChange)="onAttributeFieldChanged($event)"
+                [attributeType]="field.value.javaScriptType">
+
+              </skills-search-number-input>
+              </section>
+
+            </section>
+          }@else{
+             <!-- don't display years of experience as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.skillLevel.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)" >
+                  help_outline
+                </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-radio-button
+                  [buttonValues]="this.getRatingLabelsForField(field.value.fieldName)"
+                  [range]="false"
+                  [attributeType]="field.value.javaScriptType"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  [fieldFormatter]="fieldFormatters[field.value.fieldName]"
+                  (valueChange)="onAttributeFieldChanged($event)"></skills-search-radio-button>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display skill level as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.industryKnowledgeLevel.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)">
+                  help_outline
+                </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-radio-button
+                  [name]="field.value.fieldLabel"
+                  [buttonValues]="this.getRatingLabelsForField(field.value.fieldName)"
+                  [index]="true"
+                  [range]="false"
+                  [attributeType]="field.value.javaScriptType"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  [fieldFormatter]="fieldFormatters[field.value.fieldName]"
+                  (valueChange)="onAttributeFieldChanged($event)">
+                </skills-search-radio-button>
+              </section>
+            </section>
+          }@else{
+             <!-- don't display industry knowledge level as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.expertiseLevel.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)">
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-radio-button
+                  [buttonValues]="this.getRatingLabelsForField(field.value.fieldName)"
+                  [range]="false"
+                  [attributeType]="field.value.javaScriptType"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  [fieldFormatter]="fieldFormatters[field.value.fieldName]"
+                  (valueChange)="onAttributeFieldChanged($event)"></skills-search-radio-button>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display skill level as it does not have this field -->
+          }
+
+          @if(field.value.fieldName === skillsService.skillFieldNames.yearsOfExperienceRating.name){
+            <section class="field-container">
+              <div>
+                <mat-checkbox color="primary" #checkboxRef>{{field.value.fieldLabel}}
+                  <mat-icon [matTooltip]="getTooltipMessage(field.value.fieldName)">
+                    help_outline
+                  </mat-icon>
+                </mat-checkbox>
+              </div>
+              <section *ngIf="checkboxRef.checked">
+                <skills-search-drop-down
+                  [name]="field.value.fieldLabel"
+                  [dropDownValues]="this.getRatingLabelsForField('yearsOfExperienceRating')"
+                  (valueChange)="onAttributeFieldChanged($event)"
+                  [index]="false"
+                  [fieldFormatter]="fieldFormatters[field.value.fieldName]"
+                  [labelName]="field.value.fieldLabel"
+                  [fieldName]="field.value.fieldName"
+                  [multiSelect]="false"
+                ></skills-search-drop-down>
+              </section>
+            </section>
+          }@else{
+            <!-- don't display obtained from as it does not have this field -->
+          }
+        }@empty{
+
+        }
+        <div class="or-divider-container">
+          <hr class="or-divider">
+          <p class="or-text">OR</p>
+          <hr class="or-divider">
+        </div>
+        <div class="span-all-columns">
+          <mat-checkbox
+          color="primary"
+          (change)="onGetEveryoneCheckboxChange($event, requiredFields.attribute)">
+          Search for everyone with
+          {{ isAttributeTypeFilter ? 'any' : (requiredFields.canonicalName || '') }}
+          {{ requiredFields.topLevelTag?.toLowerCase() || '' }} in their portfolio
+          </mat-checkbox>
+
+        </div>
+      </section>
+      <section class="search-options-container">
+        @if(editAttribute){
+          <button mat-stroked-button (click)="cancelEditAttributeInSearch()">
+            <mat-icon>close</mat-icon>
+            Cancel 
+          </button>
+          <button mat-stroked-button id="search-button" (click)="editAttributeFiltersInSearch()">
+            <mat-icon>add_circle</mat-icon>
+            Edit {{topLevelTags[requiredFields.type].toLowerCase()}} in search
+          </button>
+        }@else{
+          <button mat-stroked-button (click)="cancelAttributeSearchForm()">
+            <mat-icon>close</mat-icon>
+            Cancel 
+          </button>
+          <button mat-stroked-button id="search-button" (click)="addAttributeToSearch()">
+            <mat-icon>add_circle</mat-icon>
+            Add {{topLevelTags[requiredFields.type].toLowerCase()}} to search
+          </button>  
+        }
+      </section>
+    </section>
+  }}@else{
+    @if( !isLoading && (attributeFilerObject.filters.attributeFilters.length === 0 && attributeFilerObject.filters.attributeTypeFilters.length === 0)){
+      <div class="empty-state">
+        <mat-icon class="empty-icon">info</mat-icon>
+        <h3>Get started</h3>
+        <p class="main-text">
+          Enter a search term to start finding staff with the given attribute.
+        </p>
+        <p class="sub-text">
+          You can also optionally select a company or office filter above to narrow your search.
+        </p>
+      </div>
+    }@else {
+      <!--The loader will show-->
+    }
+  }
+
+  @if(attributeFilerObject.filters.attributeFilters.length > 0 || attributeFilerObject.filters.attributeTypeFilters.length > 0){
+    <mat-divider></mat-divider>
+    <section class="query-container">
+      <section class="attribute-query-cards-container">
+        @for(field of getCombinedFilters(); track field){
+          <skill-search-query-card
+              [attributeFilters]="field"
+              [topLevelTag] = "topLevelTags[requiredFields?.type]"
+              (onAttributeDeleted)="removeAttributeFromAttributeList($event)"
+              (onAttributeEdited)="editAttributeFilter($event)"
+              [filterOperators]="filerOperators">
+          </skill-search-query-card>
+        }@empty{
+          <!-- there are no attributes -->
+        }
+      </section>
+    </section>
+  }@else{
+    <!-- there are no attributes -->
+  }
+
+
+</section>
+<section class="full-width-section">
+  <div id="saved-searches">
+    @if(attributeFilerObject.filters.attributeFilters.length > 0 || attributeFilerObject.filters.attributeTypeFilters.length > 0) {
+      <mat-form-field appearance="outline" class="save-search-field">
+        <mat-label>Save search as</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="searchNameControl"
+          (focusout)="searchNameControl.markAsUntouched()"
+          (focus)="searchNameControl.markAsTouched()">
+        <button
+          matSuffix
+          mat-icon-button
+          (click)="saveSearch()"
+          [disabled]="searchNameControl.invalid">
+          <mat-icon>check</mat-icon>
+        </button>
+        @if(searchNameControl.hasError('required') && searchNameControl.touched) {
+          <mat-error>
+            Please enter the name for this search
+          </mat-error>
+        }
+      </mat-form-field>
+    }
+    @else{
+      <!-- Input for saving search will not be on screen if there are no search parameters to save -->
+    }
+    <h4 class="section-title">Saved searches</h4>
+    <mat-form-field appearance="outline" class="retrieve-search-field">
+      <mat-label>Retrieve a saved search</mat-label>
+      <mat-select [formControl]="selectedSavedSearch">
+        @for (savedSearch of savedSearches; track savedSearch ) {
+          <mat-option [value]="savedSearch">{{ savedSearch.replace('.json', '') }}</mat-option>
+        }
+        @empty {
+          <mat-option disabled>You don't have any saved searches</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  @if(requiredFields && !isSearching && !(attributeFilerObject.filters.attributeFilters.length > 0 || attributeFilerObject.filters.attributeTypeFilters.length > 0)){
+    <div class="status-card success">
+      <p class="status-title"> Add filters</p>
+      <p class="status-sub">Please select from the given filters or select to search everyone.</p>
+    </div>
+  }@else{
+    @if(!isSearching && (attributeFilerObject.filters.attributeFilters.length > 0 || attributeFilerObject.filters.attributeTypeFilters.length > 0)){
+      <div class="status-card neutral">
+        <p class="status-title">Search for staff</p>
+        <p class="status-sub">Click Search to view matching staff</p>
+      </div>
+    }@else{
+      @if(!shouldFilter()){
+        <div class="status-card neutral">
+          <p class="status-title">You have not added any filters</p>
+          <p class="status-sub">Please add at least one filter before searching.</p>
+        </div>
+      } @else{
+        <!-- The search has been fulfilled so nothing will show -->
+      }
+    }
+  }
+
+  <section class="search-options-container">
+    <button
+      mat-stroked-button
+      (click)="resetAttributeSearchObject()">
+      <mat-icon >clear</mat-icon>
+      Clear Search
+    </button>
+    <button
+      mat-stroked-button
+      id="search-button"
+      (click)="searchForPeople()">
+      <mat-icon>search</mat-icon>
+      Search
+    </button>
+  </section>
+</section>
+</section>
+@if(errorMessage){
+  <mat-error class="error-message">
+    {{errorMessage.message}}.
+    Try refreshing the page, or
+    <a [href]="generateSupportEmail(errorMessage)">contact support</a> if the issue persists.
+  </mat-error>
+} @else{
+  <!-- there is no error to show so show nothing -->
+}
+@if(isSearching){
+  <mat-spinner></mat-spinner>
+}@else{
+  <!-- no longer searching  -->
+}
+</div>

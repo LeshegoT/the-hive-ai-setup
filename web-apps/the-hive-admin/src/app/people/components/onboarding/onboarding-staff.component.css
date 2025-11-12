@@ -1,0 +1,64 @@
+.component {
+    padding-top: 1rem;
+}
+
+.filter {
+    width: 100%;
+}
+
+.edit-date-icons {
+    cursor: pointer;
+}
+
+.selected-row {
+  background-color: var(--selected-row-background-colour);
+}
+
+.wrap-text {
+  overflow-wrap: anywhere;
+}
+
+td {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+}
+
+.action-buttons > button {
+  width: fit-content;
+}
+
+.search-bar-container {
+  display: flex;
+  gap: var(--standard-gap);
+}
+
+.search-bar-container>mat-form-field {
+  flex: 1 1 auto;
+}
+
+.search-bar-container>button {
+  flex: 1 0 auto;
+}
+.combined-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap)
+}
+
+.combined-fields .search-bar {
+  width: 100%;
+}
+
+.not-set-warning {
+  color: var(--error-message-color);
+}
+
+.header-row {
+  font-weight: bold;
+}

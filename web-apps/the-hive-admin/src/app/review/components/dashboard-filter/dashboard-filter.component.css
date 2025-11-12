@@ -1,0 +1,65 @@
+#dashboard-filter {
+  background-color: var(--app-search-bar);
+  padding: var(--standard-padding);
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--standard-gap);
+  width: 100%;
+  margin-block: 1rem;
+}
+
+.filter-item {
+  flex-grow: 1;
+}
+
+select-company-entity {
+  display: flex;
+}
+
+.filter-item ::ng-deep mat-form-field {
+  flex-grow: 1;
+}
+
+.grouping-order-list {
+  border: solid var(--standard-border-width) darkgray;
+  display: block;
+  border-radius: var(--standard-border-radius);
+}
+
+.grouping-order-list-item {
+  padding: var(--standard-padding);
+  border-bottom: solid var(--standard-border-width) darkgray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--standard-gap);
+  box-sizing: border-box;
+  cursor: move;
+}
+
+.card-header {
+  padding: var(--standard-padding);
+}
+
+.card-footer {
+  padding: var(--standard-padding);
+}
+
+.card {
+  width: min-content;
+  flex-grow: 1;
+}
+
+.grouping-methods-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--standard-gap);
+}

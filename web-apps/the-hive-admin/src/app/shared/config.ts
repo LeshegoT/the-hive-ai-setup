@@ -1,0 +1,68 @@
+import { AttributeType } from "@the-hive/lib-skills-shared";
+import { PeriodLength } from "@the-hive/lib-reviews-shared";
+import { ReviewsDashboardGroupingCategories } from "../review/services/hr-review-dashboard.service";
+
+export interface Config {
+    PRODUCTION: boolean;
+    DEBUG: boolean;
+    BASE_SERVER_URL: string;
+    API_URL: string;
+    EVENT_SERVER_URL: string,
+    CLIENT_ID: string;
+    AUTHORITY_BASE: string;
+    TENANT_ID: string;
+    REDIRECT_URI: string;
+    ADMIN_REDIRECT_URI: string;
+    MSGRAPHAPI: string;
+    SCOPES: string[];
+    INSTRUMENTATION_KEY: string;
+    HACKKERANK_URL: string;
+    HACKKERANK_API_TOKEN: string;
+    ALLOW_HR_OWN_REVIEW: boolean;
+    ENVIRONMENT_NAME: string;
+    HR_REVIEW_DASHBOARD_ENABLED: boolean;
+    CONTRACTS_DASHBOARD_ENABLED: boolean;
+    HR_REVIEW_DASHBOARD_MINIMUM_PERIODS: number;
+    HR_REVIEW_DASHBOARD_MAXIMUM_PERIODS: number;
+    HR_REVIEW_DASHBOARD_DEFAULT_PERIOD_LENGTH: PeriodLength;
+    SEARCH_DEBOUNCE_TIME_IN_MILLISECONDS: number;
+    SNACKBAR_DURATION: number;
+    FEEDBACK_DAY_IN_MONTH_DUE: number;
+    MINIMUM_CONTRACT_DURATION: number;
+    MAXIMUM_REVIEW_MINUTES_NOTE_CHARACTERS: number;
+    FEEDBACK_FORM_DEBOUNCE_THRESHOLD_IN_MILLISECONDS: number;
+    SKILL_CURRENT_DATE:string;
+    SKILL_FILE_DEFAULT :string;
+    MINIMUM_ALLOWED_YEARS_OF_EXPERIENCE: number;
+    MAXIMUM_ALLOWED_YEARS_OF_EXPERIENCE: number;
+    SKILL_MIN_SEARCH_CHARACTERS: number;
+    ALLOWED_CORE_ATTRIBUTE_TYPES: AttributeType[];
+    MAXIMUM_CORE_ATTRIBUTES_FOR_USER: number;
+    BBD_DOMAINS: string[];
+    REVIEW_SYSTEM_LAUNCH_DATE: Date;
+    ADDITIONAL_INFO_USERS: string[];
+    EARLIEST_ALLOWED_STAFF_ON_SUPPLY_AS_OF_DATE: number;
+    UNIT_CHANGE_REVIEWS_ENABLED: boolean;
+    UNIT_CHANGE_REVIEW_DEADLINE_DAYS: number;
+    REVIEWS_DASHBOARD_SUPPORTED_GROUPING_CATEGORIES: {
+      reviews: ReviewsDashboardGroupingCategories[];
+      contracts: ReviewsDashboardGroupingCategories[]
+    };
+    LIMITED_REVIEW_USERS: string[];
+    UNIT_CORRECTIONS_ENABLED: boolean;
+    ONBOARDING_ENABLED: boolean;
+    TERMINATION_ENABLED: boolean;
+    SKILLS_SEARCH_SIMILARITY_SCORE_FACTOR: number;
+    GENERATE_BIO_AD_GROUPS: string[];
+    UNIT_MOVE_HR_REPS: string[];
+    MONTHS_FROM_EMPLOYMENT_DATE_FOR_PROBATIONARY_REVIEW: number;
+    DISPLAY_SKILLS_SEARCH_BY_STAFF_TABS: boolean;
+    WORK_EXPERIENCE_MIN_DATE_YEARS: number;
+    DISPLAY_PROOF_VALIDATION_INDICATOR_ON_SKILLS_CARDS: boolean;
+    DISPLAY_PENDING_PROOF_VALIDATION_SKILLSHR_TAB: boolean;
+    WORK_EXPERIENCE_MAXIMUM_OUTCOME_CHARACTER_LENGTH: number;
+    WORK_EXPERIENCE_MAXIMUM_PROJECT_DESCRIPTION_CHARACTER_LENGTH: number;
+    FEEDBACK_PROVIDER_REQUEST_EMAIL_ENABLED: boolean;
+    MODIFY_BIO_INFORMATION_USERS: string[];
+    MAXIMUM_NUMBER_OF_ALLOWED_SPOKEN_LANGUAGES: number;
+}

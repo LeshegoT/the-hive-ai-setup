@@ -1,0 +1,88 @@
+<div class="component">
+  <div>
+    <app-title iconName="dashboard" title="Vac Work Applications"></app-title>
+  </div>
+
+
+  <table mat-table class="full-width-table" [dataSource]="peopleData" matSort>
+
+    <ng-container matColumnDef="applicationId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Application ID</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.applicationId }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="idNumber">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id/Passport Number</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.idNumber }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email Address</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.email }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.phone }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="university">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>University</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.university }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="degree">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Degree</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.degree }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.status }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="applicationDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Application Date</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.applicationDate | dateFormat }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="documents">
+      <th mat-header-cell *matHeaderCellDef> Download </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-raised-button color="primary" (click)="downloadFile(row.cv, row.name + '-CV')"
+          type="button">CV</button>
+        <button mat-raised-button color="accent" (click)="downloadFile(row.transcript, row.name + '-Transcript')"
+          type="button">Transcript</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="reportColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: reportColumns"></tr>
+  </table>
+
+  <mat-paginator #paginator [length]="peopleData.data.length" [pageIndex]="0"
+    [pageSize]="this.tableService.getPageSize()" [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+    [hidePageSize]="this.tableService.getHidePageSize()">
+  </mat-paginator>
+
+</div>

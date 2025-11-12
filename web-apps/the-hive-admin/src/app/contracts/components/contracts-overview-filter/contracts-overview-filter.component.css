@@ -1,0 +1,21 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    padding: var(--standard-padding);
+    background: var(--app-search-bar);
+    gap: var(--standard-gap);
+}
+
+.selected-filters {
+    display: flex;
+    flex-direction: row;
+    gap: var(--standard-gap);
+    background: var(--app-search-bar);
+    padding-inline: var(--standard-padding);
+    justify-content: flex-end;
+}

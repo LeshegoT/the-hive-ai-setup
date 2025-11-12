@@ -1,0 +1,138 @@
+:host {
+  /* Colours: */
+  --app-overdue: #d90000;
+  --app-almost-overdue: #ff8c00;
+  --app-due-later: #b5e1a4;
+  --completed-status : rgb(19, 118, 19);
+  --shadow-color:rgba(0, 0, 0, 0.25);
+
+  --standard-shadow:0 0.25em 1.25em var(--shadow-color);
+  --small-shadow: 0 0 0.5em var(--shadow-color);
+
+  --small-gap: 0.2rem;
+  --medium-gap:0.5rem;
+  --large-gap: 1rem;
+  --extra-large-gap: 1.5em;
+
+  --font-size-extra-tiny: 0.75em;
+  --font-size-tiny: 0.875em;
+  --font-size-small: 1em;
+  --font-size-medium-small: 1.125em;
+  --font-size-medium: 1.25em;
+  --font-size-large: 1.5em;
+  --font-size-extra-large: 2.25em;
+
+  --bold-font-weight:600;
+
+  --small-spacing: 0.3em;
+  --medium-spacing: 0.5em;
+  --standard-spacing: 1em;
+  --large-spacing: 1.5em;
+
+  --light-font-weight : 400;
+  --responsive-card-size :  clamp(5em, 50vw, 22em);
+}
+
+.form-input {
+  width: 90%;
+}
+
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.content-table {
+  width: 100%;
+  margin-top: 1em;
+}
+
+.addContentBlock {
+  margin: 1em 0;
+}
+
+#dueDateColorIndicator{
+  padding: 0.5em;
+  width: 70%;
+  border-radius: 5px;
+}
+.overdueColorIndicator{
+  background-color: var(--app-overdue);
+  color: white;
+}
+.dueSoonColorIndicator{
+  background-color: var(--app-almost-overdue);
+}
+.dueLaterColorIndicator{
+  background-color: var(--app-due-later);
+}
+
+.addButton {
+  display: block;
+  float: right;
+  width: 10%;
+}
+
+mat-expansion-panel {
+  margin-bottom: 24px;
+}
+
+/* Review component styles**/
+.pendingStatus{
+     color: var(--primary-color) ;
+}
+
+.completedStatus{
+    color: var(--completed-status)
+}
+
+.edit-feedback{
+    cursor:pointer;
+    text-align: center;
+    font-size: small;
+}
+
+
+.steal-feedback{
+    cursor:pointer;
+    text-align: center;
+    font-size: small;
+}
+
+.dateInput{
+    width:50%;
+    margin-bottom: 0.5em;
+    margin-right:0.5em;
+}
+
+.saveIcon:hover{
+    color: green;
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.cancelIcon:hover{
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.local {
+  --gradient-dark: rgba(0, 100, 0, 1);
+  --gradient-light: rgba(38, 202, 38, 1);
+}
+
+.qa {
+  --gradient-dark: rgba(254, 146, 41, 1);
+  --gradient-light: rgba(252, 190, 44, 1);
+}
+
+.prod {
+  --gradient-dark: rgba(100, 0, 0, 1);
+  --gradient-light: rgba(200, 0, 0, 1);
+}
+
+.qa, .local, .prod {
+  background: linear-gradient(90deg, var(--gradient-dark) 0%, var(--gradient-light) 50%, var(--gradient-dark) 100%);
+  background-size: cover;
+}

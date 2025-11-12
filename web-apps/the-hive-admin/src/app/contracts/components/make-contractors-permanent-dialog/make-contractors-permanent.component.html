@@ -1,0 +1,36 @@
+<div class="dialog-container">
+  <h1 mat-dialog-title>Make a staff member permanent</h1>
+  <p class="warning">
+    <strong>Warning:</strong>
+    You are about to make a contract staff member permanent.
+  </p>
+  <div class="details-container">
+    <p class=".detail-title">Name:</p>
+    <p><em>{{ data().displayName }}</em></p>
+  </div>
+  <form [formGroup]="makeContractorsPermanentForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Next Review Date</mat-label>
+      <input matInput [matDatepicker]="datePicker" formControlName="nextReviewDate" [min]="minimumNextReviewDate" />
+      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+      <mat-datepicker #datePicker></mat-datepicker>
+      <mat-error>{{ getFormErrors(makeContractorsPermanentForm.get('nextReviewDate')) }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Review Type</mat-label>
+      <mat-select formControlName="nextFeedbackTypeId">
+        <mat-option>Select Type</mat-option>
+        @for (type of reviewTypes; track type.feedbackAssignmentTemplateId) {
+        <mat-option [value]="type.feedbackAssignmentTemplateId">{{ type.templateName }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>{{ getFormErrors(makeContractorsPermanentForm.get('nextFeedbackTypeId')) }}</mat-error>
+    </mat-form-field>
+    <div class="button-panel">
+      <div mat-dialog-actions>
+        <button mat-button cdkFocusInitial type="button" (click)="onNoClick()">Cancel</button>
+        <button mat-button color="accent" type="submit" [disabled]="makeContractorsPermanentForm.invalid">Confirm</button>
+      </div>
+    </div>
+  </form>
+</div>

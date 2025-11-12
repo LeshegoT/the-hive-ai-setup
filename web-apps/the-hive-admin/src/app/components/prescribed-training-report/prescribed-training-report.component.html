@@ -1,0 +1,110 @@
+@if (reportData !== undefined) {
+<div class="component">
+  <div class="filter">
+    <mat-form-field>
+      <input type="text" placeholder="Enter Course" matInput [formControl]="courseControl" 
+[matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" >
+        <mat-option *ngFor="let option of filteredOptions | async " [value]="option.name" (onSelectionChange)="applyFilter(option.name)">
+          {{option.name}}
+       </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="exportToCSV()" type="button">Export to csv</button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <table mat-table class="full-width-table" [dataSource]="reportData" matSort>
+
+    <ng-container matColumnDef="displayName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.displayName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="userPrincipleName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>BBD Email</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.userPrincipleName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="userName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>BBD User Name</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.userName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="jobTitle">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title/Role</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.jobTitle }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.department }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="office">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Office</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.office }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="courseId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Course Id</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.courseId}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="courseName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Course Name</th>
+      <td mat-cell *matCellDef="let row">{{ row.courseName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="requiredSections">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Required Sections</th>
+      <td mat-cell *matCellDef="let row">{{ row.requiredSections }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="completedSections">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Completed Sections</th>
+      <td mat-cell *matCellDef="let row">{{ row.completedSections }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="progress">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Progress</th>
+      <td mat-cell *matCellDef="let row">{{ row.progress}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="reportColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: reportColumns"></tr>
+  </table>
+
+   <mat-paginator
+  #paginator
+  [length]="reportData.data.length"
+  [pageIndex]="0"
+  [pageSize]="this.tableService.getPageSize()" 
+  [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+  [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+  [hidePageSize]="this.tableService.getHidePageSize()"
+>
+</mat-paginator>
+
+
+</div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

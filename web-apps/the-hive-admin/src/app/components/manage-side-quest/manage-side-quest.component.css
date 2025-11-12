@@ -1,0 +1,63 @@
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.padded {
+  display: flex;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  width: 15%;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+.marginBottom {
+  margin-bottom: 0.5em;
+}
+
+.container-content {
+  width: 50%;
+}
+
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+
+.correct-date-picker {
+  margin-top: -0.5em;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.container-align {
+  align-items: end;
+}
+
+.margin-left {
+  margin-left: 5%;
+}
+
+.buttons{
+  display: flex;
+  gap: var(--standard-gap);
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-wrap: wrap;
+  }
+  .container-content {
+    width: 100%;
+  }
+}

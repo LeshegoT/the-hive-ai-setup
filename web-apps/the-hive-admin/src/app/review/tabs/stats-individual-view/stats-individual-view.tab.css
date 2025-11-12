@@ -1,0 +1,170 @@
+.component{
+    margin: 20px;
+    margin-bottom: 60px;
+}
+
+.tableSelectable:hover{
+    cursor: pointer ;
+    text-decoration: underline;
+}
+
+.containerDiv{
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px;
+    padding-right: 20px;
+}
+
+.component{
+    margin-bottom: 60px;
+}
+
+#searchButton{
+ margin-left: 10px;
+}
+
+#employeeSearch > app-staff-filter {
+    max-width: 30em;
+    overflow-x:hidden;
+}
+
+.templateSelection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start ;
+    display: inline-block;
+}
+
+.templateSelection mat-radio-button{
+    margin-left: 10px;
+    background-color: rgba(128, 128, 128, 0.103);
+    border-radius: 25px;
+    padding: 10px 15px;
+    font-size: small;
+}
+
+.bubbleClose{
+    margin-left:5px;
+    color: var(--accent-color);
+}
+
+.chipFilter{
+    margin-left:10px;
+    display: inline-block;
+}
+
+.chipFilter mat-chip{
+    padding: 10px 15px;
+    font-size: small;
+}
+
+.feedbackToggle{
+    margin: 0.5em;
+    min-width: 13em;
+}
+
+
+#selectedUserHistoryPanel{
+    width: 30%;
+}
+
+.userDepartment{
+    font-weight: bold;
+    margin-right: 2em;
+}
+
+.userManager{
+    color: gray;
+}
+
+.userStartDate{
+    color: gray;
+    margin-right: 2em;
+}
+
+#selectedUserHistoryPanel > mat-card{
+    background-color: #f4f4f4;
+}
+
+.userDetails{
+    margin:0.2em;
+    font-weight:normal;
+    color:gray;
+}
+
+
+
+.component{
+    margin: 0px;
+    margin-bottom: 0px;
+}
+
+#filterPanel{
+    background-color: #D9D9D9;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+#filterPanel > div{
+    display: flex;
+    flex-direction: row;
+}
+
+.dateRangePicker{
+    margin-left: 0.2em;
+}
+
+
+mat-form-field{
+    margin-top: 0.5em;
+    font-size: small;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+.mat-mdc-list-base .mat-mdc-list-item, .mat-mdc-list-base .mat-list-option{
+    height: 1.5em;
+}
+
+#templateFilter{
+    margin: 0.5em;
+}
+
+#selectedUpnName{
+    font-weight: bold;
+    color: black;
+    font-size:medium;
+}
+
+#voluntaryContainer{
+    margin: 1em 0;
+}
+
+.chartDiv{
+    margin: 1em 0;
+    padding: 3em;
+}
+
+#upnDetailPanel{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    background: linear-gradient(to bottom, rgb(238, 238, 238), rgba(0, 0, 0, 0));
+    padding: 1em 0.1em 3em 1em ;
+}
+@media only screen and (max-width: 1000px) {
+    #upnDetailPanel{
+        flex-direction: column;
+    }
+
+    #selectedUserHistoryPanel > mat-card:first-of-type {
+        margin-top: 1em;
+    }
+
+    #selectedUserHistoryPanel > mat-card {
+        width:150%;
+    }
+}

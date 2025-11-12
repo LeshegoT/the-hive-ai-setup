@@ -1,0 +1,37 @@
+<div class="full-width">
+  <h3>Create New Side Quest Type</h3>
+  <form [formGroup]="sideQuestTypeForm" #parentForm="ngForm" (ngSubmit)="createSideQuestType()">
+
+    <mat-form-field class="full-width">
+      <mat-label>Code*</mat-label>
+      <input matInput formControlName="code" [errorStateMatcher]="matcher"/>
+      <mat-hint align="end">Lower case letters, one word or hyphenated, max 50 characters</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Name*</mat-label>
+      <input matInput formControlName="name" [errorStateMatcher]="matcher" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Icon*</mat-label>
+      <mat-select formControlName="icon">
+        <mat-option [value]="image.path" *ngFor="let image of images$ | async">{{ image.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Description*</mat-label>
+      <textarea matInput formControlName="description" [errorStateMatcher]="matcher" ></textarea>
+      <mat-hint align="end">Markdown supported</mat-hint>
+    </mat-form-field>
+
+    <div class="error" *ngIf="error">
+      Please ensure all required fields are filled in and that there are no errors above.
+    </div>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+</div>

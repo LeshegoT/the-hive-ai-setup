@@ -1,0 +1,49 @@
+<section id="container">
+  <skill-export-graph></skill-export-graph>
+</section>
+
+<section id="buttons">
+  <button mat-raised-button color="primary" (click)="updateRequiredFields()" [disabled]="standardizedFields === undefined">
+    @if (standardizedFields === undefined) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Standardize fields
+    }
+  </button>
+  <button mat-raised-button color="primary" (click)="updateCanonicalNameGuids()" [disabled]="updatedCanonicalNameGuids === undefined">
+    @if (updatedCanonicalNameGuids === undefined) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Update canonical names
+    }
+  </button>  
+  <button mat-raised-button color="primary" (click)="removeDuplicateEdges()">
+    @if (removedDuplicateEdges === undefined) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Remove duplicate edges
+    }
+  </button>
+</section>
+
+@if (standardizeFieldsResponseMessage) {
+  <p>{{ standardizeFieldsResponseMessage }}</p>
+}
+@else{
+  <!-- do not render if there is no message to display -->
+}
+
+@if (canonicalNamesResponseMessage) {
+  <p>{{canonicalNamesResponseMessage}}</p>
+}
+@else{
+  <!-- do not render if there is no message to display -->
+}
+
+@if (removeDuplicateEdgesMessage) {
+  <p>{{removeDuplicateEdgesMessage}}</p>
+}
+@else{
+  <!-- do not render if there is no message to display -->
+}
+

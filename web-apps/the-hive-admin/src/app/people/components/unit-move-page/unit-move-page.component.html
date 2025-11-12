@@ -1,0 +1,19 @@
+<main>
+  <app-staff-filter 
+    [searchLabel]="'Employee'"
+    [searchType]="'search'"
+    [searchBy]="'staff'"
+    [blockBBDEmails]="false"
+    (selectStaff)="onSelectStaff()"
+  >
+  </app-staff-filter>
+  <section class="content-section">
+    @let selectedStaffMember = selectedStaffMember$ | async;
+    @if (selectedStaffMember) {
+      <app-staff-profile [selectedStaffMember]="selectedStaffMember" ></app-staff-profile>
+      <app-unit-change-form [selectedStaffMember]="selectedStaffMember"></app-unit-change-form>
+    } @else {
+      <p>Select a staff member to start a unit move review</p>
+    }
+  </section>
+</main>

@@ -1,0 +1,15 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.item{
+    width: 100%;
+}
+
+#feedbackList{
+    position: sticky;
+    align-self: flex-start;
+    top: 0em
+}

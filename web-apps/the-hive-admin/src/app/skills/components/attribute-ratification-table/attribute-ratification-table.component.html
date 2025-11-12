@@ -1,0 +1,96 @@
+@let ratificationAttributes = ratificationAttributes$ | async;
+@let totalCount = totalCount$ | async;
+@if( attributeRatificationTable ){
+    @if( ratificationAttributes && isError(ratificationAttributes)){
+
+        <p class="message">
+            {{ ratificationAttributes.message }}. 
+            Try refreshing the page, or
+            <a [href]="generateSupportEmail(ratificationAttributes)">contact support</a> if the issue persists.
+        </p>
+
+    } @else {
+        @if(attributeRatificationTable.data.length > 0) {
+
+            <mat-table [dataSource]="attributeRatificationTable" class="table-container full-width-table" multiTemplateDataRows>
+                
+                <ng-container matColumnDef="canonicalName">
+                <mat-header-cell *matHeaderCellDef>
+                    <div class="header-content">
+                        <div class="header-title">{{ topLevelTag.canonicalName }}</div>
+                        <input
+                            class="search-input"
+                            [formControl]="searchControl"
+                            placeholder="Search {{ topLevelTag.canonicalName }}"
+                        >
+                    </div>
+                </mat-header-cell>
+                    <mat-cell *matCellDef="let row" [attr.data-label]="topLevelTag.canonicalName + ' canonicalName'">
+                        @if(isError(row)){
+                            {{ row.message }}
+                        } @else if(topLevelTag.standardizedName !== 'institution') {
+                            <mat-chip 
+                                [color]="selectedAttribute?.standardizedName === row.standardizedName ? 'primary' : 'accent'"
+                                [disabled]="selectedAttribute?.standardizedName === row.standardizedName"
+                                (click)="invokeAffectedStaffMembersView.emit(row)">
+                                {{ row.canonicalName}}
+                            </mat-chip>
+                        } @else{
+                            {{ row.canonicalName}}
+                        }
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let row" [attr.data-label]="'Actions'">
+                        <app-ratification-actions
+                            [affectedStaffMembers]="affectedStaffMembers"
+                            [disabled]="isError(row)"
+                            [isAvailableAtRatification]="isAvailableAtRatification"
+                            [selectedAction]="isSelectedRow(row) ? editingRow.ratificationAction : undefined"
+                            (ratificationAction)="updateRatificationActionForAttribute($event, row)"
+                        >
+                        </app-ratification-actions>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="spinner">
+                    <mat-cell *matCellDef [attr.colspan]="columns.length">
+                        <mat-spinner diameter="32"></mat-spinner>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="paginator">
+                    <mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length">
+                        <mat-paginator
+                            #paginator
+                            [length]="totalCount"
+                            [pageIndex]="(pageIndex$ | async)" 
+                            [pageSize]="(pageSize$ | async)" 
+                            [pageSizeOptions]="tableService.getPageSizeOptions()"
+                            [showFirstLastButtons]="tableService.getShowFirstLastButtons()"
+                            [hidePageSize]="tableService.getHidePageSize()" 
+                            (page)="pageChanged($event)">
+                        </mat-paginator>
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="columns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columns;" [class.hidden]="!ratificationAttributes"></mat-row>
+                <mat-row *matRowDef="let row; columns: ['spinner'];" [class.hidden]="ratificationAttributes"></mat-row>
+                <mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></mat-footer-row>
+
+            </mat-table>
+
+        } @else {
+
+            <p class="message">
+                No {{ topLevelTag.canonicalName }}'s need ratification
+            </p>
+            
+        } 
+    }
+} @else {
+    <mat-spinner></mat-spinner>
+}

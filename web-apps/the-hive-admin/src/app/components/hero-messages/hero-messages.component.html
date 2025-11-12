@@ -1,0 +1,30 @@
+<h3>Quest Log</h3>
+<table mat-table class="full-width-table" [dataSource]="messageData" matSort>
+  <ng-container matColumnDef="creationDate">
+    <th class="date head" mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+    <td class="date" mat-cell *matCellDef="let row">{{ row.creationDate | dateFormat }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="createdByUserPrincipleName">
+    <th class="from head" mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+    <td class="from" mat-cell *matCellDef="let row">{{ row.createdByUserPrincipleName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="heroUserPrincipleName">
+    <th class="to head" mat-header-cell *matHeaderCellDef mat-sort-header>To</th>
+    <td class="to" mat-cell *matCellDef="let row">{{ row.heroUserPrincipleName }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+      <th class="desc head" mat-header-cell *matHeaderCellDef mat-sort-header>Context</th>
+      <td class="desc" mat-cell *matCellDef="let row">{{ row.description }}</td>
+    </ng-container>
+
+  <ng-container matColumnDef="text">
+    <th class="text head" mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
+    <td class="text" mat-cell *matCellDef="let row">{{ row.text }}</td>
+  </ng-container>
+
+  <tr class="sticky" mat-header-row *matHeaderRowDef="messageColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: messageColumns"></tr>
+</table>

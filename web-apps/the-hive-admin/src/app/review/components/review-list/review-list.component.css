@@ -1,0 +1,49 @@
+.buttonContainer{
+    display: flex;
+    gap: var(--standard-gap);
+}
+
+.edit-feedback{
+    cursor:pointer;
+    font-size: small;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dateInput{
+    width:40%;
+    margin-bottom: 0.5em;
+    margin-right:0.5em;
+}
+
+.saveIcon:hover{
+    color: green;
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.cancelIcon:hover{
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight:bold;
+}
+
+.review-month  {
+    display: flex;
+    align-items: center;
+}
+
+.review-type {
+    display: flex;
+    align-items: center;
+    gap: var(--standard-gap);
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+    padding-inline: var(--data-table-inline-padding);
+}
+
+.staff-type-chip {
+    font-size: xx-small;
+}

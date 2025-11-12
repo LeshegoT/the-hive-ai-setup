@@ -1,0 +1,80 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter(filter)" #filterInput [(ngModel)]="filter" />
+  <button mat-button *ngIf="filter" matSuffix mat-icon-button aria-label="Clear"(click)="filter = ''; applyFilter(filter)">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <table mat-table matSort multiTemplateDataRows matSortDirection="asc" matSortActive="id" [dataSource]="reasonsData">
+    <ng-container matColumnDef="createdBy">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Author</th>
+      <td class="content" mat-cell *matCellDef="let feedback">
+        {{ feedback.createdby }}
+      </td>
+    </ng-container>
+     <ng-container matColumnDef="createdDate">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Created Date</th>
+      <td class="content" mat-cell *matCellDef="let feedback">
+        {{ feedback.createdDate | dateFormat }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="text">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header width ="50%">Comment</th>
+      <td class="content" mat-cell *matCellDef="let feedback">
+        {{ feedback.text }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Tag">
+      <th mat-header-cell *matHeaderCellDef class="xsmallColumn">Tags</th>
+
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngFor="let tag of element.tags">
+          <div class="deep-line tableSelectable">
+            {{ tag.name }}
+          </div>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="RatingStar">
+      <th mat-header-cell *matHeaderCellDef class="mediumColumn">Rating</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="containerDiv">
+          <ng-container *ngFor="let tag of element.tags">
+            <div class="deep-line">
+              <mat-icon *repeat="tag.rating" class="goldenStar">star</mat-icon>
+              <mat-icon *repeat="5 - tag.rating">star</mat-icon>
+            </div>
+          </ng-container>
+        </div>
+      </td>
+    </ng-container>
+
+  
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let reason" [attr.colspan]="columns.length">
+        <div class="reason-detail" [@detailExpand]="reason == expandedReason ? 'expanded' : 'collapsed'" *ngIf="reason == expandedReason">
+          <div class="example-element-position">Retraction Reason: {{reason.retractionReason}}</div>
+           <div class="example-element-position">Retracted By: {{reason.deletedby}} </div>
+           <div class="example-element-position">Retracted Date: {{reason.deletedate | dateFormat}} </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let reason; columns: columns" class="reason-row" (click)="expandedReason = expandedReason === reason ? null : reason" [class.expanded-reason-row]="expandedReason === reason"></tr>
+    <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']" class="detail-row"></tr>
+  </table>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <mat-paginator
+        class="paginator"
+        [pageSize]="this.tableService.getPageSize()"
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+        [hidePageSize]="this.tableService.getHidePageSize()"
+      ></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

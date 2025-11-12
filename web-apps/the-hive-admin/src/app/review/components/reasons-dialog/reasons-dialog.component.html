@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<p id="noteAlert"><strong>Warning:</strong>{{data.warningMessage}}</p>
+
+
+<div mat-dialog-content>
+  <mat-divider *ngIf="data.showReviewDetails"></mat-divider>
+
+  <div id="detailSummary" *ngIf="data.showReviewDetails">
+    <div id="leftPanel">
+        <label class="detailTitle">Review for: </label>
+        <label class="detailTitle">Current HR Representative: </label>
+        <label *ngIf="data.status" class="detailTitle">Review status: </label>
+        <label class="detailTitle">Review deadline: </label>
+    </div>
+    <div id="rightPanel">
+        <label class="details"> {{data.reviewee}}</label>
+        <br>
+        <label class="details"> {{data.createdBy}}</label>
+        <br>
+     
+        <label *ngIf="!reviewCompletedFlag && data.status" class="pendingStatus">{{data.status}}</label>
+        <label *ngIf="reviewCompletedFlag && data.status" class="completedWarningStatus">{{data.status}}</label>
+        <br *ngIf="data.status">
+    
+        <label class="details">{{data.deadline}}</label>
+        <br>
+    
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-form-field>
+     <mat-label>Please select the reason</mat-label>
+      <mat-select [(ngModel)]="data.selectedReason">
+        <mat-option></mat-option>
+        <mat-option *ngFor="let reason of data.possibleReasons" [value]="reason">{{reason}}</mat-option>
+        <mat-option value="Special Case">Special Case</mat-option>
+      </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="data.selectedReason && data.selectedReason==='Special Case'">
+    <mat-label>Please type a reason</mat-label>
+    <input matInput [(ngModel)]="data.finalReason">
+  </mat-form-field>
+  <mat-error *ngIf="data.selectedReason==='Special Case' && !specialCaseIsValid()">Please provide a reason</mat-error>
+
+ 
+</div>
+<div id="buttonPanel">
+    <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()" cdkFocusInitial>Cancel</button>
+    <button mat-button color='accent' [disabled]="!canSubmit()" (click)="onSubmitReason()">Submit</button> 
+    </div>
+</div>

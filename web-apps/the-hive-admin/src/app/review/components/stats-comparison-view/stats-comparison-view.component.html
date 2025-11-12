@@ -1,0 +1,16 @@
+<div class="component">
+    <app-staff-filter (selectStaff)="selectStaff()" searchLabel="Employee" searchType="add"></app-staff-filter>
+
+    <div *ngIf='this.data != undefined && this.data.labels.length > 0'>
+        <mat-chip-listbox aria-label="Employee selection" class="chipFilter" >
+        <mat-chip-option color="primary" *ngFor="let person of this.data.labels" selected>
+            {{person}} <button mat-icon-button (click)="removeEmployee(person)" > <mat-icon class="bubbleClose">close</mat-icon> </button>
+            </mat-chip-option>
+        </mat-chip-listbox>
+
+        <div class="mat-elevation-z8 full-width chartDiv" >
+            <app-stacked-bar-graph [chartData]="data"></app-stacked-bar-graph>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,186 @@
+@if (contractReviewsTableDataSource) {
+  @if(contractReviewsTableDataSource.data.length === 0) {
+    <p class="no-recommendations">There are no items to show on this page at the moment.</p>
+  } @else {
+    <table mat-table class="full-width-table" [dataSource]="contractReviewsTableDataSource" matSort>
+      <ng-container matColumnDef="displayName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Staff Name</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.displayName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="manager">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by reviewer">Reviewer</th>
+        <td mat-cell *matCellDef="let row"> {{ row.manager }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="jobTitle">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by job title">Job Title</th>
+        <td mat-cell *matCellDef="let row"> {{ row.jobTitle }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startsAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by start date">Start</th>
+        <td mat-cell *matCellDef="let row"> {{ row.startsAt | date }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nextReviewDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by contract review due date">Contract Review Due Date</th>
+        <td mat-cell *matCellDef="let row"> {{ row.nextReviewDate | date }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToShow; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToShow" id="{{ row.userPrincipleName }}"></tr>
+      <ng-container matColumnDef="controls">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+        <div class="action-buttons">
+          @if (selectedContractRecommendationForContinuing === row) {
+            <section class="next-review-type-field">
+              <mat-form-field appearance="outline">
+                <input matInput [matDatepicker]="nextReviewDatePicker" (dateChange)="updateReviewDate(row, $event)" placeholder="Next Review Date">
+                <mat-datepicker-toggle matIconSuffix [for]="nextReviewDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #nextReviewDatePicker></mat-datepicker>
+              </mat-form-field>
+              <button
+                mat-icon-button
+                type="button"
+                class="close-icon-button"
+                (click)="selectedContractRecommendationForContinuing = undefined"
+                matTooltip="Close" >
+                <mat-icon class="close-icon">close</mat-icon>
+              </button>
+            </section>
+          } @else {
+            <!-- No recommendation selected for continuing -->
+          }
+
+          @if (isStatusProgressionAllowed(row.status, contractRecommendationStatuses.ContinueAsIs)) {
+            <mat-form-field appearance="outline">
+              <mat-label>Contract Actions</mat-label>
+              <mat-select (selectionChange)="onActionSelect($event, row)">
+                <mat-option [value]="contractRecommendationStatuses.ToRenew">
+                  <mat-icon>contract_edit</mat-icon> Renew contract
+                </mat-option>
+                <mat-option [value]="contractRecommendationStatuses.ToMakePermanent">
+                  <mat-icon>metabolism</mat-icon> Make permanent
+                </mat-option>
+                <mat-option [value]="contractRecommendationStatuses.ToTerminate">
+                  <mat-icon>contract_delete</mat-icon> Terminate contract
+                </mat-option>
+                <mat-option [value]="contractRecommendationStatuses.ContinueAsIs">
+                  <mat-icon>forward</mat-icon> Continue as is
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          } 
+
+          @if ((filters$ | async).status === 'Upcoming Contracts') {
+            <button (click)="createContractRecommendation(row)"  mat-icon-button matTooltip="Create contract recommendation" [color]="row.holdReason ? 'disabled-button' : 'renew-button'"  [disabled]="row.holdReason">
+              <mat-icon>contract</mat-icon>
+            </button>
+
+            @if (row.holdReason) {
+              <button (click)="removeContractHold(row)" mat-icon-button matTooltip="Release contract hold" color="contract-release-hold-button"><mat-icon>play_arrow</mat-icon></button>
+              <button (click)="showContractHoldReason(row)" mat-icon-button matTooltip="Contract hold reason" color="contract-review-button"><mat-icon>comment</mat-icon></button>
+            } @else {
+              <button (click)="placeContractOnHold(row)" mat-icon-button matTooltip="Put contract on hold" color="terminate-button"><mat-icon>pause</mat-icon></button>
+            }
+          } @else {
+            <!-- Don't show create contract recommendation button -->
+          }  
+
+          @if (isStatusProgressionAllowed((filters$ | async).status, contractRecommendationStatuses.InReview) && selectedContractRecommendationForReview !== row) {
+            <button (click)="selectedContractRecommendationForReview = row" mat-icon-button matTooltip="Create contract review" color="contract-review-button">
+              <mat-icon>rate_review</mat-icon>
+            </button>
+          } @else {
+            <!-- Button for moving a contract recommendation from 'New' status to 'In Review' status is not shown. -->
+          }
+
+          @if (selectedContractRecommendationForReview === row) {
+            <section class="next-review-type-field">
+              <mat-form-field appearance="outline">
+                <mat-label>Next Review Type</mat-label>
+                <mat-select (selectionChange)="updateStatusOnSelect(row, $event.value)">
+                  @for (reviewType of (reviewTypes$ | async); track reviewType.templateName) {
+                      <mat-option [value]="reviewType.templateName">{{ reviewType.templateName }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <button
+                mat-icon-button
+                type="button"
+                class="close-icon-button"
+                (click)="selectedContractRecommendationForReview = undefined"
+                matTooltip="Close" >
+                <mat-icon class="close-icon">close</mat-icon>
+              </button>
+            </section>
+          } @else {
+            <!-- The option dropdown for selecting the review type is not displayed. -->
+          }
+          
+        
+          @if (isStatusProgressionAllowed(row.status, contractRecommendationStatuses.Archived) && row.status === contractRecommendationStatuses.ToRenew) {
+            <button (click)="emitRenewContract(row)" mat-icon-button title="Renew contract" color="renew-button">
+              <mat-icon>contract_edit</mat-icon>
+            </button>
+          } @else {
+            <!-- Don't show renew contract button -->
+          }
+          @if (isStatusProgressionAllowed(row.status, contractRecommendationStatuses.Archived) && row.status === contractRecommendationStatuses.ToMakePermanent) {
+            <button (click)="emitRenewContract(row)" mat-icon-button title="Make Permanent" color="make-permanent-button">
+              <mat-icon>metabolism</mat-icon>
+            </button>
+          } @else {
+            <!-- Don't show make permanent button -->
+          }          
+          
+          @if (isStatusProgressionAllowed(row.status, contractRecommendationStatuses.Archived) && [contractRecommendationStatuses.ToTerminate, contractRecommendationStatuses.ContinueAsIs].includes(row.status)) {
+            <button (click)="updateStatusOnButtonClick(row, contractRecommendationStatuses.Archived)" mat-icon-button matTooltip="Archive" color="make-permanent-button">
+              <mat-icon>inventory_2</mat-icon>
+            </button>
+          } @else {
+            <!-- Don't show archive button -->
+          } 
+
+          @if (canStealContractRecommendation(row)) {
+            <button (click)="openStealContractRecommendationDialog(row)" mat-icon-button matTooltip="Take contract recommendation" color="contract-review-button">
+              <mat-icon>transfer_within_a_station</mat-icon>
+            </button>
+          } @else {
+            <!-- Don't show contract recommendation steal button -->
+          }
+
+          <button (click)="hrNotes(row)" mat-icon-button title="Contract Notes" color="contract-review-button">
+            <mat-icon>chat_bubble_outline</mat-icon>
+          </button>
+
+          @if (isStatusProgressionAllowed(row.status, contractRecommendationStatuses.Cancelled)) {
+            <button (click)="openDeleteContractRecommendationDialog(row)" mat-icon-button matTooltip="Cancel contract recommendation" color="terminate-button">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          } @else {
+            <!-- Don't show cancel contract recommendation button -->
+          }
+          
+        </div>
+        </td>
+      </ng-container>
+    </table>
+    <mat-paginator
+        #paginator
+        [length]="pageInfo().resultSetSize"
+        [pageIndex]="pageInfo().pageNumber"
+        [pageSize]="pageInfo().pageSize" 
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+        [hidePageSize]="this.tableService.getHidePageSize()"
+        (page)="pageChanged($event)">
+    </mat-paginator>
+  }
+} @else {
+  <mat-spinner class="spinner"></mat-spinner>
+}

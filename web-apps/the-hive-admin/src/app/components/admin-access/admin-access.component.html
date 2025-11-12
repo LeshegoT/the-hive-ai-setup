@@ -1,0 +1,198 @@
+<div class="component">
+    <app-title iconName="usage" title="Manage Admin Portal Permissions"></app-title>
+    <mat-tab-group >
+     <mat-tab label="Edit Permissions">
+<div id="viewPermissions">
+          <div class="leftPanel">
+        <h4>Select a User or Group</h4>
+        <table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="allocatedPermissions" matSort>
+                    <ng-container matColumnDef="adUserOrGroup">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>User or Group </th>
+                    <td mat-cell *matCellDef="let row" (click)="showPermissions(row.adUserOrGroup)">
+                            {{ row.adUserOrGroup }}
+                    </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Selected</th>
+                    <td mat-cell *matCellDef="let row" (click)="showPermissions(row.adUserOrGroup)">
+                     <mat-icon *ngIf="activeUserOrGroup == row.adUserOrGroup">check</mat-icon>
+                    </td>
+                    </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="allocatedPermissionsColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: allocatedPermissionsColumns"></tr>
+        </table>
+        <mat-paginator
+            #paginator
+            [length]="allocatedPermissions.data.length"
+            [pageIndex]="0"
+            [pageSize]="this.tableService.getPageSize()" 
+            [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+            [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+            [hidePageSize]="this.tableService.getHidePageSize()" >
+        </mat-paginator> 
+    </div>
+    <div class="rightPanel">
+        <div *ngIf="showPermissionList">
+            <div class="assignedRoutesContainer">
+                <h4>Allocated Route Permissions</h4>
+                <button mat-raised-button  type="button" (click)="revokeAllAccess()"  
+                        matTooltip="Revoke All User Permissions"
+                        matTooltipPosition="right"> Revoke All </button> 
+
+                <mat-chip-listbox aria-label="Assigned Permissions" class="chipFilter">
+                    <span *ngFor="let permission of activeUserOrGroupPermissions">
+                        <mat-chip-option color="primary" selected>
+                            {{permission.displayName ? permission.displayName : permission.routePattern}} <mat-icon class="bubbleClose"
+                            matTooltip="Revoke Permission"
+                            matTooltipPosition="above"
+                            (click)="revokeAccess(permission)">close</mat-icon>
+                        </mat-chip-option>
+                    </span>
+                </mat-chip-listbox>
+            </div>
+
+
+
+            <div class="availableRoutesContainer">
+                <h4>Available Route Permissions</h4>
+                <button mat-raised-button  type="button" (click)="grantAccess(displayRoutes)"> Grant All </button> 
+                    <mat-chip-listbox aria-label="Unassigned Permissions" class="chipFilter">
+                        <span *ngFor="let route of displayRoutes">
+                            <mat-chip-option color="dark" selected>
+                                {{route.displayName ? route.displayName : route.routePattern}} <mat-icon class="bubbleClose" 
+                                matTooltip="Grant Permission"
+                                matTooltipPosition="above"
+                                (click)="grantAccess([route] )"
+                                >add</mat-icon>
+                            </mat-chip-option>
+                        </span>
+                    </mat-chip-listbox>
+            </div>
+        </div>
+    </div>
+</div>
+        </mat-tab>
+        <mat-tab label="Add Portal Users">
+            <div id="createUser">
+                <h3 id="createUserTitle" >Create New Admin Site User</h3>
+                <app-staff-filter (selectStaff)="selectStaff()" searchLabel="Search Employee" searchType="add"></app-staff-filter>
+                <div *ngIf="newUser.length > 0" id="newUserContainer">
+                    <div class="leftPanel">
+                        <h4>Selected User Email </h4>
+                        <h5 class="mat-elevation-z8" id="newSiteUserName">{{newUser}}</h5>
+                        <button color="primary" (click)="insertNewUser()" mat-raised-button  type="button" id="insertButton">Insert User</button>
+                    </div>
+                    <div class="rightPanel">
+                    <div *ngIf="showPermissionList">
+                        <div class="assignedRoutesContainer">
+                            <h4>Allocated Route Permissions</h4>
+                            <button mat-raised-button  type="button" (click)="removeAccess(undefined, 'all')"> Revoke All </button> 
+
+                            <mat-chip-listbox aria-label="Assigned Permissions" class="chipFilter">
+                                <span *ngFor="let permission of newUserPermissions">
+                                    <mat-chip-option color="primary" selected>
+                                        {{permission.displayName ? permission.displayName : permission.routePattern}} <mat-icon class="bubbleClose"
+                                        matTooltip="Revoke Permission"
+                                        matTooltipPosition="above"
+                                        (click)="removeAccess(permission, 'single')">close</mat-icon>
+                                    </mat-chip-option>
+                                </span>
+                            </mat-chip-listbox>
+                        </div>
+
+
+
+                        <div class="availableRoutesContainer">
+                            <h4>Available Route Permissions</h4>
+                            <button mat-raised-button  type="button" (click)="addAccess(undefined, 'all')"> Grant All </button> 
+                                <mat-chip-listbox aria-label="Unassigned Permissions" class="chipFilter">
+                                    <span *ngFor="let route of displayRoutes">
+                                        <mat-chip-option color="dark" selected>
+                                            {{route.displayName ? route.displayName : route.routePattern}} <mat-icon class="bubbleClose" 
+                                            matTooltip="Grant Permission"
+                                            matTooltipPosition="above"
+                                            (click)="addAccess(route, 'single')"
+                                            >add</mat-icon>
+                                        </mat-chip-option>
+                                    </span>
+                                </mat-chip-listbox>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                
+            </div>
+        </mat-tab>
+        <mat-tab label="Manage Admin Routes">
+            <div id="viewPermissions">
+                <div class="leftPanel">
+                    <h3>Create New Route </h3>
+                    <form id="routes-form" [formGroup]="newRouteForm" (ngSubmit)="insertNewRoute()">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Route Pattern</mat-label>
+                            <input matInput formControlName="routePattern" placeholder="Route Pattern"/>
+                            <mat-error>{{ getFormErrors(newRouteForm.get('routePattern')) }}</mat-error>
+                        </mat-form-field>
+                        <mat-radio-group formControlName="restricted" name="restricted" required>
+                            <p>Restricted</p>
+                            <mat-radio-button [value]="true">Yes</mat-radio-button>
+                            <mat-radio-button [value]="false">No</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Display Name</mat-label>
+                            <input matInput formControlName="displayName" placeholder="Display Name"/>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Router Link</mat-label>
+                            <input matInput formControlName="routerLink" placeholder="Router Link"/>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Display Order</mat-label>
+                            <input matInput type="number" formControlName="displayOrder" placeholder="Display Order"/>
+                        </mat-form-field>
+                        <div class="buttons">
+                            <button mat-raised-button color="primary" type="submit" [disabled]="newRouteForm.invalid">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="rightPanel">
+                    <table mat-table class="full-width-table" [dataSource]="routesData" matSort>
+                        <ng-container matColumnDef="routePattern">
+                            <th mat-header-cell *matHeaderCellDef >Route Pattern</th>
+                            <td mat-cell *matCellDef="let row">{{ row.routePattern }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="restricted">
+                            <th mat-header-cell *matHeaderCellDef >Restricted</th>
+                            <td mat-cell *matCellDef="let row">{{ row.restricted }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="displayName">
+                            <th mat-header-cell *matHeaderCellDef >Display Name</th>
+                            <td mat-cell *matCellDef="let row">{{ row.displayName }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="routerLink">
+                            <th mat-header-cell *matHeaderCellDef >Router Link</th>
+                            <td mat-cell *matCellDef="let row">{{ row.routerLink }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="displayOrder">
+                            <th mat-header-cell *matHeaderCellDef >Display Order</th>
+                            <td mat-cell *matCellDef="let row">
+                                {{ row.displayOrder }}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="routesColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: routesColumns"></tr>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+  </mat-tab-group>
+
+</div>

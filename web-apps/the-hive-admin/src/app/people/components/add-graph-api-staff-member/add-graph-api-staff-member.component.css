@@ -1,0 +1,36 @@
+.back-button {
+  margin-bottom: var(--standard-gap);
+}
+
+.search-bar {
+  width: 100%;
+  margin-bottom: var(--standard-gap);
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--responsive-card-size), 1fr));
+  gap: var(--standard-gap);
+  margin-bottom: var(--standard-gap);
+  word-break: break-word;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+  width: 100%;
+}
+
+.add-new-staff-member-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+  align-items: flex-start;
+  width: 100%;
+  }
+  
+.add-new-staff-member-form {
+  width: 100%;
+  display: block;
+}
+
+.search-result-card-option {
+  display: block;
+}

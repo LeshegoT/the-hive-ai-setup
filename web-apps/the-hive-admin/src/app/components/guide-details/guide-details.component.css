@@ -1,0 +1,35 @@
+.guide {
+  padding-left: 2em;
+  display: flex;
+}
+
+.guide > * {
+  flex: 1 1 auto;
+}
+
+h2 > span {
+  font-weight: lighter;
+}
+
+.guide > div {
+  margin-top: 1.6em;
+}
+
+.guide > div > p {
+  margin-top: 0.3em;
+}
+
+.info {
+  border: 1px solid;
+  margin: 10px 0px;
+  padding: 15px 10px 15px 50px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  color: #00529b;
+  background-color: #cfbd58;
+  background-image: url('https://i.imgur.com/ilgqWuX.png');
+}
+
+button {
+  cursor: pointer;
+}

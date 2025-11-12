@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>BBD - External Feedback</title>
+    <link rel="stylesheet" href="style/styles.css">
+    <link rel="stylesheet" href="style/fonts.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="icon" href="images/cropped-favicon-300x300.png" sizes="192x192">
+    <script src="./js/log.js"></script>
+    <script src="./js/feedback-local-save.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="https://bbdsoftware.com/"><img src="images/logo2.svg" class="logo"></a>
+    </header>
+
+    <section id="tutorial">
+        <button class="startButton medium-subtext-label" id="startButton">Start Review</button>
+    </section>
+
+    <section id="survey">
+        <section id="infoAndStepper">
+            <section id="reviewInformation">
+                <h1 class="large-label">BBD Employee Review</h1>
+                <h2 class="large-subtext-label" id="reviewHeaderReviewee"></h2>
+                <span class="xsmall-subtext-label" id="reviewHeaderDueDate"></span>
+            </section>
+            <div id="progressStepper"></div>
+        </section>
+        <section id="surveyHeaders"></section>
+        <section id="surveyQuestion">
+
+
+        </section>
+        <div id="footerButtons">
+            <div id="recaptcha-container">
+                <div class="g-recaptcha" id="recap" data-sitekey="RECAPTCHA_SITE_KEY" data-callback="chaptchaChanged"
+                  data-expired-callback="chaptchaChanged"></div>
+                <label class="hidden errorMessage" id="captcha-error">* Please prove you are not a robot by completing the reCaptcha</label>
+                <label class="hidden errorMessage" id="submit-error">* Failed to submit</label>
+            </div>
+            <div id="navigationButtons">
+                <div><button class="blackLinedButton hidden" id="previousButton">Previous</button></div>
+                <div>
+                    <button class="redLinedButton" id="saveForLaterButton">Save for Later</button>
+                    <button class="redButton hidden" id="saveAndContinueButton">Save and Continue</button>
+                    <button class="redButton hidden" id="submitButton" disabled>Submit</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+<script src="./js/external.js" async defer></script>
+</body>
+</html>

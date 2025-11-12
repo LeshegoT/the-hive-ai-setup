@@ -1,0 +1,53 @@
+<mat-card>
+  @if(canonicalName.inGraphDB){
+    <mat-chip id="active"><p>In Graph Database</p></mat-chip>
+  } @else {
+    <mat-chip id="inactive"><p>Not in Graph Database</p></mat-chip>
+  }
+  <mat-card-header>
+    @if (editableCanonicalName === undefined) {
+      <mat-card-title>{{ canonicalName.canonicalName }} 
+        <button class="edit-canonical-name-button" (click)="editCanonicalName()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-card-title>
+    } @else {
+      <mat-card-title>
+        <mat-form-field appearance="fill">
+          <input matInput placeholder="Enter new name for canonicalName" [formControl]="editableCanonicalName" />
+          <mat-error>Names cant be empty</mat-error>
+        </mat-form-field>
+        <button class="edit-canonical-name-button" appearance="outline" (click)="saveCanonicalName()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button class="edit-canonical-name-button" appearance="outline" (click)="cancelEdittingCanonicalName()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-title>
+    }
+    <mat-chip>{{canonicalName.canonicalNameCategory}}</mat-chip>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Add new Alias for {{ canonicalName.canonicalName }}</mat-label>
+      <input matInput [formControl]="aliasControl" />
+      <mat-error>{{ aliasControl.errors?.['error'] }}</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="button" (click)="handleAddAlias()">
+      Add
+    </button>
+  </mat-card-content>
+  <mat-chip-set>
+    @for (alias of canonicalName.aliases; track alias.aliasesId){
+      <mat-chip
+        [removable]="true"
+        (removed)="removeAlias(canonicalName.canonicalNamesId, alias.aliasesId)"
+      >
+        {{ alias.alias }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    }@empty {
+      <mat-chip disabled>No aliases</mat-chip>
+    }
+  </mat-chip-set>
+</mat-card>

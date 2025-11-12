@@ -1,0 +1,34 @@
+<div *ngIf="quests$ | async as quests" class="detail">
+  <h3>Quests</h3>
+  <mat-accordion multi="false">
+    <mat-expansion-panel *ngFor="let quest of quests, let isFirst = first" [expanded]="isFirst">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ quest.goal }}</mat-panel-title>
+        <mat-panel-description>
+          Start: {{ quest.startDate | dateFormat }} - End: {{ quest.endDate | dateFormat }} || {{ quest.status }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-action-row *ngIf="quest.status === 'in-progress'">
+        <a href="editQuest/{{quest.questId}}"><button mat-button>Edit</button></a>
+      </mat-action-row>
+  
+      <p>Specialisation: {{ quest.specialisation }}</p>
+      <p>Guide: <a *ngIf="quest.guideUserPrincipleName" href="guide/{{ encode(quest.guideUserPrincipleName) }}">{{ quest.guideUserPrincipleName }}</a><strong *ngIf="!quest.guideUserPrincipleName">None!</strong></p>
+
+      <mat-accordion multi="false" *ngIf="quest.missions | async as missions">
+        <h3>Missions:</h3>
+        <mat-expansion-panel *ngFor="let mission of missions">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ mission.name }} ({{ mission.type }})</mat-panel-title>
+            <mat-panel-description>{{ mission.dateCompleted ? 'done' : 'in-progress' }}</mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <p>{{ mission.description }}</p>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

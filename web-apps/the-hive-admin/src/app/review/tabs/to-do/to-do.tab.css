@@ -1,0 +1,58 @@
+
+.page {
+    border:1px solid var( --app-selected-item);
+    background: var(--app-search-bar);
+    transition:width 100ms ease-in;
+    box-sizing:border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+#container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    height: 80vh;
+}
+
+.reviewList{
+    width: 100%;
+    overflow-y: scroll;
+}
+
+
+.active{
+    background-color: var( --app-selected-item);
+}
+
+.toDoItem:hover{
+    background-color: var( --app-selected-item);
+}
+
+.toDoItem{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 1.5em;
+    margin: 0;
+    cursor: pointer;
+    gap: var(--standard-gap);
+}
+
+.review-count { 
+    font-weight: bold;
+    align-self: center;
+    flex-shrink: 0;
+}
+
+.badge-loader {
+  background-color: var(--header-color);
+  border-radius: 100%;
+  padding: 0.1rem;
+}
+
+.badge-loader > .mat-mdc-progress-spinner { 
+  --mdc-circular-progress-active-indicator-color: white; 
+}

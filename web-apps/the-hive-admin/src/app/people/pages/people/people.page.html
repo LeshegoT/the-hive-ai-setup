@@ -1,0 +1,46 @@
+<app-title iconName="usage" title="Find People"></app-title>
+<mat-tab-group>
+  <mat-tab label="All Staff">
+    <ng-template matTabContent>
+      <app-all-staff [reportColumns]="staffTableColumns" [showExportButtons]="true"></app-all-staff>
+    </ng-template>
+  </mat-tab>
+
+  @if (unitMoveReviewsEnabled && unitMoveHrReps.includes(currentUpn)) {
+    <mat-tab label="Unit Move Reviews">
+      <ng-template matTabContent>
+        <app-unit-move-page></app-unit-move-page>
+      </ng-template>
+    </mat-tab>
+  } @else {
+    <!-- unit move reviews feature disabled -->
+  }
+
+  @if (onboardingEnabled) {
+    <mat-tab label="Onboard Staff">
+      <ng-template matTabContent>
+        <app-onboarding-staff></app-onboarding-staff>
+      </ng-template>
+    </mat-tab>
+  } @else {
+    <!-- staff onboarding feature disabled -->
+  }
+  @if (terminationEnabled) {
+    <mat-tab label="Terminate Employment">
+      <ng-template matTabContent>
+        <app-offboarding-staff></app-offboarding-staff>
+      </ng-template>
+    </mat-tab>
+  } @else {
+    <!-- staff employment termination feature disabled -->
+  }
+  @if (unitCorrectionsEnabled) {
+    <mat-tab label="Unit and staff detail corrections">
+      <ng-template matTabContent>
+        <app-unit-corrections-page></app-unit-corrections-page>
+      </ng-template>
+    </mat-tab>
+  } @else {
+    <!-- unit corrections feature disabled -->
+  }
+</mat-tab-group>

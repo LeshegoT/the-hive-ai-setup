@@ -1,0 +1,68 @@
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 1em;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+ul.activities,
+ul.past {
+  display: block;
+}
+
+li {
+  list-style: none;
+  margin: 0.6em;
+  width: calc(max(15em,20vw));
+}
+
+li a {
+  display: flex;
+  text-decoration: none;
+  color: var(--app-tertiary-color);
+}
+
+li a svg {
+  width: 1.8em;
+  height: 1.8em;
+  margin: 0 0.5em 0em -1.8em;
+  stroke: var(--app-tertiary-color);
+  fill: var(--app-tertiary-color);
+}
+
+li a svg .tick,
+li a svg .cross {
+  display: none;
+}
+
+li a svg.completed .tick {
+  display: inherit;
+}
+
+li a svg.missed .cross {
+  display: inherit;
+}
+
+li a span {
+  margin-top: 0.3em;
+}
+
+li a:visited {
+  color: var(--app-tertiary-color);
+}
+
+li a:hover {
+  color: var(--app-primary-color);
+}
+
+li a:hover svg {
+  stroke: var(--app-primary-color);
+  fill: var(--app-primary-color);
+}
+
+@media (min-width: 460px) {
+  section > ul {
+    margin: 0 3em;
+  }
+}

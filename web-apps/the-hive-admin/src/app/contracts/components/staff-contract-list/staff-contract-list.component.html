@@ -1,0 +1,117 @@
+@if (contractTableDataSource) {
+    @if (contractTableDataSource.data.length > 0) {
+        <p class="staff-contract-list-title">Current and past contracts for {{ staff().displayName }}</p>
+        <table mat-table class="full-width-table" [dataSource]="contractTableDataSource">
+            <ng-container matColumnDef="userPrincipleName">
+                <th mat-header-cell *matHeaderCellDef>Staff Email</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.userPrincipleName }}
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="displayName">
+                <th mat-header-cell *matHeaderCellDef>Staff Name</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.displayName }}
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="startsAt">
+                <th mat-header-cell *matHeaderCellDef>Start</th>
+                <td mat-cell *matCellDef="let row"> 
+                    @if (row !== rowCurrentlyBeingEdited) {
+                        {{ row.startsAt | date }} 
+                    } @else {
+                        <form [formGroup]="editContractDatesForm">
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="pickerFrom" formControlName="newStartDate">
+                                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerFrom></mat-datepicker>
+                                <mat-error>{{ getFormErrors(editContractDatesForm.get('newStartDate')) }}</mat-error>
+                            </mat-form-field>
+                            @if (!editContractDatesForm.valid) {
+                              <mat-error>{{ getFormErrors(editContractDatesForm) }}</mat-error>
+                            } @else {
+                              <!-- Form is valid, no errors to show -->
+                            }
+                        </form>
+                    }
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="endsAt">
+                <th mat-header-cell *matHeaderCellDef>End</th>
+                <td mat-cell *matCellDef="let row"> 
+                    @if (row !== rowCurrentlyBeingEdited) {
+                        {{ row.endsAt | date }} 
+                    } @else {
+                        <form [formGroup]="editContractDatesForm">
+                            <mat-form-field appearance="outline">
+                                <input matInput [matDatepicker]="pickerFrom" formControlName="newEndDate">
+                                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerFrom></mat-datepicker>
+                                <mat-error>{{ getFormErrors(editContractDatesForm.get('newEndDate')) }}</mat-error>
+                            </mat-form-field>
+                            @if (!editContractDatesForm.valid) {
+                              <mat-error>{{ getFormErrors(editContractDatesForm) }}</mat-error>
+                            } @else {
+                              <!-- Form is valid, no errors to show -->
+                            }
+                        </form>
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nextReviewDate">
+              <th mat-header-cell *matHeaderCellDef>Review Date</th>
+              <td mat-cell *matCellDef="let row"> 
+                  @if (row !== rowCurrentlyBeingEdited) {
+                      {{ row.nextReviewDate | date }} 
+                  } @else {
+                      <form [formGroup]="editContractDatesForm">
+                          <mat-form-field appearance="outline">
+                              <input matInput [matDatepicker]="pickerFrom" formControlName="nextReviewDate">
+                              <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                              <mat-datepicker #pickerFrom></mat-datepicker>
+                              <mat-error>{{ getFormErrors(editContractDatesForm.get('nextReviewDate')) }}</mat-error>
+                          </mat-form-field>
+                      </form>
+                  }
+              </td>
+          </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Recommendation</th>
+                <td mat-cell *matCellDef="let row"> 
+                    {{ row.recommendation ? row.recommendation : 'No recommendation yet' }} 
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="controls">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                    <div class="actions">
+                        @if (row !== rowCurrentlyBeingEdited) {
+                            <mat-icon class="edit-date-icons"  (click)="editContract(row)" matTooltip="Edit contract dates" matTooltipPosition="right" >edit</mat-icon>
+                        } @else {
+                            <mat-icon class="edit-date-icons" (click)="cancelUpdateDate()" matTooltip="Cancel update" matTooltipPosition="right">close</mat-icon>
+                            <mat-icon class="edit-date-icons" (click)="saveUpdatedDates()" matTooltip="Save date changes" matTooltipPosition="right">check</mat-icon>  
+                        }
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToShow(); sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToShow()"></tr>
+        </table>
+    } @else {
+        <p class="no-contract-text">{{ staff()?.displayName }} doesn't have a contract.</p>
+    }
+    <app-create-staff-contract 
+            class="create-contract-form"
+            [staff]="staff()"
+            [contracts]="contractTableDataSource.data"
+            (contractCreated)="fetchStaffContracts()"></app-create-staff-contract>
+} @else {
+    <mat-spinner></mat-spinner>
+}

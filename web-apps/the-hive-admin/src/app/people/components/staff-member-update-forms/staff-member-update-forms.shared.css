@@ -1,0 +1,19 @@
+.staff-member-update-form-fields {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--standard-gap);
+  align-items: center;
+  width: 100%;
+  margin-block: var(--standard-gap);
+}
+
+.staff-member-update-form-fields > * {
+  flex: 1 1 auto;
+}
+
+.staff-member-update-form-card {
+  margin: var(--standard-gap);
+  padding: var(--standard-padding);
+  max-height: fit-content;
+}

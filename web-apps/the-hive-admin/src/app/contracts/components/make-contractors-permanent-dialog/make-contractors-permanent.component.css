@@ -1,0 +1,49 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--standard-padding);
+  gap: var(--standard-gap);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.warning {
+  display: flex;
+  flex-direction: column;
+  color: var(--accent-color);
+  border-radius: var(--standard-border-radius);
+  border: solid 1px var(--accent-color);
+  justify-content: center;
+  padding: var(--standard-padding);
+}
+
+.button-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--standard-gap);
+}
+
+.detail-title {
+  display: block;
+}
+
+em {
+  font-weight: bolder;
+  font-style: normal;
+}

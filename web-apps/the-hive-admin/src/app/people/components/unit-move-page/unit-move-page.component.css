@@ -1,0 +1,7 @@
+.content-section {
+  padding-inline: var(--standard-padding);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--extra-large-gap);
+  align-items: start;
+}

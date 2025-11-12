@@ -1,0 +1,13 @@
+<app-review-list
+  #reviewList
+  [reviewData]="reviewData"
+  [reviewColumns]="reviewColumns"
+  (actionButton)="archiveAndSetNextReviewDetails($event.review, $event.actionButton)"
+  [actionButtonText]="archiveButtonText"
+  [actionButtonIconName]="actionButtonIconName"
+  [showArchiveButton]="true"
+  [showHrNotesButton]="true"
+  [buttonsEnabled]="buttonsEnabled"
+  [showReviewMeetingMinutesButton]="true"
+  showDownloadReportButton="true"
+></app-review-list>

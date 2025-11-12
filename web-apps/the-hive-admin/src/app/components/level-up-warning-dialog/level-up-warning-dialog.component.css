@@ -1,0 +1,12 @@
+mat-dialog-content{
+    width: var(--mat-dialog-container-width);
+}
+
+h3{
+    color: var(--accent-color);
+    border-radius: var(--standard-border-radius);
+    border-color: var(--accent-color);
+    border-width: var(--standard-border-width);
+    border-style: solid;
+    padding: var(--standard-padding);
+}

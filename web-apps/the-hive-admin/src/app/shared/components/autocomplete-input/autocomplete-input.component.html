@@ -1,0 +1,37 @@
+<mat-form-field class="search-bar" appearance="outline" subscriptSizing="dynamic">
+  <mat-label>Search for {{ label }}</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="searchTextControl"
+    [matAutocomplete]="auto"
+    [errorStateMatcher]="matcher"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [autoActiveFirstOption]="true"
+    (optionSelected)="optionSelectedHandler($event)"
+    (opened)="onPanelOpened()"
+    (closed)="onPanelClosed()"
+  >
+    <mat-option
+      *ngFor="let option of filteredOptions"
+      [value]="option"
+    >
+      {{ option }}
+    </mat-option>
+    @if (showAddNewOption && searchTextControl.value.length >= minimumLength && !optionExists(searchTextControl.value)) {
+      <mat-option (click)="onAddNewOption(); $event.stopPropagation()" [value]="searchTextControl.value"><mat-icon>add</mat-icon>Add {{ searchTextControl.value }} as a new {{ label }}</mat-option>
+    } @else {
+      <!-- the parent component has elected to hide the tooltip message -->
+    }
+  </mat-autocomplete>
+  @if(shouldShowErrors() && searchTextControl.hasError('required')) {
+    <mat-error>{{ requiredFieldErrorMessage }}</mat-error>
+  } @else if(shouldShowErrors() && searchTextControl.hasError('minlength')) {
+    <mat-error>{{ minimumLengthErrorMessage }}</mat-error>
+  } @else {
+    <!-- The error is not set -->
+  }
+
+</mat-form-field>

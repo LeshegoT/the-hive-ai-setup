@@ -1,0 +1,9 @@
+.search-bar{
+  width: 100%;
+}
+
+::ng-deep .search-results-spinner-container .mdc-list-item__primary-text{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

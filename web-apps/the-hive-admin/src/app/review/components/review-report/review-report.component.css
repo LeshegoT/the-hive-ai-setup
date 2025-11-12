@@ -1,0 +1,54 @@
+#mainContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    box-shadow: inset 0 0 4px #c0c0c0;
+    border-radius: 10px;
+    padding-bottom: 3em;
+    min-height: 60vh;
+    max-height: 80vh;
+    margin: 1em 6em;
+}
+
+.roundedButton{
+    min-width: 11em;
+    border-radius: 25px; 
+    margin-left: 0.5em;
+}
+
+.buttonPanel{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    margin:6em 1em;
+}
+
+mat-form-field{
+    margin-top: 0.5em;
+    font-size: small;
+}
+
+#inclusions > div{
+    margin-bottom: 1.5em;
+}
+
+#reviewDate{
+    display: block;
+    font-size: small;
+    color: gray;
+}   
+
+#reviewTemplate{
+    font-size: medium;
+    font-weight: bold;
+}
+
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+#reviewIncluded mat-list-option{
+    padding:1em 0em;
+}

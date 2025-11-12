@@ -1,0 +1,98 @@
+@let searchForUserResult = searchForUserResult$ | async;
+@let addNewStaffMemberResult = addNewStaffMemberResult$ | async;
+
+<mat-form-field
+  appearance="fill"
+  class="search-bar"
+  [hintLabel]="`Type in at least ${staffMemberSearchControlRestrictions.minimumLength} characters to search`"
+>
+  <mat-label>Search for a staff member to onboard</mat-label>
+  <input
+    matInput
+    placeholder="Search by email, first name, or last name"
+    [maxlength]="staffMemberSearchControlRestrictions.maximumLength"
+    [minlength]="staffMemberSearchControlRestrictions.minimumLength"
+    [formControl]="staffMemberSearchControl"
+    #autoTrigger="matAutocompleteTrigger"
+    [matAutocomplete]="searchAuto"
+  />
+  @if (staffMemberSearchControl.touched && staffMemberSearchControl.hasError('required')) {
+    <mat-error>Please enter at least {{ staffMemberSearchControlRestrictions.minimumLength }} characters</mat-error>
+  } @else if (staffMemberSearchControl.touched && staffMemberSearchControl.hasError('minlength')) {
+    <mat-error>Please enter at least {{ staffMemberSearchControlRestrictions.minimumLength }} characters</mat-error>
+  } @else if (staffMemberSearchControl.touched && staffMemberSearchControl.hasError('maxlength')) {
+    <mat-error>Please enter at most {{ staffMemberSearchControlRestrictions.maximumLength }} characters</mat-error>
+  } @else {
+    <!-- The form control is valid, do not show any error -->
+  }
+</mat-form-field>
+
+<mat-autocomplete #searchAuto="matAutocomplete" [autoActiveFirstOption]="true">
+  @if (!searchForUserResult) {
+    <mat-option disabled>Type to search for a staff member</mat-option>
+  } @else if (searchForUserResult?.status === 'loading' || addNewStaffMemberResult?.status === 'loading') {
+    <mat-option disabled>
+      <mat-spinner diameter="24"></mat-spinner>
+    </mat-option>
+  } @else if (searchForUserResult?.status === 'success') {
+    @if (searchForUserResult.graphOnlyUsers.length === 0 && searchForUserResult.hiveUsers.length === 0) {
+      <mat-option disabled>No staff members found</mat-option>
+    } @else {
+      @for (graphUser of searchForUserResult.graphOnlyUsers; track graphUser.upn) {
+        <mat-option [value]="staffMemberSearchControl.value" class="search-result-card-option">
+          <app-staff-member-search-result-card [staffMember]="graphUser">
+            <button trailer mat-raised-button color="primary" (click)="$event.preventDefault(); $event.stopPropagation(); addGraphApiUserToHive(graphUser)"><mat-icon>add</mat-icon>Add to Hive</button>
+          </app-staff-member-search-result-card>
+        </mat-option>
+      }
+      @for (hiveUser of searchForUserResult.hiveUsers; track hiveUser.upn) {
+        <mat-option disabled>
+          <app-staff-member-search-result-card [staffMember]="hiveUser">
+            <mat-chip trailer disableRipple>Existing Hive Member</mat-chip>
+          </app-staff-member-search-result-card>
+        </mat-option>
+      }
+    }
+  } @else {
+    <!-- The error state is handled in the error card which is below this autocomplete component -->
+  }
+</mat-autocomplete>
+@if (searchForUserResult?.status === 'error') {
+  <app-error-card
+    (mousedown)="$event.preventDefault()"
+    [title]="'Error searching for staff member'"
+    [showRetry]="true"
+    (retry)="retrySearchForUsers(); autocompleteTrigger.openPanel()"
+  >
+    <p>Something went wrong when searching for staff members</p>
+    <details>
+      <summary>Error details:</summary>
+      <p>{{ searchForUserResult.errorMessage }}</p>
+    </details>
+    <p><strong>Possible causes:</strong></p>
+    <ul>
+      <li><strong>Service busy:</strong> Microsoft's user directory is temporarily overloaded. Try again in a few moments</li>
+      <li><strong>Too many requests:</strong> You're searching too frequently. Wait a moment before searching again</li>
+      <li><strong>Server error:</strong> Our system is experiencing technical difficulties. Contact <a [href]="generateSupportEmailForSearchForUser(searchForUserResult.errorMessage)">The Hive Support</a></li>
+    </ul>
+  </app-error-card>
+} @else if (addNewStaffMemberResult?.status === 'error') {
+  <app-error-card
+    [title]="`Error adding ${addNewStaffMemberResult.graphUser?.displayName ?? 'staff member'} to the Hive`"
+    [showRetry]="false"
+  >
+    <p>Something went wrong when trying to add the {{ addNewStaffMemberResult.graphUser?.displayName ?? 'staff member' }} to the Hive.</p>
+    <details>
+      <summary>Error details:</summary>
+      <p>{{ addNewStaffMemberResult.errorMessage }}</p>
+    </details>
+    <p><strong>Possible causes:</strong></p>
+    <ul>
+      <li><strong>Duplicate user:</strong> This person already exists in the system. Check if they're already in the Hive before trying to add them again.</li>
+      <li><strong>Permission denied:</strong> You don't have permission to add staff members. Contact <a [href]="generateSupportEmailForAddNewStaffMember(addNewStaffMemberResult.errorMessage, addNewStaffMemberResult.graphUser)">The Hive Support</a></li>
+      <li><strong>Server error:</strong> Our system is experiencing technical difficulties. Contact <a [href]="generateSupportEmailForAddNewStaffMember(addNewStaffMemberResult.errorMessage, addNewStaffMemberResult.graphUser)">The Hive Support</a></li>
+    </ul>
+  </app-error-card>
+} @else {
+  <!-- No error card needed when not in error state because the dropdown covers other states -->
+}

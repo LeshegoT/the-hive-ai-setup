@@ -1,0 +1,58 @@
+<section class="warning-container">
+  <h1 mat-dialog-title>You Are Attempting To {{data.action | titlecase}} A <span *ngIf="isFeedbackCompleted">Completed</span> Feedback Assignment</h1>
+  <p *ngIf="isFeedbackCompleted" id="noteAlert"><b>Warning:</b> Unexpected bad things will happen if you don't read this!</p>
+  <p *ngIf="isFeedbackCompleted" class="note">
+      This assignment has already been completed by the reviewer. <br>
+      {{ actionHandlers[data.action].action}} this assignment will result in the <b>permanent</b> loss of their feedback. 
+  </p>
+
+  @if(!isFeedbackCompleted) {
+    <p class="note">The link emailed to this feedback provider will no longer work after deleting this assignment.</p>
+  } @else {
+    <!-- The assignment has been completed, so the link was invalid already. -->
+  }
+</section>
+
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+
+  <div id="detailSummary">
+    <div id="leftPanel">
+        <label class="detailTitle">Assignment reviewer: </label>
+        <label class="detailTitle">Assignment status: </label>
+        <label class="detailTitle">Assignment deadline: </label>
+    </div>
+    <div id="rightPanel">
+        <label class="details"> {{data.assignmentToUpdate.reviewer}}</label>
+        <label class="completedWarningStatus">{{data.assignmentToUpdate.status}}</label>
+        <label class="details">{{formattedDate}}</label>
+
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-form-field>
+    <mat-label>Please select the reason for {{ actionHandlers[data.action].action}} this assignment:</mat-label>
+    <mat-select [(value)]="selectedReasonId">
+      <mat-option *ngFor="let reason of reasons" [value] = "reason.retractionReasonID">
+        {{reason.retractionReason}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Please type the email of the reviewer to confirm</mat-label>
+    <input matInput [(ngModel)]="confirmationEmail" [formControl]="email" >
+    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+ 
+</div>
+<div id="buttonPanel">
+    <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()" cdkFocusInitial>Cancel</button>
+    <button mat-button color='accent' (click)="onDelete()" #deleteButton>Confirm {{ actionHandlers[data.action].process}}</button>
+    </div>
+</div>

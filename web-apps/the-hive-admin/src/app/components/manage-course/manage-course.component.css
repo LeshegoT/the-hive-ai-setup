@@ -1,0 +1,83 @@
+.full-width {
+    width: 100%;
+}
+
+.error {
+    color: red;
+}
+
+.contentPicker {
+    padding: 0.5em 0.5em;
+    line-height: 36px;
+}
+
+.contentPickerBox {
+    border: 0.5px solid grey;
+    margin: 0.5em 0;
+}
+
+.contentPickerTitle {
+    padding: 1em 0;
+ }
+
+.contentButton {
+    display: block;
+    float: right;
+}
+
+.addContentBlock {
+    margin: 1em 0;
+}
+
+.addSection {
+    padding: 1em 1em;
+    border: solid 1px black;
+}
+
+.addCourse {
+    width: 90%;
+}
+
+.addButton {
+    display: block;
+    float: right;
+    /* padding-top: 0.5em; */
+}
+
+.addActivity {
+    width: 15%;
+}
+
+.content-table {
+    width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.container-content {
+  width: 50%;
+}
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+.full-width {
+  width: 100%;
+}
+
+.section-table {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.buttons {
+    display: flex;
+    gap: var(--standard-gap);
+}
+
+mat-spinner {
+    margin: auto;
+}

@@ -1,0 +1,170 @@
+<main class="container">
+  @let selectedManagerForDirectReports = viewDirectReports$ | async;
+  @if (selectedManagerForDirectReports) {
+    <section>
+      <button mat-raised-button color="primary" class="close-direct-reports-button" (click)="closeDirectReports($event)">
+        <mat-icon>arrow_back</mat-icon>
+        Close direct reports
+      </button>
+      <app-staff-direct-reports [manager]="selectedManagerForDirectReports"></app-staff-direct-reports>
+    </section>
+  } @else {
+    <app-staff-filter
+      searchLabel="Search for a staff member to offboard"
+      searchType="search"
+      (selectStaff)="onStaffMemberSelected()"
+    ></app-staff-filter>
+
+    @let selectedStaffMember = selectedStaffMember$ | async;
+    @if (selectedStaffMember) {
+      <div class="selected-staff-member-header">
+        <h2>Mark staff member for termination</h2>
+        <button mat-raised-button color="primary" (click)="this.selectedStaffMember$.next(undefined)">
+          <mat-icon>clear</mat-icon> Clear selection
+        </button>
+      </div>
+      <app-staff-member-search-result-card [staffMember]="selectedStaffMember">
+        <app-mark-staff-member-for-termination-action
+          trailer
+          [userPrincipalName]="selectedStaffMember.userPrincipleName"
+          [skipActiveReviewsCheck]="false"
+          (staffMemberMarkedForTermination)="this.refreshOffboardingStaffMembers$.next()"
+        ></app-mark-staff-member-for-termination-action>
+      </app-staff-member-search-result-card>
+    } @else {
+      <!-- The staff member is not selected, so do not show the staff member search result card -->
+    }
+
+    @let offboardingStaffMembersResult = offboardingStaffMembersResult$ | async;
+
+    @if (offboardingStaffMembersResult?.status === 'loading') {
+      <mat-spinner></mat-spinner>
+    } @else if (offboardingStaffMembersResult?.status === 'success') {
+      @if (paginatedOffboardingStaffMembers$ | async; as paginatedData) {
+        <h2>Offboarding staff members</h2>
+        <mat-form-field class="filter-field">
+          <mat-label>Filter by name or email</mat-label>
+          <input matInput [formControl]="filterControl" (input)="onFilterChange()" placeholder="Enter name or email">
+        </mat-form-field>
+
+        <table mat-table [dataSource]="paginatedData.data" class="mat-elevation-z8" matSort (matSortChange)="onSortChange($event)">
+          <ng-container matColumnDef="displayName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.displayName}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="jobTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title/role">Title/Role</th>
+            <td mat-cell *matCellDef="let element"> {{element.jobTitle}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="upn">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by staff email">Staff Email</th>
+            <td mat-cell *matCellDef="let element"> {{element.upn}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="bbdUserName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by BBD user name">BBD User Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.bbdUserName}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by unit">Unit</th>
+            <td mat-cell *matCellDef="let element"> {{element.department}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="office">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by office">Office</th>
+            <td mat-cell *matCellDef="let element"> {{element.office}} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="manager">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by reviewer">Reviewer</th>
+            <td mat-cell *matCellDef="let element"> {{element.manager}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              @if (staffMemberTerminationResults$[element.upn] | async; as staffMemberTerminationResult) {
+                @switch (staffMemberTerminationResult.status) {
+                  @case ('success') {
+                    <span class="staff-member-terminated-chip">Staff member terminated</span>
+                  }
+                  @case ('error') {
+                    <div class="error-container">
+                      <mat-icon color="warn" matTooltip="Error terminating staff member. Click to retry." (click)="markStaffMemberForTermination(element.upn, getTerminationEffectiveDateControl(element.upn).value.toDate())">error</mat-icon>
+                      <mat-error>{{staffMemberTerminationResult.errorMessage}}. Contact <a [href]="generateSupportEmailForTermination(staffMemberTerminationResult.errorMessage, element)">Hive Support</a> if the issue persists.</mat-error>
+                    </div>
+                  }
+                  @case ('pending') {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  }
+                }
+              } @else if (element.directReportsCount > 0) {
+                <button mat-raised-button color="primary" (click)="openDirectReports($event, element)">
+                  <mat-icon>groups</mat-icon>
+                  View {{element.directReportsCount}} direct report(s)
+                </button>
+              } @else {
+                <div class="termination-date-container">
+                  <mat-form-field>
+                    <mat-label>Termination date</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControl]="getTerminationEffectiveDateControl(element.upn)">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    @if (getTerminationEffectiveDateControl(element.upn).hasError('required')) {
+                      <mat-error>Termination date is required</mat-error>
+                    } @else {
+                      <!-- There is no error message to display when the field is valid. -->
+                    }
+                  </mat-form-field>
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="markStaffMemberForTermination(element.upn, getTerminationEffectiveDateControl(element.upn).value.toDate())"
+                    [disabled]="!getTerminationEffectiveDateControl(element.upn).valid"
+                    [matTooltip]="`Terminate ${element.displayName}`"
+                  >
+                    <mat-icon>person_remove</mat-icon>
+                    Terminate
+                  </button>
+                </div>
+              }
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns" class="offboarding-staff-members-table-header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator class="paginator-sticky"
+          #paginator
+          [length]="paginatedData.totalCount"
+          [pageSize]="paginatedData.pageSize"
+          [pageIndex]="paginatedData.pageIndex"
+          [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+          [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+          [hidePageSize]="this.tableService.getHidePageSize()"
+          (page)="onPageChange($event)"
+        ></mat-paginator>
+      }
+    } @else {
+      <app-error-card
+        [title]="'Error fetching offboarding staff members'"
+        [showRetry]="true"
+        (retry)="refreshOffboardingStaffMembers()"
+      >
+        <p>Something went wrong when trying to fetch offboarding staff members. Please try again or contact <a [href]="generateSupportEmailForFetchingOffboardingStaffMembers(offboardingStaffMembersResult.errorMessage)">The Hive Support</a></p>
+        <details>
+          <summary>Error details</summary>
+          <p>{{ offboardingStaffMembersResult.errorMessage }}</p>
+        </details>
+      </app-error-card>
+    }
+  }
+</main>

@@ -1,0 +1,31 @@
+.component {
+  padding: 0 5em;
+}
+
+.details {
+  display:flex;
+  margin: 0 0 5em;
+  align-items: center;
+}
+
+.details > * {
+  flex: 1 1 auto;
+}
+
+.details > div:last-child {
+  text-align: right;
+  padding: 0 2em;
+}
+
+textarea {
+  width: 100%;
+  font-size: 1em;
+}
+
+h3 > span {
+  font-weight: lighter;
+}
+
+.bubbleClose {
+  cursor: pointer;
+}

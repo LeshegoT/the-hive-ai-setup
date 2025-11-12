@@ -1,0 +1,142 @@
+<table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="assignmentData" matSort>
+    
+  <ng-container matColumnDef="Feedback Provider Name" >
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Feedback Provider</th>
+    <td mat-cell *matCellDef="let row">
+        {{ row.displayName }}
+    </td>
+  </ng-container>
+  
+    <ng-container matColumnDef="provider" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Feedback Provider</th>
+        <td mat-cell *matCellDef="let row; let i = index">
+            <details>
+                <summary *ngIf="row.displayName">
+                    {{ row.displayName }}
+                </summary>
+                <summary *ngIf="!row.displayName">
+                    {{ row.reviewer }}
+                </summary>
+                        <section id="emailDetailsContainer" *ngIf="isBBDEmail(row.reviewer)">
+                            <summary *ngIf="row.displayName">
+                                {{ row.reviewer }}
+                            </summary>   
+                            <section id="emailDetails">
+                              <div class="input-button-container">
+                                <mat-form-field>
+                                  <input type="email" matInput placeholder="(client email)" [(ngModel)]="row.clientEmail" [formControl]="emailFormControls[i]"/>
+                                </mat-form-field>
+                                <button class="add-email-btn" *ngIf="canEditFeedbackAssignment()" (click)="updateClientEmail(row)" [disabled]="emailFormControls[i].hasError('email') || emailFormControls[i].hasError('bbdEmail')">+</button>
+                              </div>
+                              <div>
+                                @if (emailFormControls[i].hasError('email') && emailFormControls[i].touched) {
+                                  <mat-error>Please enter email with '&#64;'</mat-error>
+                                } @else if (emailFormControls[i].hasError('bbdEmail')) {
+                                  <mat-error>BBD email addresses are not allowed for client emails. Please use an external email address.</mat-error>
+                                }
+                                </div>
+                        </section>
+                    </section>
+                </details>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="reviewee" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reviewee</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.reviewee }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="HR Rep" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>HR Representative</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.hrRep }}
+            <details>
+                <summary>Nudges</summary>
+                <p>HR Nudges: {{ row.hrNudges }}</p>
+                <p>System Nudges: {{ row.systemNudges }}</p>
+            </details>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Nudge Counts" >
+        <th mat-header-cell *matHeaderCellDef >Nudges</th>
+        <td mat-cell *matCellDef="let row">
+            <mat-chip-set>
+              <mat-chip matTooltip="HR Nudges">
+                <mat-icon matChipAvatar>people</mat-icon>
+                {{ row.hrNudges }}
+              </mat-chip>
+              <mat-chip matTooltip="System Nudges">
+                <mat-icon matChipAvatar>computer</mat-icon>
+                {{ row.systemNudges }}
+              </mat-chip>
+            </mat-chip-set>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="review type" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.templateName}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dueDate" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Deadline</th>
+        <td mat-cell *matCellDef="let row">
+            <section [ngClass]="feedbackService.getFeedbackAssignmentDueDateColour(row)" id="dueDateColorIndicator">
+                {{ row.dueBy| date}}
+            </section>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="last accessed" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Accessed</th>
+        <td mat-cell *matCellDef="let row">
+            <section id="updatedDate">
+                {{ row.status === 'New' ? 'N/A' : row.updateDate | date}}
+            </section>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [ngClass]="row.status === 'Completed' ? 'completedStatus' : 'pendingStatus'"
+        >
+          <mat-label class="statusContainer">
+            <mat-icon>{{ row.status === 'Completed' ? 'check_circle_outline' : 'restore' }}</mat-icon>
+            {{ row.status }}
+          </mat-label>
+        </td>
+      </ng-container>
+    <ng-container matColumnDef="controls" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let row">
+            <section class="controlButtons">
+                <button *ngIf="row.status && row.status !== 'Completed' && canEditFeedbackAssignment()" (click)="actionButtonTask(row, $event)"  class="notesBtnSmall reviewActionButton" title="Send reminder"><mat-icon>send</mat-icon></button>
+                <button class="cancelBtnSmall reviewActionButton" type="button" *ngIf="row.reviewer != currentReviewUPN && canAssignmentBeDeleted(row) && canEditFeedbackAssignment()"
+                    (click)="handleDeleteFeedbackAssignment(row)"
+                    matTooltip="Delete Feedback Provider"
+                    matTooltipPosition="right">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+
+                <button class="cancelBtnSmall reviewActionButton"  type="button" *ngIf="row.status === 'Completed'  && canEditFeedbackAssignment()"
+                    (click)="handleRetractFeedbackAssignment(row)"
+                    matTooltip="Retract Feedback"
+                    matTooltipPosition="right">
+                    <mat-icon>replay</mat-icon>
+                </button>
+            </section>  
+        </td>
+    </ng-container>
+     
+    <tr mat-header-row *matHeaderRowDef="assignmentColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: assignmentColumns;"></tr>
+    <tr *matNoDataRow>
+        <td class="no-data-found-row" [attr.colspan]="assignmentColumns.length">No-one has been assigned to provide feedback.</td>
+    </tr>
+</table>
+

@@ -1,0 +1,226 @@
+/**
+* Review Styles
+*/
+
+.errorMessage {
+  color: var(--app-warning-font-color);
+  display:block;
+}
+
+.reviewComment {
+  font-family: 'Inter';
+  font-weight: 400;
+  width: 95%;
+  padding: 1em 0.5em 0;
+  border-left: 1px solid var(--app-review-input-border-color);
+  border-top: 1px solid var(--app-review-input-border-color);
+  border-right: 1px solid var(--app-review-input-border-color);
+  margin: 1em 0 0 3em;
+}
+
+.hiddenSection {
+  display: none;
+}
+
+.visibleSection {
+  display: block;
+}
+
+.subQuestionText {
+  font-family: 'Inter';
+  color: var(--app-review-sub-header-text-color);
+  line-height: 30px;
+}
+
+#questionSection {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
+
+.mainQuestion {
+  font-family: 'Inter';
+  color: black;
+  display:block;
+}
+
+.sectionRatingContainer {
+  margin: 1em 0em 2em 3em;
+}
+
+.sectionRatingContainer > div {
+  line-height: 3em;
+}
+
+.sectionRating {
+  accent-color: var(--app-warning-font-color);
+  margin-right: 2em;
+  height: 19px;
+  width: 19px;
+}
+
+.icon {
+  margin: -0.5em 0.5em;
+}
+
+.redButton{
+  background: var(--app-warning-font-color);
+  border-radius: 4px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
+}
+
+.redLinedButton{
+  background: var(--app-header-background-color);
+  border-radius: 4px;
+  color: var(--app-warning-font-color);
+  border: solid 2px var(--app-warning-font-color);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
+}
+
+.blackLinedButton {
+  background: white;
+  border-radius: 4px;
+  color: black;
+  border: solid 1px black;
+  height: 2.5em;
+  padding: 0 1em;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
+}
+
+@media only screen and (max-width: 500px) {
+  .mainQuestion{
+    font-size: 14px;
+  }
+
+  .subQuestionText {
+    font-size: 12px;
+  }
+
+  .sectionRatingContainer > div {
+    line-height: 1em;
+  }
+
+  .sectionRatingContainer {
+    margin-left: 0em;
+  }
+
+  #questionSection, .reviewComment {
+    margin: 0;
+  }
+
+}
+
+
+
+/********************
+  Font sizing
+*************************/
+
+.xx-small-subtext-label{
+  font-weight: 400;
+  font-size: 0.625rem;
+  font-size: clamp(0.625rem, 0.6rem + 0.125vw, 0.75rem);
+}
+
+.x-small-subtext-label{
+  font-weight: 400;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem);
+}
+
+.small-subtext-label{
+  font-weight: 300;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-subtext-label{
+  font-weight: 300;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-subtext-label{
+  font-weight: 300;
+  font-size: 1rem;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+}
+
+.x-large-subtext-label{
+  font-weight: 300;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.925531914893617rem + 0.6382978723404256vw, 1.5rem);
+}
+
+.xx-large-subtext-label{
+  font-weight: 300;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.75rem + 0.625vw, 1.5rem);
+}
+
+
+
+.small-label{
+  font-weight: 500;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-label{
+  font-weight: 500;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-label{
+  font-weight: 500;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.925531914893617rem + 0.6382978723404256vw, 1.5rem);
+}
+
+.x-large-label{
+  font-weight: 500;
+  font-size: 1.25rem;
+  font-size: clamp(1.25rem, 1.1rem + 0.75vw, 2rem);
+}
+
+
+.x-small-heading{
+  font-weight: 600;
+  font-size: 0.625rem;
+  font-size: clamp(0.625rem, 0.6rem + 0.125vw, 0.75rem);
+}
+
+.small-heading{
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.550531914893617rem + 0.6382978723404256vw, 1.125rem);
+}
+
+.medium-heading{
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.675531914893617rem + 0.6382978723404256vw, 1.25rem);
+}
+
+.large-heading{
+  font-weight: 600;
+  font-size: 1rem;
+  font-size: clamp(1rem, 0.7340425531914894rem + 0.851063829787234vw, 1.5rem);
+}
+
+.xlarge-heading{
+  font-weight: 600;
+  font-size: 1.125rem;
+  font-size: clamp(1.125rem, 0.526595744680851rem + 1.9148936170212765vw, 2.25rem);
+}

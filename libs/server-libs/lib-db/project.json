@@ -1,0 +1,19 @@
+{
+  "name": "lib-db",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/server-libs/lib-db/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server-libs/lib-db",
+        "main": "libs/server-libs/lib-db/src/index.ts",
+        "tsConfig": "libs/server-libs/lib-db/tsconfig.lib.json",
+        "assets": ["libs/server-libs/lib-db/*.md"]
+      }
+    }
+  }
+}

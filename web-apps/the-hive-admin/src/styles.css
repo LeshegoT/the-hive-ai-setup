@@ -1,0 +1,201 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --primary-color: rgb(37, 159, 251); 
+  --primary-color-alpha: rgb(37, 159, 251, 0.4);
+  --secondary-color: rgb(254, 176, 25) ; 
+  --tertiary-color: rgb(37, 230, 165); 
+  --accent-color: rgb(255,64,129);
+  --header-color:rgb(63, 81, 181);
+  --app-review-green-button: rgb(37, 230, 165);
+  --app-review-button: #3f51b5;
+  --app-large-font-size: 2em;
+  --app-button-text: white;
+  --app-release-button: #5774ac;
+  --app-cancel-button:  #ff4081;
+  --background-shade-color: rgb(248, 248, 248);
+  --standard-border-width: 0.01em;
+  --standard-border-radius: 0.3em;
+  --small-spacing: 0.3em;
+  --medium-padding : 0.625em;
+  --standard-padding: 1em;
+  --standard-gap: 1em;
+  --font-size-medium: 1.2em;
+  --medium-large-gap: 1.5em;
+  --remaining-characters-hint-color: #64748B;
+  --selected-row-background-colour: #F8F4F4;
+  --mat-dialog-container-width: 60em;
+  --data-table-margin-block: auto;
+  --hover-over-color: rgb(219, 219, 219);
+  --standard-top-bottom-padding: calc(var(--standard-padding) / 2);
+  --comments-background-color: ghostwhite;
+  --app-page-height: calc(100vh - var(--mat-toolbar-standard-height) - 70px);
+  --warning-background-color: #fff9c4;
+  --skills-dashboard-charts-height: 30rem;
+  --error-message-color: #d32f2f;
+  --disabled-button-color: #d4cfcf;
+  --background-color-light: #f5f5f5;
+  --box-shadow: 0 2px 6px rgba(51, 51, 51, 0.2);
+  --standard-border-color: rgba(0, 0, 0, 0.12);
+  --hint-background-color: #e3f2fd;
+}
+
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+}
+
+.basic-container {
+  padding: 50px;
+}
+
+.version-info {
+  font-size: 8pt;
+  float: right;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.filter {
+  display: flex;
+}
+
+.filter > mat-form-field {
+  flex: 1 1 auto;
+  max-width: 40em;
+  margin-left: 1.3em;
+}
+
+.filter > a {
+  flex: 1 1 auto;
+  text-align: right;
+  margin: 1.3em 1.3em 0 0;
+}
+
+
+
+
+.staffFilter {
+  display: flex;
+}
+
+.staffFilter > a {
+  flex: 1 1 auto;
+  text-align: right;
+  margin: 1.3em 1.3em 0 0;
+}
+
+.staffFilter > mat-form-field {
+  flex: 1 1 100%;
+}
+
+.component {
+  padding: 0 1em;
+}
+
+.buttons {
+  margin: 1em 0 3em;
+}
+
+.buttons > button {
+  width: 10em;
+  border-radius: 0;
+}
+
+.actionBtn{
+  color: var(--app-button-text);
+  background-color: var(--app-review-green-button);
+  padding: 0.8em 2em;
+  border-radius: 25px;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 2px 3px 4px 0px #888888;
+  font-size:medium;
+  text-wrap: nowrap;
+  margin-block: var(--data-table-margin-block);
+}
+
+.actionBtn:disabled{
+  background-color: grey;
+}
+
+.releaseBtnSmall{
+  background-color: var(--app-release-button);
+}
+
+.releaseBtnSmall:disabled{
+  background-color: grey;
+}
+
+.actionBtnSmall{
+  background-color: var(--app-review-green-button);
+}
+
+.actionBtnSmall:disabled{
+  background-color: grey;
+}
+
+.notesBtnSmall{
+  background-color: var(--app-review-button);
+}
+
+.notesBtnSmall:disabled{
+  background-color: grey;
+}
+
+.cancelBtnSmall{
+  background-color:var(--app-cancel-button);
+}
+
+.cancelBtnSmall:disabled{
+  background-color: grey;
+}
+
+.selected {
+  background-color: var(--selected-row-background-colour);
+}
+
+.selectable-row {
+  cursor: pointer;
+}
+
+.selectable-row:hover {
+  background-color: var(--background-shade-color);
+}
+
+.reviewActionButton {
+  color: var(--app-button-text);
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  margin-block: var(--data-table-margin-block);
+  box-shadow: 2px 3px 4px 0px #888888;
+  padding: var(--standard-padding);
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+mat-paginator {
+  position: sticky;
+  bottom: 0;
+}
+
+.clickable-icon{
+  cursor: pointer;
+}
+.inline-flex-items{
+  display:inline-flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.hidden{
+  display: none;
+}

@@ -1,0 +1,63 @@
+<mat-card>
+  <mat-card-title>
+    <mat-form-field id="new-attribute-name-form" appearance="fill">
+      <input id="new-name-input" matInput type="text" [formControl]="attributeNameControl" placeholder="Enter new name"
+        [(ngModel)]="attribute.canonicalName" />
+      <mat-error>Name cannot be empty</mat-error>
+      </mat-form-field>
+  </mat-card-title>
+
+  <section class="button-container">
+    <button id="reject-attribute-button" [disabled]="attributeNameControl.invalid || (loading$ | async)" mat-raised-button
+      color="primary" type="button" (click)="rejectAttribute()">
+      @if ((loading$ | async) !== loadingState.Reject) {
+        Reject
+      } @else {
+      <app-loading-indicator></app-loading-indicator>
+      }
+    </button>
+    <button id="approve-attribute-button" [disabled]="attributeNameControl.invalid || (loading$ | async)" mat-raised-button
+      type="button" (click)="approveAttribute()">
+      @if ((loading$ | async) !== loadingState.Approve) {
+        Approve
+      } @else {
+      <app-loading-indicator></app-loading-indicator>
+      }
+    </button>
+  </section>
+  <mat-expansion-panel (opened)="fetchUsersForAttribute()">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Users for {{attribute.canonicalName}}
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+  @if (users$ | async; as userList) {
+      @if (userList.length > 0)  {
+        <table mat-table [dataSource]="userList" class="mat-elevation-z8">
+            <ng-container matColumnDef="staffId">
+                <th mat-header-cell *matHeaderCellDef> StaffId </th>
+                <td mat-cell *matCellDef="let element"> {{element.staffId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="upn">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.upn}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="displayName">
+              <th mat-header-cell *matHeaderCellDef> Display Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.displayName}} </td>
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['staffId', 'upn', 'displayName']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['staffId', 'upn', 'displayName']"></tr>
+        </table>
+    } @else {
+      <p id="no-staff-for-certification-message">No staff details to show</p>
+    }
+  } @else {
+    <mat-spinner></mat-spinner>
+}
+</mat-expansion-panel>
+
+</mat-card>

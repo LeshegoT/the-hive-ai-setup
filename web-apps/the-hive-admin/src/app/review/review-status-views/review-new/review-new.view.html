@@ -1,0 +1,11 @@
+<app-review-list
+  #reviewList
+  [reviewData]="reviewData"
+  [reviewColumns]="reviewColumns"
+  (actionButton)="onNextButtonClicked($event.review, $event.actionButton, $event.cancelButton)"
+  [actionButtonText]="actionButtonText"
+  [cancelButtonText]="cancelButtonText"
+  [showHrNotesButton]="true"
+  [actionButtonIconName]="actionButtonIconName"
+  [buttonsEnabled]="buttonsEnabled"
+></app-review-list>

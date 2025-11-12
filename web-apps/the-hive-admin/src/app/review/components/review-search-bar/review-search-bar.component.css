@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--app-search-bar);
+}
+
+.chip-container {
+  display: flex;
+  justify-content: end;
+  padding: var(--standard-padding);
+}

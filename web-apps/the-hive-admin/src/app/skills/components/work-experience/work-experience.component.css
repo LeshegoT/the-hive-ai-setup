@@ -1,0 +1,247 @@
+.work-experience-container > form, .view-container {
+  flex: 0 1 50%;
+  padding: var(--standard-padding);
+  max-width: 50%;
+  background-color: white;
+  box-sizing: border-box;
+  box-shadow: var(--box-shadow);
+  height: fit-content;
+}
+
+.work-experience-container {
+  display: flex;
+  flex-direction: row;
+  gap: var(--standard-padding);
+  padding: var(--standard-padding);
+  box-sizing: border-box;
+}
+
+.work-experience-container table {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.outcomes-section,
+.technologies-section {
+  margin-top: var(--medium-spacing);
+  padding: var(--standard-padding);
+  background-color: var(--background-color-light);
+  border-radius: var(--standard-border-radius);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--standard-padding);
+}
+
+.outcomes-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--standard-padding);
+  margin-bottom: var(--medium-spacing);
+  background-color: var(--hint-background-color);
+  border-radius: var(--standard-border-radius);
+}
+
+.outcomes-hint > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--small-spacing);
+}
+
+.outcomes-hint p {
+  color: var(--text-color);
+  flex: 1 1 auto;
+  word-wrap: break-word;
+  margin: 0;
+  padding: 0;
+}
+
+.outcomes-hint mat-icon {
+  flex: 0 0 auto;
+}
+
+.outcomes-item {
+  border-radius: var(--standard-border-radius);
+  padding: var(--standard-padding);
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.outcome-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--medium-spacing);
+  align-items: end;
+  width: 100%;
+}
+
+.outcomes-field {
+  width: 100%;
+}
+
+.outcomes-field textarea {
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--standard-spacing);
+  align-items: start;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--medium-spacing);
+  justify-content: flex-end;
+  margin-top: var(--standard-padding);
+}
+
+.mat-cell {
+  text-align: center;
+  width: 100%;
+}
+
+table {
+  height: fit-content;
+  flex: 1;
+  min-width: 0;
+}
+
+.form-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-experience-button {
+  white-space: nowrap;
+}
+
+tr.selected {
+  background-color: var(--selected-row-background-colour);
+}
+
+tr {
+  cursor: pointer;
+}
+
+.outcomes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--small-spacing);
+  padding: var(--small-spacing) 0;
+}
+
+.empty-outcomes-message {
+  display: block;
+  text-align: center;
+  padding: var(--standard-padding);
+  font-style: italic;
+  color: var(--text-color-secondary);
+}
+
+.drag-handle {
+  cursor: move;
+}
+
+.add-experience-button {
+  padding: var(--medium-padding);
+}
+
+.button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--standard-padding);
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mat-mdc-footer-row .mat-mdc-footer-cell {
+  border-top: var(--standard-border-width) solid var(--standard-border-color);
+}
+
+.last-column {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--small-spacing);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  padding: var(--standard-padding);
+  border: var(--standard-border-width) solid var(--standard-border-color);
+  background-color: var(--background-color-light);
+  border-radius: var(--standard-border-radius);
+}
+
+.notice-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--small-spacing);
+}
+
+.notice-text p {
+  display: flex;
+  align-items: center;
+  gap: var(--small-spacing);
+}
+
+.contact-staff-button {
+  width: fit-content;
+}
+
+.readonly-section > p{
+  display: flex;
+  align-items: center;
+}
+.outcome-item {
+  background-color: var(--hint-background-color);
+  padding: var(--standard-padding);
+  border-radius: var(--standard-border-radius);
+}
+
+.technologies-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: var(--small-spacing);
+}
+
+mat-chip.mat-mdc-chip {
+  background-color: var(--hint-background-color);
+}
+
+p.notice-text{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.outcomes-list {
+  list-style: none;
+}
+
+.project-description-text{
+  white-space: pre-line;
+}

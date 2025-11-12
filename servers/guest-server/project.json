@@ -1,0 +1,58 @@
+{
+  "name": "guest-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "servers/guest-server/src",
+  "projectType": "application",
+  "tags": ["application:backend"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/servers/guest-server",
+        "format": ["cjs"],
+        "bundle": true,
+        "main": "servers/guest-server/index.js",
+        "tsConfig": "servers/guest-server/tsconfig.app.json",
+        "assets": ["servers/guest-server/public/**"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "guest-server:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "guest-server:build:development"
+        },
+        "production": {
+          "buildTarget": "guest-server:build:production"
+        }
+      }
+    }
+  }
+}

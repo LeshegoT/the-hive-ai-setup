@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    @let canonicalNameCategory = canonicalNameCategory$ | async;
+    @if (canonicalNameCategory && isError(canonicalNameCategory)) {
+      <mat-error>
+        <a [href]="generateSupportEmail(canonicalNameCategory)" class="support-email-link" matTooltip="Contact support">
+          <mat-icon>error</mat-icon>
+          {{ canonicalNameCategory.message }}
+        </a>
+      </mat-error>
+    } @else if (canonicalNameCategory) {
+      <mat-chip>
+        {{ canonicalNameCategory.canonicalName }}
+      </mat-chip>
+    } @else {
+      <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+    }
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="newCanonicalName === undefined; else editingTemplate">
+      <mat-card-title>
+        {{ canonicalName.canonicalName }}
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Edit Name"
+          class="edit-canonical-name-button"
+          (click)="editCanonicalName()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-card-title>
+    </ng-container>
+    <ng-template #editingTemplate>
+      <mat-card-content>
+        <mat-form-field appearance="fill">
+          <input matInput placeholder="Enter new name for canonicalName" [formControl]="newCanonicalName" />
+          <mat-error>Name can't be empty</mat-error>
+        </mat-form-field>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="updateCanonicalName()">
+          <mat-icon>check</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="cancelEditingCanonicalName()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-content>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

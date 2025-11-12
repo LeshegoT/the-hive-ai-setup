@@ -1,0 +1,21 @@
+.component {
+    padding: 0 10em 2em;
+}
+
+.component > div {
+    margin-top: 2em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button{
+    cursor: pointer;
+}
+
+#bottomButtons{
+    display: flex;
+    justify-content: space-between;
+}
+

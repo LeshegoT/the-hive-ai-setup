@@ -1,0 +1,180 @@
+@let staffOnSupplyTable = staffOnSupplyTable$ | async;
+<app-staff-filter (selectStaff)="addStaffToSupply(staffOnSupplyTable.data)" searchLabel="Add staff member to supply"
+  searchType="add"></app-staff-filter>
+  @if (staffOnSupplyTable) {
+  @if (staffOnSupplyTable.data.length > 0) {
+    <section class="staff-on-supply">
+      <section class="table-container">
+        <mat-table class="mat-elevation-z8 full-width-table" [dataSource]="staffOnSupplyTable" matSort multiTemplateDataRows>
+
+          <ng-container matColumnDef="displayName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Staff Name</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Staff Name'">
+              {{ row.displayName}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="upn">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Staff Email</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Staff Email'">
+              {{ row.upn }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="jobTitle">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Job title</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Job title'">
+              {{ row.jobTitle}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="department">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Unit</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Unit'">
+              {{ row.department}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="manager">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Lead</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Lead'">
+              {{ row.manager}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="on-supply-role-cell">Role</mat-header-cell>
+            <mat-cell *matCellDef="let row" class="on-supply-role-cell">
+              @let onSupplyRoles = onSupplyRoles$ | async;
+                @if (onSupplyRoles) {
+                  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-select 
+                      [formControl]="row.role"
+                      [placeholder]="'Select role'">
+                      @for(onSupplyRole of onSupplyRoles; track onSupplyRole.role) {
+                        <mat-option [value]="onSupplyRole.role" class="on-supply-roles" (onSelectionChange)="updateOnSupplyRole($event, row.role.value, onSupplyRoles, row.upn)">
+                          {{ onSupplyRole.role }}
+                        </mat-option>
+                      }
+                    </mat-select>
+                    @if (row.role.hasError('roleUpdateError')) {
+                      <mat-error>{{ row.role.getError('roleUpdateError') }}</mat-error>
+                    } @else {
+                      <!-- No error occurred while updating staff role; no error message to display -->
+                    }
+                  </mat-form-field>
+                } @else {
+                  <mat-spinner></mat-spinner>
+                }
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="entity">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Company entity</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Company entity'">
+              {{ row.entityDescription }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="onSupplyAsOf">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>On supply as of</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'On supply as of'">
+              <mat-form-field>
+                <input matInput [min]="earliestAllowedStaffOnSupplyAsOfDate" [matDatepicker]="picker" [ngModel]="row.onSupplyAsOf"
+                  (ngModelChange)="updateStaffOnSupply($event, row)">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="coreTech">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Staff core tech</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Staff core tech'">
+                @if(row.staffCoreTech.length === 0) {
+                  <p>None set</p>
+                } @else {
+                  <ul class="core-tech-list">
+                    <li *ngFor="let coreTech of row.staffCoreTech; trackBy: coreTech">
+                      {{ coreTech.attribute.canonicalName }}
+                    </li>
+                  </ul>
+                }
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Actions'">
+              <button matTooltip="Remove staff from Supply" matTooltipPosition="right" matTooltipHideDelay="200"
+                class="delete-button" (click)="removeStaffFromSupply(staffOnSupplyTable.data, row.upn)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button matTooltip="Expand core tech editor" matTooltipPosition="right" matTooltipHideDelay="200"
+                class="core-tech-editor-button" (click)="toggleRowExpansionState(row)">
+                <mat-icon>list</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="expandedDetail">
+            <mat-cell *matCellDef="let row" [colSpan]="columns.length">
+              @if(isRowExpanded(row)){
+                @let userAttributes = userAttributes$ | async;
+                @if(userAttributes && userAttributes.length === 0){
+                  <p class="empty-results">
+                    <a [href]="'mailto:' + row.upn +
+                                    '?subject=Please fill out your skills portfolio' +
+                                    '&body=Hi ' + row.displayName + ',%0D%0A%0D%0A' +
+                                    'Please update your portfolio on The Hive.%0D%0A%0D%0A' +
+                                    'This is where you can showcase your skills, qualifications, certifications, industry knowledge and unique qualities that YOU bring to BBD.%0D%0A%0D%0A' +
+                                    'We will use this information to identify exciting opportunities within our client base whilst building your career at BBD.%0D%0A%0D%0A' +
+                                    'Please fill out your portfolio on the-hive:%0D%0A' +
+                                    'https://the-hive.bbd.co.za/skills/'">
+                      {{ row.displayName }}
+                    </a> has no skills or industry knowledge added to their portfolio
+                  </p>
+                } @else if(userAttributes){
+                  <section class="user-attributes">
+                    @for(attribute of userAttributes; track attribute){
+                      @let isCoreTech = isAttributeCoreTech(attribute);
+                      @let hasReachedCoreTechLimit = hasStaffReachedCoreTechLimit(row.staffCoreTech);
+
+                      <app-user-attribute-card
+                        [skillsFields]="this.skillsFields"
+                        [jsTypes]="this.jsTypes"
+                        [jsTypeScales]="this.jsTypeScales"
+                        [userAttribute]="attribute"
+                        [isCoreTech]="isCoreTech"
+                        [hasReachedCoreTechLimit]="hasReachedCoreTechLimit"
+                        (userAttributeSelected)="isCoreTech ?
+                          removeCoreTech($event, staffOnSupplyTable.data, userAttributes, row.upn) :
+                          makeCoreTech($event, staffOnSupplyTable.data, userAttributes, row.upn)"
+                      ></app-user-attribute-card>
+                    }
+                  </section>
+                } @else{
+                  <app-loading-indicator class="loading-icon"></app-loading-indicator>
+                }
+              }
+              @else{
+                <!--don't display anything as the row is not expanded-->
+              }
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="columns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columns;"></mat-row>
+
+          <mat-row *matRowDef="let row; columns: ['expandedDetail'];" [class.expanded]="isRowExpanded(row)" [class.collapsed]="!isRowExpanded(row)">
+          </mat-row>
+          </mat-table>
+      </section>
+    </section>
+    } @else {
+    <p class="no-staff">No Details to Display</p>
+    }
+  } @else {
+    <app-loading-indicator class="loading-icon"></app-loading-indicator>
+  }
+

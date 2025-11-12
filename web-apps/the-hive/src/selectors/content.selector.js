@@ -1,0 +1,1 @@
+export const selectContentSearchOptions = (state) => state.content.contentSearchOptions;

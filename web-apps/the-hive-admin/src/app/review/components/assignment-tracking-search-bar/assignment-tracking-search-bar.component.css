@@ -1,0 +1,12 @@
+#staff-overview-filter-panel {
+    align-items: center;
+}
+
+.selected-filters {
+    padding: var(--standard-padding);
+}
+
+.manager-text {
+    font-weight: bolder;
+    font-size: large;
+}

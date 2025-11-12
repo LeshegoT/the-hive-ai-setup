@@ -1,0 +1,60 @@
+.leftPanel {
+  flex: 1 0 42vw;
+  margin-right: 1vw;
+  overflow-x: hidden;
+}
+.middlePanel {
+  flex: 0 0 10vw;
+  overflow-x: hidden;
+}
+.rightPanel {
+  flex: 1 0 42vw;
+  margin-left: 1vw;
+  overflow-x: hidden;
+}
+.staffFilter{
+  display: flex;
+  flex-direction: row;
+}
+#viewPermissions{
+  display:flex ;
+  justify-content: space-between;
+}
+.multiline-mat-option.mat-mdc-option {
+  white-space: normal;
+  line-height: normal;
+}
+.autoCompleteExtendedDetails{
+  font-size: small;
+  color: grey;
+}
+.user-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+}
+.user-row button {
+  margin-left: 0.5rem;
+}
+.header{
+  background-color: #ffffff; 
+  font-size: small;
+  color: grey;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 0.5rem;
+}
+.permissions{
+  background-color: rgb(238, 252, 176);
+  margin-left: 6.25rem;
+  margin-right: 6.25rem;
+  white-space: nowrap;
+}
+.p-span{
+  margin-left: 15.625rem;
+}
+table {
+  width: 100%;
+  margin-top: 1.875rem;
+}

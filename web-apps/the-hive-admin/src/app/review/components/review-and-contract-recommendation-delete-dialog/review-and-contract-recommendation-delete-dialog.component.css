@@ -1,0 +1,58 @@
+.note{
+    color: black;
+    padding-left: 2em;
+    /* margin-bottom: 1.5em; */
+    color:gray;
+}
+
+.notes {
+    display: flex;
+    flex-direction: column;
+    /* gap: var(--standard-gap); */
+}
+
+#noteAlert{
+    color: var(--accent-color);
+    height: 3em;
+    border-radius: 5px;
+    border: solid 1px  var(--accent-color);
+    background-color: rgba(255, 245, 246, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 2em;
+}
+
+#buttonPanel{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+mat-form-field.mat-mdc-form-field {
+    display: flex;
+}
+
+#detailSummary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1em 40% 1em 0em;
+}
+
+.detailTitle{
+    color:gray;
+    display: block;
+}
+
+.details{
+    color: black;
+}
+
+.completedWarningStatus{
+     color: var(--accent-color);
+}
+
+.warning-container {
+    padding: var(--standard-padding);
+}

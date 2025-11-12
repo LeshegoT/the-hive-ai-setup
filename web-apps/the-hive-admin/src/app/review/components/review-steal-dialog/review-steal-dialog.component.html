@@ -1,0 +1,66 @@
+<section class="steal-warning-container">
+  <h1 mat-dialog-title>You Are Attempting To Take A {{ data.stealType }}</h1>
+  <p id="noteAlert"><strong>Warning:</strong> Taking this {{ data.stealType.toLowerCase() }} will result in more work for you.</p>
+</section>
+
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+
+  <div id="detailSummary">
+    <div id="leftPanel">
+        <label class="detailTitle">{{ data.stealType }} for: </label>
+        <label class="detailTitle">Current HR Representative: </label>
+        <label class="detailTitle">{{ data.stealType }} status: </label>
+        <label class="detailTitle">{{ data.stealType }} deadline: </label>
+    </div>
+    <div id="rightPanel">
+        <label class="details"> {{data.reviewee}}</label>
+        <label class="details"> {{data.hrRep}}</label>
+        <label class="pendingStatus">{{data.status}}</label>
+        <label class="details">{{data.deadline | date:'yyyy/MM/dd'}}</label>
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-form-field>
+     <mat-label>Please select the reason for taking this {{ data.stealType.toLowerCase() }}</mat-label>
+      <mat-select [formControl]="stealForm.controls.reasonFormControl" (valueChange)="onReasonSelection($event)">
+        <mat-option></mat-option>
+        <mat-option *ngFor="let reason of possibleStealReasons" [value]="reason">{{ reason }}</mat-option>
+        <mat-option value="Special Case">Special Case</mat-option>
+      </mat-select>
+      <mat-error >{{ getFormErrors(stealForm.controls.reasonFormControl) }}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="stealForm.controls.reasonFormControl.value ==='Special Case'">
+    <mat-label>Please type the reason for taking this {{ data.stealType.toLowerCase() }}</mat-label>
+    <input matInput [formControl]="stealForm.controls.specialReasonFormControl">
+    <mat-error >{{ getFormErrors(stealForm.controls.specialReasonFormControl) }}</mat-error>
+  </mat-form-field>
+
+  <mat-radio-group class="take-duration-radio-buttons-container" [formControl]="stealForm.controls.takeDurationOption" (change)="onTakeDurationOptionChange($event.value)" aria-label="labelName">
+    @for (takeOption of takeDurationOptions; track takeOption) {
+      <mat-radio-button [value]="takeOption">{{ takeOption }}</mat-radio-button>
+    }
+  </mat-radio-group>
+
+  @if (stealForm.controls.takeDurationOption.value === 'Take until') {
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input [min]="minimumTakeDate" matInput [matDatepicker]="picker" [formControl]="stealForm.controls.takeDurationDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>{{ getFormErrors(stealForm.controls.takeDurationDate) }}</mat-error>
+    </mat-form-field>
+  } @else {
+    <!-- The HR representative is taking the review permanently, so there is no need to ask for a date. -->
+  }
+</div>
+<div id="buttonPanel">
+    <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()" cdkFocusInitial>Cancel</button>
+    <button [disabled]="disableTakeReviewButton" mat-button color='accent' (click)="onSteal()">Take {{ data.stealType }}</button> 
+    </div>
+</div>

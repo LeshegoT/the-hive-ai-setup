@@ -1,0 +1,23 @@
+.audit-table-container {
+  padding: var(--standard-padding);
+}
+
+.audit-table {
+  width: 100%;
+}
+
+.header-row {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paginator-left {
+  display: flex;
+  align-items: center;
+}

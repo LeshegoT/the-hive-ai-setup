@@ -1,0 +1,10 @@
+.paginator-sticky {
+    position: sticky;
+    bottom: 0;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    border-bottom-style: none;
+}

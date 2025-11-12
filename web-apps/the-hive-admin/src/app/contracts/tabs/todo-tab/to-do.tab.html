@@ -1,0 +1,50 @@
+<section class="todo-items">
+  @for(item of navOptions; track item) {
+    <p [class.selected]="activeNavOption === item" (click)="setActiveNavOption(item)" >
+      @if(contractRecommendationNumbers() && contractRecommendationNumbers()[item] !== undefined) { 
+        {{item}} 
+        <span class="badge" matBadgePosition="before" matBadge="{{contractRecommendationNumbers()[item]}}"></span>
+      }@else {
+        {{item}}
+      }
+    </p>
+  }
+</section>
+
+<section class="details-view">
+    <app-contracts-search-bar
+      (onFiltersChanged)="onSearchBarFiltersChanged($event)"
+      [showCreateAllRecommendationsButton]="activeNavOption === navOptions[0]"
+      (onCreateAllButtonClicked)="createAllRecommendations()"
+    ></app-contracts-search-bar>
+    <section class="contract-review-list">
+      <app-contract-review-list 
+        #contractReviewListComponent 
+        (selectedRecommendation)="selectedRecommendation.set($event)" 
+        [filters$]="currentFilters$"
+        (onFiltersOrListChanged)="fetchRecommendationNumbers($event)"
+        >
+      </app-contract-review-list>
+      @if (selectedRecommendation()) {
+        <section>
+          @if(activeNavOption === "To Make Permanent") {
+            <app-make-contractors-permanent
+              [data]="selectedRecommendation()"
+              (cancelButtonClicked)="selectedRecommendation.set(undefined)"
+              (contractStaffTypeChanged)="refreshContractReviewListComponentData()"
+            ></app-make-contractors-permanent>
+          } @else {
+            <app-change-staff-to-contractor 
+              [contractRecommendation]="selectedRecommendation()"
+              (cancelButtonClicked)="selectedRecommendation.set(undefined)"
+              (contractRenewed)="refreshContractReviewListComponentData()"
+            >
+            </app-change-staff-to-contractor>
+          }
+        </section>
+      }@else {
+        <!-- Do not display because recommendation is not selected -->
+      }
+      
+    </section>
+</section>

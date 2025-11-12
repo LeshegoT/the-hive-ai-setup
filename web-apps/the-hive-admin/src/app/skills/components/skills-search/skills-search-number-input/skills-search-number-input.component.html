@@ -1,0 +1,68 @@
+<section>
+    <skills-search-operator-selector [attributeType]="attributeType" (valueChange)="onOperatorSelected($event)"></skills-search-operator-selector>
+    @if(range){
+      <section id="range-Container">
+        <mat-form-field id="input-container" appearance="outline">
+          <mat-label>Start:</mat-label>
+          <input
+            matInput
+            [formControl]="numberControlMinValue"
+            (blur)="validateInput()"
+            [min]="min"
+            [max]="max"
+            [step]="step"
+            type="text"
+            [attr.value]="numberControlMinValue.value"
+            [name]="name"
+            placeholder="placeholder"
+            [disabled]="disabled"
+            [required]="required"
+            (input)="onInputChange($event.target.value)"
+            (keydown)="handleKeyDown($event)"
+          />
+        </mat-form-field>
+        <mat-form-field id="input-container" appearance="outline">
+          <mat-label>End:</mat-label>
+          <input
+            matInput
+            [formControl]="numberControlMaxValue"
+            (blur)="validateInput()"
+            [min]="min"
+            [max]="max"
+            [step]="step"
+            type="text"
+            [attr.value]="numberControlMaxValue.value"
+            [name]="name"
+            placeholder="placeholder"
+            [disabled]="disabled"
+            [required]="required"
+            (input)="onInputChange($event.target.value)"
+            (keydown)="handleKeyDown($event)"
+          />
+        </mat-form-field>
+      </section>
+      
+
+    }@else {
+      <mat-form-field id="input-container" appearance="outline">
+        <mat-label>{{ labelName }}</mat-label>
+        <input
+          matInput
+          [formControl]="numberControl"
+          (blur)="validateInput()"
+          [min]="min"
+          [max]="max"
+          [step]="step"
+          type="text"
+          [name]="name"
+          placeholder="{{placeholder}}"
+          [disabled]="disabled"
+          [required]="required"
+          (input)="onInputChange($event.target.value)"
+          (keydown)="handleKeyDown($event)"
+        />
+      </mat-form-field>
+    }
+    <mat-error>{{ errorMessage() }}</mat-error>
+</section>
+  

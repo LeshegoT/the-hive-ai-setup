@@ -1,0 +1,91 @@
+<div class="full-width">
+    <form [formGroup]="templateForm" >
+    <h3>Modify Template: </h3>
+    <div class="container">
+      <mat-form-field class="full-width container-content">
+        <mat-label>Template Name</mat-label>
+        <input matInput type="text" name="templateName" formControlName="templateName" [errorStateMatcher]="matcher"/>
+        <mat-hint align="end">(eg. Annual, Probationary, Interim, Level Up)</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="full-width container-content-right">
+        <mat-label>Template Subject Line</mat-label>
+        <input matInput type="text" name="subjectLineTemplate" formControlName="subjectLineTemplate" [errorStateMatcher]="matcher"/>
+        <mat-hint align="end">Subject line for the email.</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="container">
+      <mat-form-field class="full-width container-content">
+        <mat-label>Template Url</mat-label>
+        <input matInput type="text" name="urlTemplate" formControlName="urlTemplate" [errorStateMatcher]="matcher"/>
+        <mat-hint align="end">Url destination for clickable link to feedback.(eg: $/peer-feedback)</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="full-width container-content-right">
+        <mat-label>Template Title</mat-label>
+          <input matInput type="text" name="titleTemplate" formControlName="titleTemplate" [errorStateMatcher]="matcher"/>
+          <mat-hint align="end">Email title.</mat-hint>
+      </mat-form-field>
+    </div>
+    <br/>
+    <div class="full-width margin-bottom" >
+        <mat-form-field class="full-width">
+          <mat-label>Self Feedback Questions</mat-label>
+          <mat-chip-grid #chipList aria-label="Self Feedback Questions" formControlName="questions">
+            <mat-chip-row
+              *ngFor="let question of templateQuestions"
+               [style.display]="question.question ? 'inline-flex' : 'none'"
+              (removed)="remove(question)">
+              {{question.question}}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            <input
+              placeholder="New Question..."
+              #questionControl
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)">
+          </mat-chip-grid>
+        </mat-form-field>
+    </div>
+    <mat-label class="small-label">Template Text Content</mat-label>
+    <div class="container"> 
+      <angular-editor
+        class="full-width drag-container"
+        name="textContentTemplate" 
+        formControlName="textContentTemplate" 
+        [config]="editorConfig"
+      >
+      </angular-editor>
+      <div class="full-width drag-container-right">
+        <h4 class="parameter-label">Custom Variables</h4>
+        <div class="parameter-scroll-block">
+          <ul class="item-list">
+            <li class="item-box" *ngFor="let item of templateVariable" draggable="true" (dragstart)="drag($event, item.option)">
+              {{ item.value }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div class="error margin-bottom" *ngIf="error">
+      Please ensure all required fields are filled in and that there are no errors above.
+    </div>
+    <div class="margin-bottom">
+      <input type="checkbox" id="manualFeedbackAssignment" name="manualFeedbackAssignment" formControlName="manualFeedbackAssignment" >
+      <label for="manualFeedbackAssignment">Allow Admin to Manually Assign Feedback </label>
+    </div>
+    <div class="save-button">
+      <button
+        [disabled]=saveClicked
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="modifyTemplate()"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,19 @@
+a {
+    display: block;
+    text-decoration: none;
+    color: var(--app-secondary-color);
+}
+
+a:visited {
+    color: var(--app-secondary-color);
+}
+
+.done,
+a.done:visited {
+    color: var(--app-tertiary-color);
+}
+
+.done svg {
+    fill: var(--app-done-color);
+    stroke: var(--app-done-color);
+}

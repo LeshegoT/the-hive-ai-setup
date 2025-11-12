@@ -1,0 +1,13 @@
+.addSection {
+  padding: 1em 1em;
+  border: solid 1px black;
+}
+
+.sections-table {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.error {
+  color: red;
+}

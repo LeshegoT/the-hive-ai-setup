@@ -1,0 +1,17 @@
+.warning-message {
+  display: flex;
+  gap: var(--small-spacing);
+  padding: var(--standard-padding);
+  background-color: var(--warning-background-color);
+  border: var(--standard-border-width) solid var(--secondary-color);
+  border-radius: var(--standard-border-radius);
+  margin-top: var(--small-spacing);
+}
+
+.warning-message mat-icon {
+  color: var(--secondary-color);
+}
+
+.warning-message p {
+  margin: 0;
+}

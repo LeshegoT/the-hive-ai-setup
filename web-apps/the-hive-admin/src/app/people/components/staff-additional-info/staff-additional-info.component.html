@@ -1,0 +1,13 @@
+<section class="additional-info">
+  @if( userHasAdditionalInfoRights | async) {
+    @let info = additionalInfo$ | async;
+    @if( info && info.flag ) {
+      <a (click)="toggleFlag(false)">{{ info.flag }}</a>
+    }  @else if( info ) {
+      <a (click)="toggleFlag(true)">∅</a>
+    }
+    @else {
+      <mat-spinner mode="indeterminate" diameter="15" strokeWidth="2"></mat-spinner>
+    }
+  }
+</section>

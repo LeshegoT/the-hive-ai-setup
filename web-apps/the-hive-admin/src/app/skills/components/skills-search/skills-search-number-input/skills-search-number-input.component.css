@@ -1,0 +1,14 @@
+#input-container {
+    display: flex;
+    flex-direction: column;
+    width: inherit;
+}
+  
+#range-Container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--standard-gap);
+}
+
+  

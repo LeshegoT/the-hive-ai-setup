@@ -1,0 +1,16 @@
+<section>
+    <mat-form-field id="input-container" appearance="outline">
+        <mat-label>{{labelName}}</mat-label>
+        <mat-select [formControl]="inputSelected" [multiple]="multiSelect">
+            @if(index){
+                <mat-option *ngFor="let option of dropDownValues; let i = index" [value]="i">
+                    {{ option }}
+                </mat-option>
+            }@else{
+                <mat-option *ngFor="let option of dropDownValues" [value]="option">
+                    {{ option }}
+                </mat-option>
+            }
+        </mat-select>
+      </mat-form-field>
+</section>

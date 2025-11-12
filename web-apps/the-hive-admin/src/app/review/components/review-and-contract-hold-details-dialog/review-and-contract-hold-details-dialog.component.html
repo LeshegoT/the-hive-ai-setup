@@ -1,0 +1,28 @@
+<div class="dialog-container">
+  <h1 mat-dialog-title>Review Hold Details</h1>
+
+  @if(data.onHoldByText) {
+    <section mat-dialog-content>
+      <label >Placed by:   </label>
+      <span>{{data.onHoldByText}}</span>
+    </section>
+  }
+
+  @if(data.placedOnHoldDate) {
+    <section mat-dialog-content>
+      <label >Placed on: </label>
+      <span>{{ data.placedOnHoldDate | dateFormat }}</span>
+    </section>
+  } @else {
+    <!-- This review was not placed on hold or it was placed on hold before we started tracking this date so don't show a placed on hold date -->
+  }
+
+  @if(data.holdReasonText){
+    <section mat-dialog-content>
+      <label >Hold reason: </label>
+      <p>{{data.holdReasonText}}</p>
+    </section>
+  }
+
+  <button mat-button mat-dialog-close (click)="close()">Close</button>
+</div>

@@ -1,0 +1,11 @@
+{
+  "name": "@the-hive/lib-staff-shared",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "tslib": "^2.8"
+  }
+}

@@ -1,0 +1,8 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <mat-select [formControl]="control" multiple (closed)="onClosed()">
+      @for (option of options; track option.id) {
+        <mat-option [value]="option">{{ option[displayProperty] }}</mat-option>
+      }
+  </mat-select>
+</mat-form-field>

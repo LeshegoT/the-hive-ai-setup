@@ -1,0 +1,7 @@
+<section class="programmes-container">
+  <h1>
+    <mat-icon>dashboard</mat-icon>
+    Manage Programmes
+  </h1>
+  <app-table-programme (triggerRefresh)='refreshProgrammes()' [allProgrammes]="programmes"></app-table-programme>
+</section>

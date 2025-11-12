@@ -1,0 +1,79 @@
+@if ((icons$ | async) && (tracks$ | async)){
+<div class="full-width">
+    <h3>Manage Course</h3>
+    <p>
+      Before creating a course, it must be in a folder inside the Azure courses directory (this is used when adding sections later).
+      Look at other courses in this directory to understand the structure as well as how images are stored (inside an images folder) and used.
+      Additionally, the icon must exist in the app/images/logos directory.
+      <a href="mailto:atcteam@bbd.co.za?Subject=Upload Course Help" target="_top">ATC</a> can help you with these steps.
+    </p>
+    <form [formGroup]="courseForm">
+      <div class="container">
+        <mat-form-field class="container-content">
+          <mat-label>Name*</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="container-content-right">
+          <mat-label>Code*</mat-label>
+          <input matInput formControlName="code" />
+          <mat-hint align="end">Lower case letters, one word or hyphenated, max 50 characters</mat-hint>
+        </mat-form-field>
+      </div>
+      
+      <div class="container">
+      <mat-form-field class="container-content">
+        <mat-label>Icon File Name</mat-label>
+        <mat-select formControlName="icon">
+        @for (image of icons$ | async; track trackByPath(image)){
+          <mat-option [value]="image.path">{{ image.name }}</mat-option>
+        }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="container-content-right">
+        <mat-label>Select Track</mat-label>
+        <mat-select formControlName="assignedTrackIds" (selectionChange)="onTrackChange($event.value)" multiple>
+          @for (trackForCourse of tracks$ | async ; track trackForCourse.trackId){
+            <mat-option [value]="trackForCourse.trackId">
+              {{ trackForCourse.name }}
+            </mat-option>
+          }
+        </mat-select>
+        @if(courseForm.get('assignedTrackIds').hasError('required')){
+        <mat-error>
+          You must select at least one track.
+        </mat-error>
+        } @else {
+          <!-- No error to display -->
+        }
+      </mat-form-field>
+      </div>
+  
+      <mat-form-field class="full-width">
+        <mat-label>Description*</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <app-manage-restrictions 
+      [contentId]="course.courseId" 
+      contentType='Course'
+      [contentName]='course.name'
+      contentIdString='courseId'
+      (currentRestrictions)="restrictions=$event"
+      >
+      </app-manage-restrictions>
+  
+      <app-section-editor [parentFormGroup]="courseForm" [sections]="addedSections" button="Add"></app-section-editor>
+  
+      <div class="error" *ngIf="error">
+        Please ensure all required fields are filled in and that there are no errors above.
+      </div>
+  
+      <div class="buttons">
+        <button mat-raised-button color="primary" type="button" (click)="updateCourse()">Save</button>
+        <button mat-raised-button color="warn" type="button" (click)="onCancel.emit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

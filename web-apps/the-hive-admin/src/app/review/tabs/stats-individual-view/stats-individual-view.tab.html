@@ -1,0 +1,74 @@
+
+<div class="component" >
+    <div id="reviewListHeaderOptions">
+      @let selectedStaffMember = selectedStaffMember$ | async;
+       <div id="filterPanel">
+            <div id="employeeSearch">
+                <app-staff-filter (selectStaff)="selectStaff()" searchLabel="Search Employee" searchType="search"></app-staff-filter>
+            </div>
+            <div>
+                <div>
+                    @let dateRangeFilter = dateRangeFilter$ | async;
+                    <mat-form-field appearance="outline" class="dateRangePicker">
+                        <mat-label>From</mat-label>
+                        <input matInput [matDatepicker]="startDatePicker" [ngModel]="dateRangeFilter.from" (dateChange)="onDateRangeStartChange($event)" [disabled]="!selectedStaffMember">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="dateRangePicker">
+                        <mat-label>To</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" [ngModel]="dateRangeFilter.to" (dateChange)="onDateRangeEndChange($event)" [disabled]="!selectedStaffMember">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    
+                    <button mat-icon-button color="primary" type="button" 
+                        (click)="clearDateRange()"
+                        [disabled]="!dateRangeFilter.to || !dateRangeFilter.from"
+                        matTooltip="Clear Date Range"
+                        matTooltipPosition="right">
+                        <mat-icon>remove_circle_outline</mat-icon>
+                    </button> 
+                </div>
+            </div>
+       </div>
+
+       <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar> 
+               
+        <app-staff-profile [selectedStaffMember]="selectedStaffMember">
+        </app-staff-profile>
+        
+        <mat-divider></mat-divider>
+    </div>
+
+    @let completedFeedbackTemplateNamesForStaffMember = completedFeedbackTemplateNamesForStaffMember$ | async;
+<div id="templateFilter">
+        @let chosenTemplateName = chosenTemplateName$ | async;
+        <mat-radio-group aria-label="Select an option" [ngModel]="chosenTemplateName" (ngModelChange)="updateChosenTemplate($event)" class="templateSelection"  >
+            <mat-radio-button *ngFor="let template of completedFeedbackTemplateNamesForStaffMember" value={{template}}>{{template}}</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    
+    <mat-divider *ngIf="completedFeedbackTemplateNamesForStaffMember?.length > 0"></mat-divider>
+
+    <mat-accordion [multi]="true">
+        @let reviewFeedback = reviewFeedback$ | async;
+        <mat-expansion-panel *ngFor="let reviewFeedback of reviewFeedback; let i = index">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ (reviewFeedback.review.dueDate) | date:'longDate' }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-feedback-questions-template-display [feedback]="reviewFeedback" [hideDropdowns]="true"></app-feedback-questions-template-display>
+        </mat-expansion-panel>
+        @let voluntaryFeedback = voluntaryFeedback$ | async;
+        <mat-expansion-panel *ngIf="voluntaryFeedback?.length">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Voluntary Feedback
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-feedback-questions-template-display [feedback]="voluntaryFeedback"></app-feedback-questions-template-display>
+        </mat-expansion-panel>
+    </mat-accordion>
+  </div>

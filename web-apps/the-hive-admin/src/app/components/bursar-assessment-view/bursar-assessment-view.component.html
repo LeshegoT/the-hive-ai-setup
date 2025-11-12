@@ -1,0 +1,84 @@
+<div id="searchBar">
+    <label>Search</label>
+
+    <div class="filterSearch">
+        <mat-form-field appearance="outline">
+        <mat-label>Search (requires atleast 3 characters)</mat-label>
+        <input matInput (keyup)="filterSearchText($event)" [(ngModel)]="searchText" placeholder=""  />
+        </mat-form-field>
+    </div>
+</div>
+<div id="candidateAssessments">
+  <div id="candidateTable">
+    <table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="bursarAssessmentCandidatesData" matSort>
+        <ng-container matColumnDef="name" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Candidate Name</th>
+        <td mat-cell *matCellDef="let row" >
+            {{ row.name }}
+        </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="email" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email </th>
+            <td mat-cell *matCellDef="let row" >
+                    {{ row.email }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dueDate" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</th>
+            <td mat-cell *matCellDef="let row">
+                {{ row.dueDate | date:'yyyy-MM-dd' }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status" >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let row"  >
+                <label class="status" [ngClass]="'status' + row.progress.status.id">{{row.progress.status.name}}</label>
+            </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="prompt">
+        <th mat-header-cell *matHeaderCellDef width ="5%"></th>
+        <td mat-cell *matCellDef="let row" >
+                <button mat-mini-fab color="primary" type="button" 
+                *ngIf="row.progress.status.id <= 2"
+                (click)="nudgeAssessment(row)"
+                [disabled] = "row.nudged"
+                matTooltip="Resend Invite"
+                matTooltipPosition="right">
+                    <mat-icon>send</mat-icon>
+                </button> 
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="remove">
+        <th mat-header-cell *matHeaderCellDef width ="5%"></th>
+        <td mat-cell *matCellDef="let row">
+                <button mat-mini-fab color="accent"  type="button" *ngIf="row.progress.status.id <= 2 " 
+                (click)="removeAssessment(row)"
+                matTooltip="Cancel Assessment"
+                matTooltipPosition="right">
+                <mat-icon>delete_outline</mat-icon>
+                </button> 
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="bursarAssessmentCandidatesColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: bursarAssessmentCandidatesColumns;" ></tr>
+    </table>
+    <mat-paginator
+        #paginator
+        [length]="currentPageInfo.resultSetSize"
+        [pageIndex]="0"
+        [pageSize]="currentPageInfo.pageSize" 
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+        [hidePageSize]="this.tableService.getHidePageSize()"
+        (page)="pageChanged($event)"
+    ></mat-paginator>
+ </div>
+</div>

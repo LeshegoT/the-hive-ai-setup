@@ -1,0 +1,79 @@
+.staff-filter-container {
+  margin-block: var(--standard-gap);
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--standard-gap);
+}
+
+.staff-input {
+  flex: 1 1 auto;
+}
+
+.staff-member-name {
+  display: block;
+}
+
+.staff-member-upn {
+  display: block;
+  font-size: small;
+}
+
+.paginator-sticky {
+  position: sticky;
+  bottom: 0;
+}
+
+.container {
+  padding: var(--standard-padding);
+}
+
+.selected-staff-member-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.offboarding-staff-members-table-header-row {
+  font-weight: bold;
+}
+
+.termination-date-container {
+  display: flex;
+  gap: var(--standard-gap);
+  align-items: center;
+  padding-block: var(--standard-padding);
+}
+
+.staff-member-terminated-chip {
+  display: inline-flex;
+  background-color: var(--error-message-color);
+  color: var(--app-button-text);
+  border-radius: 1rem;
+  vertical-align: middle;
+  align-items: center;
+  padding-inline: var(--standard-padding);
+  height: 100%;
+}
+
+.error-container {
+  display: flex;
+  gap: var(--standard-gap);
+  align-items: center;
+}
+
+.error-container > * {
+  flex-basis: fit-content;
+}
+
+.filter-field {
+  margin-block-end: var(--standard-gap);
+  width: fit-content;
+}
+
+.close-direct-reports-button {
+  margin-block: var(--standard-gap);
+}

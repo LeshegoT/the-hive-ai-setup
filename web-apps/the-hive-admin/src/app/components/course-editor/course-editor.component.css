@@ -1,0 +1,38 @@
+
+.error {
+  color: red;
+}
+
+.contentPicker {
+  padding: 0.5em 0.5em;
+  line-height: 36px;
+}
+
+.contentPickerBox {
+  border: 0.5px solid grey;
+  margin: 0.5em 0;
+}
+
+.contentPickerTitle {
+  padding: 1em 0;
+}
+
+::ng-deep .contentButton {
+  display: block;
+  float: right;
+}
+
+.addActivity {
+  width: 15%;
+}
+.addContentBlock{
+  margin: 1em 0;
+}
+.addCourse {
+    width: 90%;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--standard-gap);
+}

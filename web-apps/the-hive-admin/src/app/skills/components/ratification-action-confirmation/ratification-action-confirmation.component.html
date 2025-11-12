@@ -1,0 +1,65 @@
+<section class="container">
+    <h1>{{skillsEntityAndRatificationAction.skillsEntity.canonicalName}}</h1>
+    @if (topLevelTag.standardizedName === 'institution'){ 
+        @if (skillsEntityAndRatificationAction.ratificationAction === 'Accept') {
+            <mat-form-field appearance="outline">
+                <mat-label class="market-label">Institution Type</mat-label>
+                <mat-select [formControl]="selectedInstitutionType">
+                    @for (institutionType of institutionTypes; track institutionType) {
+                        <mat-option [value]="institutionType">{{ institutionType }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+        } @else {
+            <!-- The accept button is not clicked do not show the institution type selection -->
+        }
+    } @else {
+        <!-- The selected attribute is not an institution so do not show the institution type selection -->
+    }
+    @if (isRatificationActionEqualTo(skillsEntityAndRatificationAction.ratificationAction, 'Merge')) {
+        <span class="search-container">
+            @if (topLevelTag.standardizedName === 'institution') {
+                <app-institution-search-bar
+                    (searchOptionSelected)="onSearchOptionSelected($event)"
+                ></app-institution-search-bar>
+            } @else {
+                <app-skills-search-bar
+                    (searchOptionSelected)="onSearchOptionSelected($event)"
+                ></app-skills-search-bar>
+            }
+        </span>
+    } @else {
+        <!-- The merge button is not clicked do not show the search bar -->
+    }
+    @if (isRatificationActionEqualTo(skillsEntityAndRatificationAction.ratificationAction, 'ChangeCanonicalName')) {
+        <input matInput type="text" placeholder="New Canonical Name" class="new-canonical-name-input" [formControl]="newCanonicalNameControl"/>
+    } @else {
+        <!-- The change button is not clicked do not show the search bar -->
+    }
+    <p class="confirmation-text">
+        {{ getConfirmationMessage() }}
+    </p>
+    @let attributeCanonicalNameDetails = (attributeCanonicalNameDetails$ | async);
+    <div class="actions">
+        @if(attributeCanonicalNameDetails) {
+            <button mat-raised-button color="primary" (click) = "handleRatificationAction(skillsEntityAndRatificationAction)">
+                <mat-icon>check</mat-icon> {{skillsEntityAndRatificationAction.ratificationAction}}
+            </button>
+        } @else{
+            <button mat-raised-button [disabled]="true">
+                <mat-spinner diameter="20"></mat-spinner>
+                {{skillsEntityAndRatificationAction.ratificationAction}}
+            </button>
+        }
+        <button mat-raised-button (click)="cancelAction()"><mat-icon>close</mat-icon> Cancel</button>
+    </div>
+    @if(errorMessage) {
+        <mat-error>
+            An error occured while {{skillsEntityAndRatificationAction.ratificationAction}}, Try refreshing the page, or 
+            <a [href]="generateSupportEmail(errorMessage)">contact support</a> if the issue persists
+        </mat-error>
+    } @else{
+        <!-- there is no error to show as we have not ratified anything yet or ratification actions succeeded -->
+    }
+</section>

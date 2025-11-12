@@ -1,0 +1,7 @@
+::ng-deep .toggle-all-checkbox .mdc-label {
+    font-size:var(--font-size-medium) ;
+}
+
+::ng-deep .toggle-all-checkbox {
+    padding-left: var(--small-spacing) ;
+}

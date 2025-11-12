@@ -1,0 +1,40 @@
+<div class="full-width">
+  @if(typeName.name){
+    <h3>Manage Side Quest Type: {{ typeName.name }}</h3>
+  }@else{
+    <h3>Create New Side Quest Type</h3>
+  }
+  <form [formGroup]="manageTypeForm" (submit)="updateType()">
+    <mat-form-field class="full-width">
+        <mat-label>Name*</mat-label>
+        <input matInput formControlName="name" [errorStateMatcher]='matcher'/>
+      </mat-form-field>
+    <div class="container">
+      <mat-form-field class="container-content">
+        <mat-label>Code*</mat-label>
+        <input matInput formControlName="code" [errorStateMatcher]="matcher"/>
+        <mat-hint align="end">Lower case letters, one word or hyphenated, max 20 characters</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="container-content-right">
+        <mat-label>Icon*</mat-label>
+        <mat-select formControlName="icon">
+          <mat-option [value]="image.path" *ngFor="let image of images$ | async">{{ image.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Description*</mat-label>
+      <textarea matInput matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="8" formControlName="description" [errorStateMatcher]="matcher" ></textarea>
+      <mat-hint align="end">Markdown supported</mat-hint>
+    </mat-form-field>      
+    <div class="error" *ngIf="error">
+      Please ensure all required fields are filled in and that there are no errors above.
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+      <button mat-raised-button color="warn" type="button" (click)="onCancel()" matTooltip="Cancel" matTooltipShowDelay="1000">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

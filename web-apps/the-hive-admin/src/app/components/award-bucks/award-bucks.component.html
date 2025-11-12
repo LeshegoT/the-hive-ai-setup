@@ -1,0 +1,86 @@
+<app-title title="Award BBD Bucks">Award BBD Bucks</app-title>
+<div class="filter">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+    </mat-form-field>
+</div>
+<div class="mat-elevation-z8 full-width">
+  <table mat-table #table matSort [dataSource]="formattedStaffdata">
+    <ng-container matColumnDef="userPrincipleName">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>User Principle Name</th>
+      <td class="content" mat-cell *matCellDef="let staff">
+        {{ staff.userPrincipleName }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="displayName">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>display Name</th>
+      <td class="content" mat-cell *matCellDef="let staff">
+        {{ staff.displayName }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="department">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>department</th>
+      <td class="content" mat-cell *matCellDef="let staff">
+        {{ staff.department }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="options">
+    <th mat-header-cell *matHeaderCellDef>Amount</th>
+    <td class="dropColumns" mat-cell *matCellDef="let element">
+      <mat-form-field>
+        <mat-label>Select amount*</mat-label>
+          <mat-select [disabled]=checkActiveSelect(element) (selectionChange)="updateCurrentAmount($event)" id="amount">
+            <mat-option value="100">100</mat-option>
+            <mat-option value="200">200</mat-option>
+            <mat-option value="300">300</mat-option>
+            <mat-option value="400">400</mat-option>
+            <mat-option value="500">500</mat-option>
+          </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="reasons">
+    <th  mat-header-cell *matHeaderCellDef>Reason</th>
+    <td class="dropColumns" mat-cell *matCellDef="let element">
+      <mat-form-field *ngIf="!checkActiveSelect(element)">
+        <mat-label>Reason*</mat-label>
+          <mat-select [(ngModel)]='currentReason' id="reason"(selectionChange)="checkNewReason($event)">
+            <mat-option [value]="reason.rewardReasonId" *ngFor="let reason of reasons$ | async">{{ reason.description }}</mat-option>
+            <mat-option value="Create new reason">Create new reason</mat-option>
+          </mat-select>
+  </mat-form-field>
+    </td>
+  </ng-container>
+   <ng-container matColumnDef="newReasons">
+    <th  mat-header-cell *matHeaderCellDef>New Reason</th>
+    <td class="dropColumns" mat-cell *matCellDef="let element">
+      <mat-form-field  hintLabel="Max 255 characters" *ngIf="newReasonCheck(element)">
+        <mat-label>New reason description*</mat-label>
+          <input matInput #input id="newReason" [(ngModel)]='newReasonDescription'>
+      </mat-form-field>
+    </td>
+  </ng-container>
+    <ng-container matColumnDef="actions">
+      <th class="head" mat-header-cell *matHeaderCellDef> Award BBD bucks </th>
+      <td class="content" mat-cell *matCellDef="let staff"> 
+        <button [disabled]="checkActiveSelect(staff)" mat-raised-button (click)="onSubmit()" type="button" matTooltip="Award BBD bucks" matTooltipShowDelay="1000">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="allStaffColumns"></tr>
+    <tr mat-row *matRowDef="let staff; columns: allStaffColumns"
+      (click)="updateCurrentName(staff)"
+      (click)="highlight(staff)"
+      [class.highlight]="this.selectedRowIndex === staff.displayName">
+      
+    </tr>
+  </table>
+      <mat-paginator 
+      [pageSize]="this.tableService.getPageSize()" 
+      [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+      class="paginator"
+      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+      [hidePageSize]="this.tableService.getHidePageSize()">
+    </mat-paginator>
+</div>

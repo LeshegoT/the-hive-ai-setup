@@ -1,0 +1,27 @@
+th {
+  font-weight: bold;
+}
+
+.empty-data-row {
+  text-align: center;
+}
+
+.selected-row {
+  background-color: var(--selected-row-background-colour);
+}
+
+.bulk-reassignment-card {
+  margin-block: var(--standard-gap);
+}
+
+.bulk-reassignment-form {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--standard-gap);
+  padding-block: var(--standard-padding);
+  align-items: center;
+}
+
+.manager-name {
+  font-weight: bold;
+}

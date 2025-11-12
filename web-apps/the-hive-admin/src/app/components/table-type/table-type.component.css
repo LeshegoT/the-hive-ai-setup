@@ -1,0 +1,38 @@
+.content {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+table {
+  width: 100%;
+}
+tr.detail-row {
+  height: 0;
+}
+.paginator {
+  background: #f5f5f5;
+}
+.mat-toolbar-row { 
+  justify-content: space-between; 
+} 
+.mat-toolbar {
+    margin-bottom: 5%;
+}
+tr.type-row:not(.expanded-type-row):hover {
+  background: whitesmoke;
+}
+tr.type-row:not(.expanded-type-row):active {
+  background: #efefef;
+}
+.type-row td {
+  border-bottom-width: 0;
+}
+.expanded-type-row {
+  background: #efefef;
+}
+.type-detail {
+  display: inline;
+  font-size: 16px;
+}
+.disp {
+  display: none;
+} 

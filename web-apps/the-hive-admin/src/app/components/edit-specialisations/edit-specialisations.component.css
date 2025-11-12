@@ -1,0 +1,51 @@
+.create-specialisation-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+    padding: var(--standard-padding);
+}
+
+.create-specialisation-title {
+    align-self: center;
+    font-weight: bolder;
+    margin: var(--standard-gap);
+}
+
+.error {
+    color: var(--accent-color);
+}
+
+.guide {
+    align-self: center;
+    display:flex;
+    justify-content: center;
+    gap: var(--standard-gap);
+}
+
+.specialisation-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+}
+
+.no-specialisation-text {
+    padding: var(--standard-padding);
+}
+
+.specialisation {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--standard-gap);
+    align-items: center;
+}
+
+.specialisation-list-title {
+    font-weight: bold;
+    color: var(--remaining-characters-hint-color);
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--standard-gap);
+}

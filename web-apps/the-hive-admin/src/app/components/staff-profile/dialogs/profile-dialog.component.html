@@ -1,0 +1,39 @@
+@let profiles = skillsProfiles$ | async;
+<h2 mat-dialog-title>
+  @if (profiles && profiles.length > 0) {
+    Please select a profile overview to use
+  } @else {
+    No profile overview available
+  }
+</h2>
+<mat-dialog-content>
+  @if (profiles && profiles.length > 0) {
+    <mat-form-field>
+      <mat-label>Select profile overview</mat-label>
+      <mat-select [(ngModel)]="selectedProfileId">
+        @for (profile of profiles; track profile) {
+          <mat-option [value]="profile.skillsProfilesId">{{profile.shortDescription}}</mat-option>
+        } 
+      </mat-select>
+    </mat-form-field>
+    @if (!selectedProfileId) {
+      <div class="warning-message">
+        <mat-icon>info</mat-icon>
+        <p>Please select a profile overview or generate without one.</p>
+      </div>
+    }
+  } @else {
+    <div class="warning-message">
+      <mat-icon>info</mat-icon>
+      <p>No profile overview available for this employee.</p>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="secondary" matButton (click)="onCancelClick()">Cancel</button>
+  @if (profiles && profiles.length > 0) {
+    <button mat-raised-button color="primary" matButton (click)="onOkClick()" cdkFocusInitial>Ok</button>
+  } @else {
+    <button mat-raised-button color="primary" matButton (click)="onGenerateWithoutProfile()" cdkFocusInitial>Generate without profile</button>
+  }
+</mat-dialog-actions>

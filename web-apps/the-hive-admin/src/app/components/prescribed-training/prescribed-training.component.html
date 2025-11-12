@@ -1,0 +1,133 @@
+<div class="component">
+  <div class="courses">
+    <h3>Select a course</h3>
+
+      <mat-form-field>
+        <mat-label>Course</mat-label>
+        <mat-select 
+          aria-label="Select a course" 
+          [(ngModel)]="courseId" 
+          (selectionChange)="refreshData()">
+            @for (course of courses; track course){
+              <mat-option  [value]="course.courseId">
+                {{ course.name }}
+              </mat-option>
+            }
+        </mat-select>
+      </mat-form-field>
+      @if (selectedCourse) {
+        <div>
+          @if (mailingList) {
+            <p>Assign to mailing lists: <span>(list mailing list aliases only - no user email addresses - comma separated)</span></p>
+            <p>WARNING: <span>this will assign the course to multiple people</span></p>
+          } @else {
+            <p>Assign to people: <span>(list user email addresses only - no mailing list addresses - comma separated)</span></p>
+          }
+          <input type="checkbox" name="mailingList" [(ngModel)]="mailingList">
+          <label for="mailingList">Assign to all members of mailing list</label>
+          <textarea [(ngModel)]="newUsers" rows="2"></textarea>
+          <button mat-raised-button color="primary" (click)="saveNewUsers()">Save</button>
+        </div>
+      }
+    @if (selectedCourse) {
+      @if (assignedUsers !== undefined && notAssignedUsers !== undefined ){
+        <section id="assigned-container">
+              <div class="Assigned">
+                <h4>Assigned Users:</h4>    
+                    <div class="filter">
+                  <mat-form-field>
+                      <input matInput (keyup)="applyFilter($event.target.value,'Assigned')" placeholder="Filter" [value]="this.assignedTableData.filter" />
+                  </mat-form-field>
+                </div>
+                  <div>
+                    <table mat-table [dataSource]="assignedTableData">
+                      <ng-container matColumnDef="assigned">
+                        <th mat-header-cell *matHeaderCellDef>Assigned users</th>
+                        <td mat-cell *matCellDef="let person;let i = index">
+                          {{ person.userPrincipleName }}
+                        </td>
+                        </ng-container>
+                        <ng-container matColumnDef="dueDate">
+                          <th mat-header-cell *matHeaderCellDef>Due Date</th>
+                            <td mat-cell *matCellDef="let person;let i = index">
+                              {{ person.dueDate | dateFormat }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="completed">
+                        <th mat-header-cell *matHeaderCellDef>Completion Date</th>
+                        <td mat-cell *matCellDef="let person;let i = index">
+                          {{(person.dateCompleted | dateFormat)}}
+                        </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let person;let i = index">
+                          @if (!person.dateCompleted){
+                            <button mat-button color="warn" (click)="removePrescribedCourse(person.userPrincipleName)">Remove</button>
+                          } @else {
+                            <!-- Do nothing because user has completed course -->
+                          }
+                        </td>
+                        </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="assignedColumns"></tr>
+                      <tr mat-row *matRowDef="let person; columns: assignedColumns"></tr>
+                    </table>
+                    <mat-toolbar class="toolbar"><mat-paginator
+                      [pageSize]="this.tableService.getPageSize()"
+                      [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+                      class="paginator"
+                      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+                      [hidePageSize]="this.tableService.getHidePageSize()"
+                      #assingedUsersPaginator>
+                    </mat-paginator></mat-toolbar>
+                  </div>
+                
+              </div>
+              <div class="Unassigned">
+                <h4>Not Assigned Users:</h4>
+             <div class="filter">
+               <mat-form-field>
+                   <input matInput (keyup)="applyFilter($event.target.value,'Unassigned')" placeholder="Filter" [value]="this.notAssignedTableData.filter" />
+               </mat-form-field>
+                <mat-form-field class="due-date">
+                    <mat-label>Due date</mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dueDateInput">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>                  
+             </div>
+                <div>
+                  <table mat-table [dataSource]="notAssignedTableData">
+                    <ng-container matColumnDef="UserName">
+                      <th mat-header-cell *matHeaderCellDef >Not assigned users</th>
+                      <td mat-cell *matCellDef="let person;let i = index">
+                        {{ person.userPrincipleName }}
+                      </td>
+                      </ng-container>
+                      <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef >Assign User to course</th>
+                      <td mat-cell *matCellDef="let person">
+                        <button mat-raised-button (click)="saveNewUsersViaTable(person.userPrincipleName)" type="button" matTooltip="Assign course" matTooltipShowDelay="1000">
+                            <mat-icon>assignment</mat-icon>
+                        </button>
+                      </td>
+                      </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="notAssignedColumns"></tr>
+                    <tr mat-row *matRowDef="let person; columns: notAssignedColumns"></tr>
+                  </table>
+                  <mat-toolbar class="toolbar"><mat-paginator
+                    [pageSize]="this.tableService.getPageSize()"
+                    [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+                    class="paginator"
+                    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+                    [hidePageSize]="this.tableService.getHidePageSize()"
+                    #unassingedUsersPaginator>
+                  </mat-paginator></mat-toolbar>
+                </div>
+            </div>
+        </section>
+      } @else {
+        <mat-spinner></mat-spinner>
+      }
+  }
+</div>

@@ -1,0 +1,98 @@
+<div class="full-width">
+  <h3>Create New Programme</h3>
+  <form [formGroup]="programmeForm" #formDirective="ngForm" (submit)="createProgramme(formDirective)">
+    <mat-form-field class="full-width">
+      <mat-label>Name*</mat-label>
+      <input id="fieldName" matInput formControlName="name" />
+      <mat-hint align="end">First letter is capital, one word or hyphenated, max 30 characters</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="datepicker" [formControl]="date" [min]="minDate" />
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Period*</mat-label>
+      <mat-select formControlName="period" [(value)]="selectedPeriod">
+        <mat-option value="1">Jan-Dec (For example: January 2019 - December 2019)</mat-option>
+        <mat-option value="2">July-June (For example: July 2019 - June 2020)</mat-option>
+      </mat-select>
+      <mat-hint align="end">Select the period in which the programme will take place.</mat-hint>
+    </mat-form-field>
+
+    <div class="full-width addContentBlock">
+      <mat-form-field class="addLevelUp">
+        <mat-label>Add LevelUp</mat-label>
+        <mat-select [(value)]="selectedlevelup">
+          <mat-option [value]="levelup.levelUpId" *ngFor="let levelup of levelups$ | async">
+            {{ levelup.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="addButton" (click)="addLevelUp()" type="button">Add</button>
+    </div>
+
+    <div class="contentPickerTitle" *ngIf="levelupDataSource.data.length > 0 || levelupDataSource.data !== undefined">
+      <span>LevelUps to be added:</span>
+      <table mat-table class="content-table mat-elevation-z8" [dataSource]="levelupDataSource">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>LevelUp</th>
+          <td mat-cell *matCellDef="let levelup">{{ levelup.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let levelup">
+            <button mat-stroked-button color="error" (click)="deleteLevelup(levelup)" type="button">Delete</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedLevelUpColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedLevelUpColumns"></tr>
+      </table>
+    </div>
+
+    <div id="insertUserDiv">
+      <h1>Add users</h1>
+      <app-staff-filter
+        (selectStaff)="selectUser()"
+        searchLabel="Select Users to add"
+        searchType="search"
+      ></app-staff-filter>
+
+      <h3>Users to be added:</h3>
+      <div class="contentPickerTitle" *ngIf="userDataSource.data.length > 0 || userDataSource.data !== undefined">
+        <table mat-table class="content-table mat-elevation-z8" [dataSource]="userDataSource">
+          <ng-container matColumnDef="displayName">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let user">{{ user.displayName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="userPrincipleName">
+            <th mat-header-cell *matHeaderCellDef>User Principle Name</th>
+            <td mat-cell *matCellDef="let user">{{ user.UPN }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let user">
+              <button mat-stroked-button color="error" (click)="deleteUser(user)" type="button">Delete</button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedUserColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedUserColumns"></tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="actionButtons">
+      <button mat-raised-button color="primary" (click)="createProgramme(formDirective)" type="button">Save</button>
+      <button mat-raised-button color="warn" type="button" (click)="cancelCreate()" matTooltip="Cancel"
+        matTooltipShowDelay="1000">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,33 @@
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--large-gap);
+    box-shadow: var(--small-shadow);
+}
+  
+.user-skill-card {
+    min-width: 20em;
+}
+  
+.footer-left, .footer-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.person-card-container{
+    padding: var(--medium-spacing);
+    justify-content: space-between;
+}
+
+mat-card {
+    box-shadow: var(--small-shadow);
+}
+
+.header{
+    cursor: pointer;
+}
+
+.message{
+    word-break: normal;
+}

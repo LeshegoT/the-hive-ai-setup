@@ -1,0 +1,42 @@
+<mat-card appearance="outlined" class="card">
+    <mat-card-content>
+        <form class="contract-form"
+            (ngSubmit)="(createContract())"
+            [formGroup]="contractForm">
+            <p>Create contract for {{ staff().displayName }}</p>
+
+            @if (getContractDurationWarning()) {
+                <p class="alert-warning-text">{{ getContractDurationWarning() }}</p>
+            } @else {
+                <!-- There is no warning to show. -->
+            }
+            <section class="contract-form-date-fields">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start date</mat-label>
+                    <input matInput formControlName="startDate" [matDatepicker]="startDatePicker">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-error>{{ getFormErrors(contractForm.get('startDate')) }}</mat-error>
+                </mat-form-field>
+            
+                <mat-form-field appearance="outline">
+                    <mat-label>Contract end date</mat-label>
+                    <input matInput formControlName="endDate" [matDatepicker]="endDatePicker">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error>{{ getFormErrors(contractForm.get('endDate')) }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Contract review due date</mat-label>
+                  <input matInput formControlName="reviewDate" [matDatepicker]="reviewDatePicker">
+                  <mat-datepicker-toggle matSuffix [for]="reviewDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #reviewDatePicker></mat-datepicker>
+                  <mat-error>{{ getFormErrors(contractForm.get('reviewDate')) }}</mat-error>
+                </mat-form-field>
+            </section>
+            <mat-error>{{ getFormErrors(contractForm) }}</mat-error>
+            <button class="contract-form-save-button" mat-raised-button color="primary" type="submit" [disabled]="contractForm.invalid">Save</button>
+        </form>
+    </mat-card-content>
+</mat-card>

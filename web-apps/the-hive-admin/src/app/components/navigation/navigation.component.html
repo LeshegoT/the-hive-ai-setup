@@ -1,0 +1,32 @@
+<div class="nav-container" [class.nav-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+  <mat-toolbar color="primary" class="nav-toolbar" [ngClass]="environmentName">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="nav-app-name">The Hive Admin</h1>
+    <span class="center-space">({{environmentName}})</span>
+    <app-profile></app-profile>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    class="nav-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+
+  >
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let route of menuRoutes | async" routerLink="{{route.routerLink}}">{{route.displayName}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content (click)='snav.close()'>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <section id="footer" [ngClass]="environmentName"></section>
+</div>

@@ -1,0 +1,12 @@
+<app-review-list
+  [showHoldButton]="showHoldButton"
+  [isOnUpcomingReviews]="canDateBeEdited"
+  [reviewData]="reviewData"
+  [reviewColumns]="reviewColumns"
+  (actionButton)="createSingleReview($event.review, $event.actionButton)"
+  (holdButton)="holdReview($event.review, $event.holdButton)"
+  [actionButtonText]="createSingleReviewButtonText"
+  [actionButtonIconName]="actionButtonIconName"
+  [showHrNotesButton]="true"
+  [showMarkAsPendingDeleteButton]="true"
+></app-review-list>

@@ -1,0 +1,7 @@
+<mat-dialog-content>
+  <h3>{{data.warningMessage}}</h3>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close>No</button>
+  <button mat-raised-button color="primary" mat-dialog-close (click)="handleClose(confirm)">Yes</button>
+</mat-dialog-actions>

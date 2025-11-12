@@ -1,0 +1,128 @@
+<html>
+  <body>
+    <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+      <tr>
+        <td align='center'>
+          <table width='75%' bgcolor='#FFFFFF' style='{{font}}'>
+            <tr>
+              <td width='128' valign='top'>
+                <img
+                  style='margin:auto'
+                  src='cid:{{image.name}}'
+                  alt='{{image.altText}}'
+                />
+              </td>
+              <td>
+                <table width='100%' border='0' cellspacing='5' cellpadding='0'>
+                  <tr>
+                    <td width='100'>
+                      <p>
+                        Hi ATCTeam,
+                      </p>
+
+                      <p>
+                        The staff review import process has completed:
+                      </p>
+
+                      <p>
+                        Job details:
+                        <ul>
+                          <li>
+                            Started:
+                            {{started}}
+                          </li>
+                          <li>
+                            Completed:
+                            {{end}}
+                          </li>
+                          <li>
+                            Total duration:
+                            {{durationMinutes}}
+                            minutes
+                          </li>
+                        </ul>
+                      </p>
+
+                      <p>
+                        Processing details:
+                        <ul>
+                          <li>
+                            Total records in CSV:
+                            {{csvRecordCount}}
+                          </li>
+                          <li>
+                            Ignored records in CSV:
+                            {{ignoredStaffReviews}}
+                          </li>
+                          <li>
+                            Join date updates:
+                            {{updatedJoinedDates}}
+                          </li>
+                          <li>
+                            Invalid staff numbers:
+                            {{badStaffNumbers}}
+                          </li>
+
+                          <li>
+                            Initial review cycles need to be created for:
+                            {{initialStaffReviewsCreated}}
+                            staff members
+                          </li>
+                        </ul>
+                      </p>
+
+                      <p>
+                        Review history insertion summary
+                      </p>
+                      <table border='1' cellspacing='0'>
+                        <thead>
+                          <tr>
+                            <td>
+                              Number of
+                              <br />
+                              review history
+                              <br />
+                              records created
+                            </td>
+                            <td>
+                              Count of staff
+                            </td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each summary}}
+                            <tr>
+                              <td>
+                                {{this.numberOfReviews}}
+                              </td>
+                              <td>
+                                {{this.numberOfStaff}}
+                              </td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+
+                      {{#if errors.length}}
+                        <p>
+                          Unhandled errors detailed below:
+                        </p>
+                        <ol>
+                          {{#each errors}}
+                            <li>
+                              {{this}}
+                            </li>
+                          {{/each}}
+                        </ol>
+                      {{/if}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<mat-form-field class="multi-select-field" appearance="outline" subscriptSizing="dynamic">
+  <mat-label>{{ label }}</mat-label>
+  <mat-chip-grid
+    aria-label="Selected items"
+    cdkDropList
+    #chipGrid
+    (cdkDropListDropped)="onChipDrop($event)"
+  >
+    @for (option of selectedOptions; track option) {
+      <mat-chip
+        class="selected-chip"
+        (removed)="removeOption(option)"
+        cdkDrag
+      >
+        <p>{{ option[displayKey] }}</p>
+        <button matChipRemove aria-label="remove">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+    }
+  </mat-chip-grid>
+
+  <input
+    type="text"
+    matInput
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+    placeholder="{{ label }}"
+    #searchInput
+    [matChipInputFor]="chipGrid"
+  />
+
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+    @for (option of filteredOptions; track option) {
+    <mat-option
+      [value]="option[displayKey]"
+      [disabled]="isSelected(option)"
+    >
+      <mat-icon *ngIf="isSelected(option)">done</mat-icon>
+      {{ option[displayKey] }}
+    </mat-option>
+  }
+  </mat-autocomplete>
+</mat-form-field>
+
+

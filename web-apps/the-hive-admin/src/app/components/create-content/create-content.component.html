@@ -1,0 +1,23 @@
+<div>
+  <app-title iconName="dashboard" title="Create Content"></app-title>
+</div>
+
+<div class="component">
+  <div>
+    <mat-form-field>
+      <mat-label>Content Type</mat-label>
+      <mat-select [(value)]="content">
+        <mat-option [value]="con" *ngFor="let con of allContent">{{ con.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <app-create-level-up class="contentBlock" *ngIf="content.code === 'level_up'"></app-create-level-up>
+
+  <app-create-group class="contentBlock" *ngIf="content.code === 'group'"></app-create-group>
+  
+  <app-create-level-up-activity-type class="contentBlock" *ngIf="content.code === 'level_up_activity_type'"></app-create-level-up-activity-type>
+      
+  <app-create-programme class="contentBlock" *ngIf="content.code === 'programme'"></app-create-programme>
+
+</div>

@@ -1,0 +1,110 @@
+.profiles-section {
+  padding: var(--standard-padding);
+}
+
+.profiles-layout {
+  display: block;
+}
+
+.mat-cell {
+  text-align: center;
+}
+
+table {
+  height: fit-content;
+}
+
+.selectable-row.selected {
+  background-color: var(--selected-row-background-colour);
+}
+
+.selectable-row {
+  cursor: pointer;
+}
+
+.selectable-row:hover {
+  background-color: var(--selected-row-background-colour);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--large-padding) var(--standard-padding);
+  color: var(--text-secondary);
+}
+
+.empty-state h3 {
+  margin: 0 0 var(--small-spacing) 0;
+  color: var(--text-primary);
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--standard-padding);
+}
+
+.form-panel {
+  width: 100%;
+  background: var(--background-primary);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--box-shadow);
+}
+
+.hidden {
+  display: none;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--standard-padding) var(--medium-padding);
+  border-bottom: var(--standard-border-width) solid var(--standard-border-color);
+}
+
+.form-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--heading-size);
+}
+
+.form-content {
+  padding: var(--medium-padding);
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: var(--standard-spacing);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--small-spacing);
+  padding: var(--standard-padding) var(--medium-padding);
+  border-top: var(--standard-border-width) solid var(--standard-border-color);
+  background: var(--background-secondary);
+}
+
+.button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--standard-padding);
+}
+
+.add-profile-button {
+  white-space: nowrap;
+  padding: var(--medium-padding);
+}
+
+.mat-mdc-footer-row .mat-mdc-footer-cell {
+  border-top: var(--standard-border-width) solid var(--standard-border-color);
+}
+
+.last-column {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--small-spacing);
+}

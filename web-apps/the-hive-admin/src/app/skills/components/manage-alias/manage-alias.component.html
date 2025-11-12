@@ -1,0 +1,100 @@
+<section class="component">
+  <section class="search-bar-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select  [formControl]="category">
+        <mat-option [value]="">All</mat-option>
+        @for (canonicalNameCategory of (canonicalNameCategories$ |async); track canonicalNameCategory.standardizedName) {
+          <mat-option [value]="canonicalNameCategory.standardizedName">{{canonicalNameCategory.canonicalName}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="search-bar" appearance="outline" >
+      <mat-label>Search</mat-label>
+      <input type="text" matInput [formControl]="searchText" [matAutocomplete]="auto" />
+      <mat-autocomplete #auto="matAutocomplete"        
+      >
+        @if (searchText.value.length > 0){
+          @for (option of filteredOptions; track option) {
+            <mat-option [value]="option">
+              {{ option }}
+            </mat-option>
+          }
+        } @else {
+          <!-- Do not display options if the user has not started typing-->
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    @if(canonicalNameControl){
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        matTooltip="Close form."
+        (click)="removeCanonicalNameInput()"
+      >
+        <mat-icon class="icon">cancel</mat-icon>
+      </button>
+    }@else{
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        matTooltip="Add canonical name."
+        (click)="displayCanonicalNameInput()"
+      >
+        <mat-icon class="icon">add</mat-icon>
+      </button>
+    }
+  </section>
+
+  @if (canonicalNameControl) {
+    <section class="canonical-name-input-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Add a new canonical name</mat-label>
+        <input matInput [formControl]="canonicalNameControl" />
+        <mat-error>{{ canonicalNameControl.errors?.['valueExists'] }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Select a category</mat-label>
+        <mat-select [formControl]="canonicalNameCategoryControl">
+          @for (category of (canonicalNameCategories$ | async); track category.canonicalNameCategoryId) {
+            <mat-option [value]="category">
+              {{ category.canonicalName }}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>Category for canonical name is required</mat-error>
+      </mat-form-field>      
+      <button mat-raised-button color="primary" type="button" (click)="saveCanonicalName()">Save</button>
+    </section>
+  } @else {
+    <!-- Do not display input -->
+  } 
+
+  <mat-checkbox [formControl]="findNotInGraphDB">Not in Graph DB</mat-checkbox>
+
+  @if (!canonicalNameAndAliases){
+    <mat-spinner></mat-spinner>
+  } @else {
+    <section class="card-container">
+    @for (canonicalName of canonicalNameAndAliases ; track canonicalName.canonicalNamesId) {
+      <app-canonical-name-and-alias-card
+        [canonicalName]="canonicalName"
+        (aliasRemoved)="handleAliasRemoved($event)"
+        (aliasAdded)="handleAliasAdded($event)"
+      ></app-canonical-name-and-alias-card>
+    } @empty {
+      <p>No results found for {{ searchText.value }}</p>
+    }
+    </section>
+    <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage.value"
+    [pageSize]="pageSize.value"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+  }
+</section>

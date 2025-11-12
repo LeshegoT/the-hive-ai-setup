@@ -1,0 +1,81 @@
+@let affectedStaffMembers = affectedStaffMembers$ | async;
+<header>
+    <button mat-icon-button (click)="closeAffectedStaffMembersView.emit()" class="close-affected-staff-members-view">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Affected Staff Members for {{ attributeCanonicalNameDetails.canonicalName }}:</h1>
+</header>
+@if(affectedStaffMembers && isError(affectedStaffMembers)){
+    <mat-error class="error-message">
+        An unexpected error occurred.
+        Try refreshing the page, or
+        <a [href]="generateSupportEmail(affectedStaffMembers)">contact support</a> if the issue persists. 
+    </mat-error>
+} @else if (affectedStaffMembers && affectedStaffMembers.data.length > 0) {
+
+    <mat-table [dataSource]="affectedStaffMembers" class="full-width-table">
+
+        <ng-container matColumnDef="displayName">
+            <mat-header-cell *matHeaderCellDef> Display Name </mat-header-cell>
+            <mat-cell *matCellDef="let staff"> {{staff.displayName}} </mat-cell>
+        </ng-container>
+
+        @if (columnsToDisplay.includes(proofFieldName)) {
+            <ng-container matColumnDef="proof">
+                <mat-header-cell *matHeaderCellDef> Proof </mat-header-cell>
+                <mat-cell *matCellDef="let staff">
+                    @let proofFieldValue = findProofFieldValue(staff);
+                    @let staffMemberProofDownload = staffMembersProofDownloadMap[staff.staffId] | async;
+                    @if (!proofFieldValue || proofFieldValue.value === 'NoFile') {
+                        @let obtainedFromFieldValue = this.findObtainedFromFieldValue(staff);
+                        @if(obtainedFromFieldValue){
+                            @let institutionName = institutionsCanonicalNameMap[obtainedFromFieldValue.standardizedName] | async;
+                            @let obtainedFromTextForEmail = this.createObtainedFromTextForEmail(institutionName);
+                            <mat-chip [color]="primary">
+                                <a [href]="'mailto:' + staff.upn +
+                                '?subject=Request for supporting documents' +
+                                '&body=Hello ' + staff.displayName + ',%0D%0A%0D%0A' +
+                                'Please kindly provide us with the necessary proof of your ' + staff.attribute.attributeType + ': ' + staff.attribute.canonicalName +
+                                obtainedFromTextForEmail +
+                                'As part of our ongoing efforts to maintain accurate records, we require the relevant supporting documents.%0D%0A%0D%0A' +
+                                'Please upload the required proof on the Hive using the following link:%0D%0A' +
+                                'https://the-hive.bbd.co.za/skills/%0D%0A%0D%0A' +
+                                'Feel free to reach out if you have any questions or need assistance.%0D%0A%0D%0A' +
+                                'Thank you.%0D%0A%0D%0A'">
+                                    Request proof
+                                </a>
+                            </mat-chip>
+                        } @else{
+                            <mat-spinner diameter="20" class="proof-spinner"></mat-spinner>
+                        }
+                    }@else if(staffMemberProofDownload && isError(staffMemberProofDownload)){
+                        <button 
+                            mat-icon-button 
+                            color="warn"
+                            matTooltip="{{ staffMemberProofDownload.message }}. Click to retry"
+                            matTooltipPosition="after"
+                            (click)="downloadProof(proofFieldValue.value, staff.staffId,staff.upn)">
+                            <mat-icon>warning</mat-icon>
+                        </button>
+                    } @else if(staffMemberProofDownload && staffMemberProofDownload === staff.upn){
+                        <button mat-icon-button (click)="downloadProof(proofFieldValue.value, staff.staffId,staff.upn)">
+                            <mat-icon>file_copy</mat-icon>
+                        </button>
+                    } @else{
+                        <mat-spinner diameter="20" class="proof-spinner"></mat-spinner>
+                    }
+                </mat-cell>
+            </ng-container>
+        } @else {
+            <!-- no need to show the proof column -->
+        }
+
+        <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+    </mat-table>
+
+} @else if (affectedStaffMembers && affectedStaffMembers.data.length === 0) {
+    <p class="no-staff-message">No affected staff members found.</p>
+} @else {
+    <mat-spinner diameter="32"></mat-spinner>
+}

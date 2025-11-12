@@ -1,0 +1,75 @@
+<div class="content">
+  <table mat-table #table matSort multiTemplateDataRows [dataSource]="templateData">
+    <ng-container matColumnDef="FeedbackAssignmentTemplateId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Template Id</th>
+      <td mat-cell *matCellDef="let template">
+        {{ template.feedbackAssignmentTemplateId }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="TemplateName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Template Name</th>
+      <td mat-cell *matCellDef="let template">
+        {{ template.templateName }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="SubjectLineTemplate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject Line Template</th>
+      <td mat-cell *matCellDef="let template">
+        {{ template.subjectLineTemplate }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="TitleTemplate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Template Title</th>
+      <td mat-cell *matCellDef="let template">
+        {{ template.titleTemplate }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let template" [attr.colspan]="templateColumns.length">
+        <div class="template-detail" [@detailExpand]="checkDetailExpand(template)" *ngIf="template == expandedTemplate">
+          <app-modify-feeback-template (onSave)="onSave($event)" [template]='template'></app-modify-feeback-template>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="createTemplate">
+      <td mat-footer-cell *matFooterCellDef="let template" [attr.colspan]="templateColumns.length">
+        <div class="template-detail" [@detailExpand]="checkCreateExpand()" *ngIf="creating">
+          <app-modify-feeback-template (onSave)="onSave($event)"></app-modify-feeback-template>
+          <div class="cancelButton">
+            <button mat-raised-button color="warn" type="button" (click)="cancelCreateTemplate()" matTooltip="Cancel" matTooltipShowDelay="1000">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="templateColumns"></tr>
+    <tr mat-row 
+      *matRowDef="let template; columns: templateColumns;"
+      class="template-row"
+      (click)="updateSelected(template)"
+      [class.expanded-template-row]="expandedTemplate === template">
+    </tr>
+    <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']" class="detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="['createTemplate']" class="detail-row"></tr>
+  </table>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-raised-button color="primary" type="button" (click)="createNewTemplate()" matTooltip="Add New Template" matTooltipShowDelay="1000">
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-paginator
+        class="paginator"
+        (page)="cancelCreateTemplate()"
+        #paginator
+        [length]="templateData.data.length"
+        [pageIndex]="0"
+        [pageSize]="this.tableService.getPageSize()"
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+        [hidePageSize]="this.tableService.getHidePageSize()"
+      >
+      </mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

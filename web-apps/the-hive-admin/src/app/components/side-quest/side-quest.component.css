@@ -1,0 +1,9 @@
+mat-spinner {
+    position: relative;
+    margin: auto;
+}
+
+mat-tab {
+    display: flex;
+    justify-content: center;
+}

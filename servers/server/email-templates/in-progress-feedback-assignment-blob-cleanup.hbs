@@ -1,0 +1,53 @@
+<html>
+  <body>
+    <p>Hi ATCTeam,</p>
+
+    <p>The clean-up of in-progress feedback assignment azure storage blobs has
+      completes:</p>
+
+    <p>
+      Job details:
+      <ul>
+        <li>Started: {{started}}</li>
+        <li>Completed: {{end}}</li>
+        <li>Total duration: {{durationMinutes}} minutes</li>
+      </ul>
+    </p>
+
+    <p>In progress blobs summary</p>
+    <table border='1' cellspacing='0'>
+      <thead>
+        <tr>
+          <td>Detail</td>
+          <td>Results</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items as |user|}}
+          <tr>
+            <td>{{@key}}</td>
+            <td>
+              {{#if user.length}}
+                {{#each user as |item|}}
+                  <p>
+                    {{#if item.assignmentId}}
+                      Assignment
+                      {{item.assignmentId}}
+                    {{/if}}
+                    {{#if item.assignmentToken}}
+                      Assignment
+                      {{item.assignmentToken}}
+                    {{/if}}
+                    ({{item.type}}) -
+                    {{item.result}}</p>
+                {{/each}}
+              {{else}}
+                <p>Had no blobs to delete</p>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </body>
+</html>

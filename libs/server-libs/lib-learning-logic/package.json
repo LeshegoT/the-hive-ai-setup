@@ -1,0 +1,19 @@
+{
+  "name": "@the-hive/lib-learning-logic",
+  "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@the-hive/lib-db": "0.0.1",
+    "@the-hive/lib-learning-shared": "0.0.1",
+    "@the-hive/lib-core": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29",
+    "jest": "^29",
+    "ts-jest": "^29"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true
+}

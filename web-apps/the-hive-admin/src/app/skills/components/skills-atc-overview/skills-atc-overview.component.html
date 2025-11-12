@@ -1,0 +1,6 @@
+<section class="graphs">
+  <mat-card appearance="raised" *ngIf="ratificationTrace$ | async as trace">
+    <plotly-plot [data]="[trace]" [layout]="ratificationGraph.layout" [config]="ratificationGraph.config"></plotly-plot>
+  </mat-card>
+</section>
+ 

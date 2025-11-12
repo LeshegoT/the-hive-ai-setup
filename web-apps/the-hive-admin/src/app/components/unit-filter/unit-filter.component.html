@@ -1,0 +1,15 @@
+<mat-form-field >
+    <mat-label>Search unit</mat-label>
+    <input type="text" matInput [matAutocomplete]="auto" [formControl]="unitSearchInputText" >
+    <mat-autocomplete 
+        #auto="matAutocomplete" 
+        (optionSelected)="onUnitSelected($event)">
+        @for (unit of filteredStaffUnits$ | async ; track unit) {
+            <mat-option [value]="unit">
+                {{unit}}
+            </mat-option>
+        }@empty {
+            <mat-option [requireSelection]="false">No units found</mat-option> 
+        }   
+    </mat-autocomplete>
+</mat-form-field>

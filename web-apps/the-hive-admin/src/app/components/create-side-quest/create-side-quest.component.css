@@ -1,0 +1,70 @@
+.full-width {
+    width: 100%;
+}
+
+.error {
+    color: red;
+}
+.contentPicker {
+    padding: 0.5em 0.5em;
+    line-height: 36px;
+}
+
+.contentPickerBox {
+    border: 0.5px solid grey;
+    margin: 0.5em 0;
+}
+
+.contentPickerTitle {
+    padding: 1em 0;
+ }
+
+.contentButton {
+    display: block;
+    float: right;
+}
+
+.addContentBlock {
+    margin: 1em 0;
+}
+
+.addGroup {
+    width: 90%;
+}
+
+.addButton {
+    display: block;
+    float: right;
+    padding-top: 0.5em;
+}
+
+.addActivity {
+    width: 15%;
+}
+
+.padded {
+    display: flex;
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+    width: 15%;
+}
+
+.datePicker {
+    display: flex;
+}
+
+.date {
+    float: left;
+    padding-top: 1.5em;
+}
+
+.time {
+    padding-top: 2.5em;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 1.5em;
+}
+
+.timePicker {
+    display: flex;
+}

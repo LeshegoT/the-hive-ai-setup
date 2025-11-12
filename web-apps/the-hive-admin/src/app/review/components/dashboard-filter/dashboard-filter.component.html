@@ -1,0 +1,151 @@
+@if (!filterForm) {
+  <mat-spinner></mat-spinner>
+} @else {
+<main id="dashboard-filter" [formGroup]="filterForm">
+
+  <section class="grouping-methods-container">
+
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>
+          Period filter
+        </mat-card-title>
+        <mat-card-subtitle>
+          Set the period of interest
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="filter-container">
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>As At</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="asAtEndOf" [min]="minimumAsAtDate" [max]="maximumAsAtDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (filterForm.get('asAtEndOf')?.valid) {
+            <!-- the form has no error so no error message needs to be shown -->
+            }
+            @else {
+            <mat-error>{{formErrorMessages.asAtFieldError()}}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Period</mat-label>
+            <mat-select formControlName="periodLength">
+              <mat-option value="week">Week</mat-option>
+              <mat-option value="fortnight">Fortnight</mat-option>
+              <mat-option value="month">Month</mat-option>
+              <mat-option value="quarter">Quarter</mat-option>
+              <mat-option value="half-year">Half Year</mat-option>
+            </mat-select>
+            @if (filterForm.get('periodLength')?.valid) {
+            <!-- the form has no error so no error message needs to be shown -->
+            }
+            @else {
+            <mat-error>{{formErrorMessages.periodFieldError()}}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label style="text-transform: capitalize;">Number of {{filterParams.periodLength}}s</mat-label>
+            <input matInput type="number" formControlName="numberOfPeriods" [min]="minimumNumberOfPeriods"
+              [max]="maximumNumberOfPeriods">
+            @if (filterForm.get('numberOfPeriods')?.valid) {
+            <!-- the form has no error so no error message needs to be shown -->
+            }
+            @else {
+            <mat-error>{{formErrorMessages.numberOfPeriodsFieldError()}}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>
+          Inclusion filter
+        </mat-card-title>
+        <mat-card-subtitle>
+          Select entites, categories, review statuses, and HR representatives of interest
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="filter-container">
+          <select-company-entity (entitySelected)="selectedEntities$.next($event)" class="filter-item"></select-company-entity>
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Ageing categories</mat-label>
+            <mat-select formControlName="includedLatenesses" multiple>
+              @for (ageing of ageingCategories; track ageing) {
+              <mat-option [value]="ageing">{{ageing}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Review statuses</mat-label>
+            <mat-select formControlName="includedStatuses" multiple>
+              @for (status of statuses; track status) {
+              <mat-option [value]="status">{{status}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          @if (supportedGroupingCategories.includes('templateName')) {
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Review types</mat-label>
+            <mat-select formControlName="includedTemplateNames" multiple>
+              @for (template of feedbackAssignmentTemplates; track templateName) {
+              <mat-option [value]="template.templateName">{{template.templateName}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          } @else {
+            <!-- grouping by template name is not supported so don't show the filter -->
+          }
+
+            @if (filterForm.get('hrRepShown').value) {
+              <mat-form-field appearance="outline" class="filter-item">
+                <mat-label>HR reps</mat-label>
+                <mat-select formControlName="includedHrReps" multiple>
+                  @for (hrRep of hrReps; track hrRep) {
+                  <mat-option [value]="hrRep">{{hrRep}}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            } @else {
+              <!-- grouping category is not selected so don't show in the list of draggable items -->
+            }
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card">
+      <mat-card-header class="card-header">
+        <mat-card-title>
+          Grouping filter
+        </mat-card-title>
+        <mat-card-subtitle>
+          Set the order in which you want the summaries to be grouped by dragging and dropping
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div cdkDropList class="grouping-order-list" (cdkDropListDropped)="orderGrouping($event)">
+          @for (groupingCategory of supportedGroupingCategories; track groupingCategory) {
+            <div class="grouping-order-list-item" cdkDrag>
+              {{groupingCategoriesDisplayNames[groupingCategory] ?? groupingCategory}}
+            </div>
+          }
+        </div>
+      </mat-card-content>
+      <mat-card-footer class="card-footer">
+        <mat-checkbox [formControlName]="'hrRepShown'">Show HR Reps</mat-checkbox>
+      </mat-card-footer>
+    </mat-card>
+
+  </section>
+
+</main>
+}

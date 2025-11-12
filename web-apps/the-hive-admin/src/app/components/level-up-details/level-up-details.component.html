@@ -1,0 +1,311 @@
+<div *ngIf="levelUpDetails as details" class="component">
+  <app-title iconName="level-up" title="{{ details.levelUp.name }}"></app-title>
+
+  <div>
+    <button mat-raised-button color="primary" routerLink="/levelUp">Back</button>
+  </div>
+
+  <div class="dates">
+    <div>
+      <strong>Start date:</strong>
+      {{ details.levelUp.startDate | dateFormat }}
+    </div>
+    <div>
+      <strong>End date:</strong>
+      {{ details.levelUp.endDate | dateFormat }}
+    </div>
+    <div class="last">
+      <button mat-raised-button color="primary" [routerLink]="['/levelUpDetails', details.levelUp.levelUpId, 'detail']">
+        Copy to new level up
+      </button>
+    </div>
+  </div>
+
+    {{ details.levelUp.description }}
+    <h3>Courses</h3>
+    <ul>
+      <li *ngFor="let course of details.courses">{{ course.name }}</li>
+    </ul>
+
+    <h3>Facilitators</h3>
+    <mat-chip-listbox aria-label="Assign Facilitators" class="chipFilter" >
+        <span *ngFor="let facilitator of details.facilitators">
+          <mat-chip-option color="light">
+            {{facilitator.displayName ? facilitator.displayName : facilitator.userPrincipleName}} <mat-icon class="bubble-close" (click)="removeFacilitator(facilitator.userPrincipleName)">close
+            </mat-icon>
+          </mat-chip-option>
+        </span>
+      </mat-chip-listbox>
+
+    <div class="facilitator-input">
+      <app-staff-filter (selectStaff)="saveFacilitators()" [searchLabel]="searchLabel" [searchType]="searchType">
+      </app-staff-filter>
+    </div>
+    <div>
+      <a [routerLink]="['/registeredUsers', details.levelUp.levelUpId]">Show Registered Users</a>
+    </div>
+  <div>
+    <div>
+      <h3>
+        Activities
+        <span>
+          <button mat-raised-button color="primary" (click)="downloadSheet()" type="button">
+            Generate Consolidated Register
+          </button>
+        </span>
+      </h3>
+
+      <table mat-table class="full-width-table" [dataSource]="details.activities">
+        <ng-container matColumnDef="levelUpActivityType">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let row">{{ row.levelUpActivityType }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="activityDate">
+          <th mat-header-cell *matHeaderCellDef>Activity Date</th>
+          <td mat-cell *matCellDef="let row">{{ row.activityDate | dateFormat }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="durationInMinutes">
+          <th mat-header-cell *matHeaderCellDef>Duration</th>
+          <td mat-cell *matCellDef="let row">{{ row.durationInMinutes }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="qr-code-link">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <a href="levelUpQr/{{ row.levelUpActivityId }}">Generate QR Code</a>
+            |
+            <a href="levelUpActivityLink/{{ row.levelUpActivityId }}">Add link</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="attendance-register-link">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <a href="activityAttendanceRegister/{{ row.levelUpActivityId }}">View Attendance Register</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="activityColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: activityColumns"></tr>
+      </table>
+    </div>
+  </div>
+  <div>
+    <h3>Syndicate Configuration</h3>
+
+    <form [formGroup]="formationForm" class="form-container">
+      <mat-form-field>
+        <mat-label>Choices allowed</mat-label>
+        <input matInput type="number" name="choicesAllowed" formControlName="choicesAllowed" min="1" max={{ideasLimit}}/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Ideas limit</mat-label>
+        <input matInput type="number" name="ideasLimit" formControlName="ideasLimit" min="1" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Number of groups</mat-label>
+        <input matInput type="number" name="numberOfGroups" formControlName="numberOfGroups" min="1" />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="allowConflictingGroups">
+        Allow users to join groups with conflicting past members
+      </mat-checkbox>
+
+      <mat-form-field class="full-width">
+        <mat-label>Formation stage</mat-label>
+        <mat-select formControlName="currentStage">
+          <mat-option [value]="stage.formationStagesId" *ngFor="let stage of formationStages">
+            {{ stage.formationStage }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="UpdateFormation(details.formation.syndicateFormationId, details.levelUp.levelUpId)"
+      >
+        Update
+      </button>
+    </form>
+  </div>
+
+  <div>
+    <h3>Ideas</h3>
+    <table mat-table class="full-width-table" [dataSource]="details.formation.ideas">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let row">{{ row.title }}</td>
+      </ng-container>
+
+      <ng-container class="description" matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>description</th>
+        <td mat-cell *matCellDef="let row">{{ row.description }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>actions</th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            mat-raised-button
+            (click)="removeIdea(row)"
+            color="primary"
+            type="button"
+            matTooltip="Remove Idea"
+            matTooltipShowDelay="1000"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="ideasColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: ideasColumns"></tr>
+    </table>
+    <form [formGroup]="newIdeaForm" class="form-container" *ngIf="addingNewIdea">
+      <mat-form-field class="new-idea-field">
+        <mat-label>Idea title</mat-label>
+        <input matInput type="input" name="newTitle" formControlName="newTitle" #titleData />
+      </mat-form-field>
+      <br />
+      <mat-form-field class="new-idea-field">
+        <mat-label>Description</mat-label>
+        <input matInput type="textarea" name="newDescription" formControlName="newDescription" />
+      </mat-form-field>
+      <div class="buttons">
+        <button mat-raised-button color="warn" type="button" (click)="cancelNewIdea()">Cancel</button>
+        <button mat-raised-button color="primary" type="button"  [disabled]="titleData.value === ''" (click)="saveNewIdea()">Add</button>
+      </div>
+    </form>
+    <mat-toolbar *ngIf="!addingNewIdea">
+      <mat-toolbar-row>
+        <button
+          [disabled]="disableIdeaAddition()"
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="addNewIdea()"
+          matTooltip="Add New Idea"
+          matTooltipShowDelay="1000"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+  <h3>
+    Syndicates
+    <span>
+      <button
+        *ngIf="!syndicateAssignments.length && details.formation.ideas.length"
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="generateTeams()"
+        matTooltip="Form Syndicates"
+        matTooltipShowDelay="1000"
+      >
+        Form Syndicates
+      </button>
+      <button
+        *ngIf="syndicateAssignments.length"
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="saveTeams()"
+        matTooltip="Confirm Syndicate Formation"
+        matTooltipShowDelay="1000"
+      >
+        Save Syndicates
+      </button>
+    </span>
+  </h3>
+  <h4 *ngIf="syndicateAssignments.length">Top {{ details.formation.numberOfGroups }} Ideas</h4>
+  <button *ngIf="formationForm.controls.currentStage.value == 5"
+    [disabled]=nudgeClicked 
+    mat-raised-button
+    color="primary"
+    type="button"
+    matTooltip="Nudge Team Feedback"
+    matTooltipShowDelay="1000"
+    (click)="nudgeTeamFeedback(syndicateAssignments, details.levelUp.name, details.levelUp.levelUpId); nudgeClicked=true"
+  >
+    Nudge Team Feedback
+  </button>
+   <button *ngIf="formationForm.controls.currentStage.value == 5"
+    mat-raised-button
+    color="primary"
+    type="button"
+    matTooltip="Export Syndicate Teams"
+    matTooltipShowDelay="1000"
+    (click)="downloadSyndicateTeamsSheet()"
+  >
+    Export 
+  </button>
+  <div class="drag-container">
+    <div class="ideaList" *ngFor="let idea of syndicateAssignments">
+      <h3>{{ idea.title }}</h3>
+      <ul
+        cdkDropList
+        id="{{ idea.title }}"
+        [cdkDropListData]="idea.syndicates"
+        [cdkDropListConnectedTo]="connectedTo"
+        class="item-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+
+        <li 
+          class="item-box" 
+          *ngFor="let syndicate of idea.syndicates" 
+          cdkDrag 
+          [style.border] ="gradsWithRepeatedMembers.includes(syndicate.hero) ? '3px solid red' : 'none'" 
+          (mouseover) ="getRepeatedCombinations(syndicate.hero,details.levelUp.levelUpId)"
+          [matTooltip]="toolTipContent"
+          matTooltipClass = "emphasis-tooltip"
+          matTooltipShowDelay = "500"
+          matTooltipPosition = "right"
+        >
+          {{ syndicate.hero }}
+        </li>
+        <form *ngIf="idea.title !== 'Unassigned Heroes' && idea.gitRepo == null">
+          <mat-form-field>
+            <mat-label>Enter Git Link Below:</mat-label>
+            <input #gitLink matInput type="textarea" value={{idea.gitRepo}}/>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            matTooltip="Update Link To Git Repository"
+            matTooltipShowDelay="1000"
+            (click)="onSubmit(gitLink.value, idea.syndicateIdeaId)"
+          >
+            Insert
+          </button>
+        </form>
+        <form *ngIf="idea.title !== 'Unassigned Heroes' && idea.gitRepo != null">
+          <mat-form-field>
+            <mat-label>Update Git Link Below:</mat-label>
+            <input #gitLink matInput type="textarea" value={{idea.gitRepo}}/>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            matTooltip="Update Link To Git Repository"
+            matTooltipShowDelay="1000"
+            (click)="onSubmit(gitLink.value, idea.syndicateIdeaId)"
+          >
+            Update
+          </button>
+        </form>
+      </ul>
+    </div>
+  </div>
+</div>

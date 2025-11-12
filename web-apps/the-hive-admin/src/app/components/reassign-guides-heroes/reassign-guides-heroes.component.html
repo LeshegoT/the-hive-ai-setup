@@ -1,0 +1,102 @@
+<section class="reassign-guides-container" cdkDropListGroup >
+    <section class="reassign-guides-container-item">
+        <mat-form-field class="guide-form">
+            <mat-label>Source Guide</mat-label>
+            <input type="text" matInput [formControl]="sourceGuideForm" [matAutocomplete]="sourceGuideAuto">
+            <mat-hint class="hint-text">Select the pending-deletion guide whose heroes you want to reassign.</mat-hint>
+            <mat-autocomplete #sourceGuideAuto="matAutocomplete"
+                (optionSelected)="setSourceGuide($event)">
+                @for (guide of sourceGuideFilteredOptions | async; track guide.userPrincipleName) {
+                    <mat-option [value]="guide" class="guide-option">
+                        <p>{{ guide.userPrincipleName }}</p>
+                        <p class="guide-specialisation-text">{{ guide.specialisations }}</p>
+                    </mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        @if (sourceGuide !== undefined) {
+            <mat-card>
+                <mat-card-title class="guide-title">
+                    {{ sourceGuide.userPrincipleName  }}
+                </mat-card-title>
+                <mat-card-content>
+                    <p class="guide-status-text">Status: {{ sourceGuide.guideStatus }}</p>
+                    <p class="guide-specialisation-text">Specialisation: {{ sourceGuide.specialisations  }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card
+                cdkDropList
+                [cdkDropListData]="sourceGuideHeroes"
+                class="drag-drop-area"
+                (cdkDropListDropped)="reassignHero($event)">
+                <mat-card-content>
+                    <p>Drag and drop a hero between the boxes to reassign.</p>
+                    @for (hero of sourceGuideHeroes; track hero.heroUserPrincipleName) {
+                        <mat-card appearance="outlined" cdkDrag class="hero">
+                            <mat-card-content class="hero-information">
+                                <section>
+                                    <span>{{ hero.heroUserPrincipleName }}</span>
+                                    <span class="hero-specialisation">{{ hero.specialisation }}</span>
+                                </section>
+                                <mat-icon matTooltip="Drag">drag_indicator</mat-icon>
+                            </mat-card-content>
+                        </mat-card>
+                    } @empty {
+                        <p class="hint-text">All the guide's heroes have been reassigned</p>
+                    }
+                </mat-card-content>
+            </mat-card>
+        } @else {
+            <!-- Can't show the guide's heroes because the source guide has not been selected. -->
+        }
+    </section>
+    <section class="reassign-guides-container-item">
+        <mat-form-field class="guide-form">
+            <mat-label>Target Guide</mat-label>
+            <input type="text" matInput [formControl]="targetGuideForm" [matAutocomplete]="targetGuideAuto">
+            <mat-hint class="hint-text">Select the guide to which you want to reassign the heroes.</mat-hint>
+            <mat-autocomplete #targetGuideAuto="matAutocomplete" 
+                (optionSelected)="setTargetGuide($event)">
+                @for (guide of targetGuideFilteredOptions | async; track guide.userPrincipleName) {
+                    <mat-option [value]="guide" class="guide-option">
+                        <p>{{ guide.userPrincipleName }}</p>
+                        <p class="guide-specialisation-text">{{ guide.specialisations }}</p>
+                    </mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+        @if (targetGuide !== undefined) {
+            <mat-card>
+                <mat-card-title class="guide-title">{{ targetGuide.userPrincipleName  }}</mat-card-title>
+                <mat-card-content>
+                    <p class="guide-status-text">Status: {{ targetGuide.guideStatus }}</p>
+                    <p class="guide-specialisation-text">Specialisation: {{ targetGuide.specialisations  }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card
+                cdkDropList
+                [cdkDropListData]="targetGuideHeroes"
+                class="drag-drop-area"
+                (cdkDropListDropped)="reassignHero($event)">
+                <mat-card-content>
+                    <p>Drag and drop a hero between the boxes to reassign.</p>
+                    @for (hero of targetGuideHeroes; track hero.heroUserPrincipleName) {
+                        <mat-card appearance="outlined" cdkDrag class="hero">
+                            <mat-card-content class="hero-information">
+                                <section>
+                                    <span>{{ hero.heroUserPrincipleName }}</span>
+                                    <span class="hero-specialisation">{{ hero.specialisation }}</span>
+                                </section>
+                                <mat-icon matTooltip="Drag">drag_indicator</mat-icon>
+                            </mat-card-content>
+                        </mat-card>
+                    } @empty {
+                        <p class="hint-text">All the guide's heroes have been reassigned</p>
+                    }
+                </mat-card-content>
+            </mat-card>
+        } @else {
+            <!-- Can't show the guide's heroes because the target guide has not been selected. -->
+        }
+    </section>
+</section>

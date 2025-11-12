@@ -1,0 +1,96 @@
+# npm audit report
+
+esbuild  <=0.24.2
+Severity: moderate
+esbuild enables any website to send any requests to the development server and read the response - https://github.com/advisories/GHSA-67mh-4wv8-2f99
+fix available via `npm audit fix --force`
+Will install esbuild@0.25.9, which is a breaking change
+node_modules/esbuild
+
+form-data  <2.5.4
+Severity: critical
+form-data uses unsafe random function in form-data for choosing boundary - https://github.com/advisories/GHSA-fjxv-7rqg-78g4
+fix available via `npm audit fix --force`
+Will install protractor@3.3.0, which is a breaking change
+node_modules/request/node_modules/form-data
+  request  *
+  Depends on vulnerable versions of form-data
+  Depends on vulnerable versions of tough-cookie
+  node_modules/request
+    azure-storage  *
+    Depends on vulnerable versions of request
+    Depends on vulnerable versions of xml2js
+    node_modules/azure-storage
+    webdriver-manager  *
+    Depends on vulnerable versions of request
+    Depends on vulnerable versions of xml2js
+    node_modules/webdriver-manager
+      protractor  >=1.3.0
+      Depends on vulnerable versions of selenium-webdriver
+      Depends on vulnerable versions of webdriver-js-extender
+      Depends on vulnerable versions of webdriver-manager
+      node_modules/protractor
+        @angular-devkit/build-angular  *
+        Depends on vulnerable versions of protractor
+        Depends on vulnerable versions of webpack-dev-server
+        node_modules/@angular-devkit/build-angular
+
+node-fetch  <2.6.7
+Severity: high
+node-fetch forwards secure headers to untrusted sites - https://github.com/advisories/GHSA-r683-j2x4-v87g
+fix available via `npm audit fix`
+node_modules/isomorphic-fetch/node_modules/node-fetch
+  isomorphic-fetch  2.0.0 - 2.2.1
+  Depends on vulnerable versions of node-fetch
+  node_modules/isomorphic-fetch
+    @microsoft/microsoft-graph-client  1.1.0 - 1.7.0
+    Depends on vulnerable versions of isomorphic-fetch
+    node_modules/@microsoft/microsoft-graph-client
+
+
+tmp  <=0.2.3
+tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter - https://github.com/advisories/GHSA-52f5-9888-hmc6
+fix available via `npm audit fix --force`
+Will install protractor@3.3.0, which is a breaking change
+node_modules/selenium-webdriver/node_modules/tmp
+  selenium-webdriver  2.43.1 - 4.0.0-rc-2
+  Depends on vulnerable versions of tmp
+  Depends on vulnerable versions of xml2js
+  node_modules/selenium-webdriver
+    webdriver-js-extender  *
+    Depends on vulnerable versions of selenium-webdriver
+    node_modules/webdriver-js-extender
+
+tough-cookie  <4.1.3
+Severity: moderate
+tough-cookie Prototype Pollution vulnerability - https://github.com/advisories/GHSA-72xf-g2v4-qvf3
+fix available via `npm audit fix --force`
+Will install protractor@3.3.0, which is a breaking change
+node_modules/request/node_modules/tough-cookie
+
+webpack-dev-server  <=5.2.0
+Severity: moderate
+webpack-dev-server users' source code may be stolen when they access a malicious web site with non-Chromium based browser - https://github.com/advisories/GHSA-9jgg-88mc-972h
+webpack-dev-server users' source code may be stolen when they access a malicious web site - https://github.com/advisories/GHSA-4v9v-hfq4-rm2v
+fix available via `npm audit fix`
+node_modules/@angular-devkit/build-angular/node_modules/webpack-dev-server
+
+xml2js  <0.5.0
+Severity: moderate
+xml2js is vulnerable to prototype pollution - https://github.com/advisories/GHSA-776f-qx25-q3cc
+fix available via `npm audit fix --force`
+Will install protractor@3.3.0, which is a breaking change
+node_modules/selenium-webdriver/node_modules/xml2js
+node_modules/webdriver-manager/node_modules/xml2js
+node_modules/xml2js
+
+16 vulnerabilities (2 low, 9 moderate, 3 high, 2 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.

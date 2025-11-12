@@ -1,0 +1,36 @@
+<div [formGroup]="questionGroup">
+  <div>
+    <mat-form-field *ngIf="editQuestion" class="question-input">
+      <input matInput type="text" formControlName="questionText" >
+      <mat-hint align="end">Edit Question Text</mat-hint>
+    </mat-form-field>
+    <button mat-stroked-button color="primary" (click)="editQuestionText()" *ngIf="!editQuestion"
+      type="button">
+      Edit
+    </button>
+    <button mat-stroked-button color="primary" (click)="doneQuestionText()" *ngIf="editQuestion"
+      type="button">
+      Done
+    </button>
+  </div>
+  <p>Answers: (correct answer is marked with *)</p>
+  <ul *ngIf="question.answers.length>0">
+    <li *ngFor="let answer of question.answers; let i=index">
+      <div formArrayName="answers">
+        <answer [answer]="answer" [parentFormGroup]="questionGroup"></answer>
+        <button mat-stroked-button color="error" class="addButton" (click)="deleteAnswer(answer)" type="button">
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+  <mat-form-field class="answer-input">
+    <mat-label>Answer Text</mat-label>
+    <input matInput formControlName="answerText" />
+    <mat-hint align="end">Answer text</mat-hint>
+  </mat-form-field>
+  <mat-checkbox formControlName="correctAnswer">Is this the correct answer?</mat-checkbox>
+  <button mat-raised-button color="primary" class="addButton" (click)="addAnswer()" type="button">
+    Add Answer
+  </button>
+</div>

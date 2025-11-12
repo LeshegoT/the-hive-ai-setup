@@ -1,0 +1,97 @@
+<mat-spinner *ngIf="assignmentData === undefined" class="feedbackSpinner"></mat-spinner>
+
+<label *ngIf="!review && assignmentData !== undefined" id="feedbackUsageInfoPanel">Select a Review to view the related Feedback Assignments</label>
+
+<label *ngIf="review && assignmentData && assignmentData.data.length === 0" class="noDataToDisplayLabel">No Feedback Assignments found for the selected review</label>
+
+<div *ngIf="review && assignmentData?.data.length > 0 && !showComments">
+  <div>
+      <h3 class="userDetailsHeading">{{review.template.name}}</h3>
+      <h4 class="userDetailsHeading">{{activeReviewee.displayName}} - {{review.dueDate | date}}</h4>
+
+      <div id="selectedUserPanel">
+          <h5 class="userDetails">Title: {{activeReviewee.jobTitle}}</h5>
+          <h5 class="userDetails">Unit: {{activeReviewee.department}}</h5>
+          <h5 class="userDetails">Office: {{activeReviewee.office}}</h5>   
+          <h5 class="userDetails">Reviewer: {{activeReviewee.manager}}</h5>   
+      </div>
+  </div>
+
+
+ <div class="container">
+   <table mat-table class="mat-elevation-z8 full-width-table assignmentTable" [dataSource]="assignmentData">
+      
+      <ng-container matColumnDef="reviewer" >
+          <th mat-header-cell *matHeaderCellDef >Reviewer </th>
+          <td mat-cell *matCellDef="let row; let i = index" >
+              <details>
+                  <summary *ngIf="row.displayName">
+                      {{ row.displayName }}
+                  </summary>
+                  <summary *ngIf="!row.displayName">
+                      {{ row.reviewer }}
+                  </summary>
+                      <section id="emailDetailsContainer" *ngIf="row.reviewer.includes('bbd.co.za')">
+                          <summary *ngIf="row.displayName">
+                              {{ row.reviewer }}
+                          </summary>   
+                      </section>
+              </details>
+          </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="deadline">
+          <th mat-header-cell *matHeaderCellDef >Feedback Due Date</th>
+          
+      <td mat-cell *matCellDef="let row" class="feedbackDeadline">
+          <section [ngClass]="feedbackService.getFeedbackAssignmentDueDateColour(row)" id="dueDateColorIndicator">
+              <label>{{row.dueBy | date}}</label>
+          </section>
+      </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">
+      <mat-label *ngIf="row.status !== 'Completed'" class="pendingStatus"><mat-icon>restore</mat-icon> {{row.status}} </mat-label>
+          <mat-label *ngIf="row.status === 'Completed'" class="completedStatus"><mat-icon>check_circle_outline</mat-icon> {{row.status}}</mat-label>
+      </td>
+      </ng-container>
+
+      <ng-container matColumnDef="prompt">
+      <th mat-header-cell *matHeaderCellDef width ="6%"></th>
+      <td mat-cell *matCellDef="let row" >
+              <button mat-mini-fab color="primary" type="button" 
+              *ngIf="row.status !== 'Completed' && activeUPN === row.createdBy"
+              (click)="nudgeFeedback(row, $event)"
+              matTooltip="Send Reminder"
+              matTooltipPosition="right">
+                  <mat-icon>send</mat-icon>
+              </button> 
+          </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="assignmentColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: assignmentColumns;" [ngClass]="!row.reviewer.includes('bbd.co.za') ? 'externalReviewer': ''"></tr>
+  </table>
+ </div>
+
+
+
+
+
+  <div class="assignmentButtonPanel">
+      <button mat-raised-button color="primary" class="roundedButton" (click)="commentsShow()"><mat-icon> chat_bubble_outline</mat-icon> Review Notes</button>
+      <button mat-raised-button color="primary" class="roundedButton" (click)="exportReport()"><mat-icon>save_alt</mat-icon> Export Report</button>
+  </div>
+</div>
+
+<div *ngIf="showComments">
+  <app-review-comments 
+  (toggleComments)="toggleComments($event)" 
+  [showComments]="showComments"
+  [fetchComments]="fetchReviewComments"
+  [postComment]="postReviewComment">
+  </app-review-comments>
+</div>

@@ -1,0 +1,22 @@
+button{
+    margin-right: 0.1em;
+}
+
+
+@media only screen and (max-width: 1700px) {
+  .mini-button{
+    transform: scale(0.9)
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+  .mini-button{
+    transform: scale(0.8)
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+  .mini-button{
+    transform: scale(0.65)
+    }
+}

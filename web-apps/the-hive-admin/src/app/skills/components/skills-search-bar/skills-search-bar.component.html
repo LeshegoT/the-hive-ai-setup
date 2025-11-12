@@ -1,0 +1,24 @@
+<mat-form-field class="search-bar" appearance="outline" >
+    <mat-label>Search</mat-label>
+    <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto"/>
+    <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="onSearchOptionSelected($event)">
+      @if(searchControl.touched && !searchResults){
+        <mat-option class="search-results-spinner-container">
+          <mat-spinner diameter="16"></mat-spinner>
+        </mat-option>
+      } @else{
+        <mat-option *ngFor="let option of searchResults" [value]="option">
+          {{ option.canonicalName }}
+        </mat-option>
+      }
+    </mat-autocomplete>
+    @if (searchControl.hasError('minLength') && searchControl.touched) {
+      <mat-error>Please enter at least {{ minimumSearchCharacters }} characters.</mat-error>
+    } @else if (searchControl.hasError('noResults') && searchControl.touched) {
+      <mat-error>No matching skills, qualifications, certifications, or industry expertise found.</mat-error>
+    } @else {
+      <!-- The attribute being searched for must be at least {{ minimumSearchCharacters }} characters long or it is in of search exceptions. -->
+    }
+</mat-form-field>

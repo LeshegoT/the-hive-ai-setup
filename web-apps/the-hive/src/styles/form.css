@@ -1,0 +1,92 @@
+h3 {
+  font-size: 1.5em;
+  font-weight: lighter;
+  padding-left: 0;
+  margin-bottom: 0.8em;
+}
+
+h6 {
+  font-size: 1.5em;
+}
+
+
+textarea {
+  height: 5em;
+}
+
+input.error,
+textarea.error,
+select.error {
+  border: 0.1em solid var(--app-primary-color);
+  box-shadow: 0.5px 0.5px 1.5px var(--app-primary-color);
+}
+
+div.error {
+  color: var(--app-primary-color);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+button.save {
+  align-self: flex-end;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+form > div > * {
+  flex: 1 1 auto;
+}
+
+form > div > label {
+  font-size: 1em;
+  flex: 0;
+  display: inline-block;
+  min-width: 12em;
+  color: var(--app-tertiary-color);
+  margin-top: 0.5em;
+}
+
+input,
+select,
+textarea {
+  font-size: 1em;
+  padding: 0.5em;
+}
+
+select {
+  height: 2.5em;
+}
+
+form button {
+  font-size: 1em;
+  flex: 0;
+}
+
+form > a,
+form > span {
+  color: var(--app-tertiary-color);
+  font-weight: lighter;
+  text-decoration: none;
+  font-size: 0.9em;
+  display: block;
+  text-align: right;
+  margin-bottom: 0.6em;
+  margin-top: -1em;
+}
+
+@media (min-width: 460px) {
+  form {
+    margin: auto;
+  }
+
+  form > div {
+    flex-direction: row;
+  }
+}

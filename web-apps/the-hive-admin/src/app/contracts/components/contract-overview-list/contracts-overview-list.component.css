@@ -1,0 +1,15 @@
+table {
+    width: 100%;
+}
+
+.action-button {
+    background-color: var(--app-review-button);
+    color: var(--app-button-text);
+}
+
+#no-contractors {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: large;
+}

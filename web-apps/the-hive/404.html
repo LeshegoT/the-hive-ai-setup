@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Hive</title>
+    <meta name="generator" content="PWA Starter Kit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="The Hive - BBD's continuous learning platform." />
+    <meta http-equiv="Content-Type" content="text/html">
+
+    <base href="/" />
+
+    <link rel="icon" href="images/thehive.ico" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-28875611-3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-28875611-3');
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+          'Segoe UI Symbol';
+        line-height: 1.6;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page_404{
+        padding:40px 0; background:#fff; font-family: 'Arvo', serif;
+      }
+
+      .page_404  img{ width:100%;}
+
+      .four_zero_four_bg{
+      
+      background-image: url(/static-content/images/error/neanderthal.gif);
+          height: 400px;
+          background-position: center;
+      }
+      
+      .four_zero_four_bg h1{
+        font-size:80px;
+      }
+      
+      .four_zero_four_bg h3{
+          font-size:80px;
+      }
+          
+      .link_404{			 
+        color: #fff!important;
+        padding: 10px 20px;
+        background: #39ac31;
+        margin: 20px 0;
+        display: inline-block;
+      }
+
+      .content_box_404{
+        margin-top:-50px;
+      }
+  
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="page_404">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 ">
+            <div class="col-sm-10 col-sm-offset-1  text-center">
+              <div class="four_zero_four_bg">
+                <h1 class="text-center ">404</h1>
+              </div>
+              <div class="content_box_404">
+                <h3 class="h2">
+                  Look like you're lost (or the Neanderthals at ATC are)
+                </h3>
+                <p>the page you are looking for not avaible!</p>
+                <a href="/" class="link_404">Go Home</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <span class="hidden">
+      <%= htmlWebpackPlugin.options.info.buildTimeString %>(<%= htmlWebpackPlugin.options.info.buildTime %> ms)
+    </span>
+
+  </body>
+</html>

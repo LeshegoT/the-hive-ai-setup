@@ -1,0 +1,29 @@
+/** View Reviews */
+.mat-mdc-row:hover{
+    cursor:pointer;
+    background-color: #F8F4F4;
+}
+
+.activeRow{
+    background-color: #F8F4F4;
+}
+
+
+
+@media only screen and (max-width: 1700px) {
+  .mini-button{
+    transform: scale(0.9)
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+  .mini-button{
+    transform: scale(0.8)
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+  .mini-button{
+    transform: scale(0.65)
+    }
+}

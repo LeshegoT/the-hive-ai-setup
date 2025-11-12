@@ -1,0 +1,398 @@
+<div class="component">
+  @let onboardingStaff = onboardingStaff$ | async;
+  @let updateOnboardingStaffResult = updateOnboardingStaffResult$ | async;
+  @let selectedUPN = selectedStaffUPN$ | async;
+
+  <app-add-graph-api-staff-member (refresh)="getOnboardingStaff()"></app-add-graph-api-staff-member>
+
+  @if (onboardingStaff?.status === 'loading') {
+    <mat-spinner></mat-spinner>
+  } @else if (onboardingStaff?.status === 'success') {
+
+    <table mat-table [dataSource]="onboardingStaffDataSource" matSort>
+      <ng-container matColumnDef="staff">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="staff-details">
+            <div class="staff-name">
+              {{ row.displayName }}
+            </div>
+            <div class="staff-email">
+              {{ row.upn }}
+            </div>
+            <div class="staff-number">
+              {{ row.bbdUserName }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="employmentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Employment Date</th>
+        <td mat-cell *matCellDef="let row">
+          @if (selectedUPN === row.upn && onboardingForms[row.upn]) {
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>Employment Date</mat-label>
+              <input
+                matInput
+                [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.employmentDate"
+                [matDatepicker]="picker"
+                [min]="onboardingStaffFormControlRestrictions.basicStaffDetails.employmentDate.minimumDate"
+                [max]="onboardingStaffFormControlRestrictions.basicStaffDetails.employmentDate.maximumDate"
+              >
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('employmentDate')) {
+              <mat-error>Employment date is required for onboarding</mat-error>
+            } @else if (
+              onboardingForms[row.upn].controls.basicStaffDetails.controls.employmentDate.hasError('minimumDate') 
+              || onboardingForms[row.upn].controls.basicStaffDetails.controls.employmentDate.hasError('matDatepickerMin')
+            ) {
+              <mat-error>Employment date must be after {{ onboardingStaffFormControlRestrictions.basicStaffDetails.employmentDate.minimumDate.toDate() | date }}</mat-error>
+            } @else if (
+              onboardingForms[row.upn].controls.basicStaffDetails.controls.employmentDate.hasError('maximumDate') 
+              || onboardingForms[row.upn].controls.basicStaffDetails.controls.employmentDate.hasError('matDatepickerMax')
+            ) {
+              <mat-error>Employment date must be before {{ onboardingStaffFormControlRestrictions.basicStaffDetails.employmentDate.maximumDate.toDate() | date }}</mat-error>
+            } @else {
+              <!-- There is no error message to display when the field is valid. -->
+            }
+          } @else {
+            @if (row.employmentDate) {
+              {{ row.employmentDate | date }}
+            } @else {
+              <span class="not-set-warning">{{ notSetText }}</span>
+            }
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="office">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Office & Entity</th>
+        <td mat-cell *matCellDef="let row">
+          @if (selectedUPN === row.upn && onboardingForms[row.upn]) {
+            <div class="combined-fields">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Select Company Entity</mat-label>
+                <mat-select [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.companyEntityId"
+                  placeholder="Select Company Entity">
+                  <mat-option *ngFor="let entity of companyEntities" [value]="entity.companyEntityId">
+                    {{ entity.abbreviation }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('companyEntityId')) {
+                <mat-error>Company entity is required for onboarding</mat-error>
+              } @else {
+                <!-- There is no error message to display when the field is valid. -->
+              }
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Select Office</mat-label>
+                <mat-select [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.officeId" placeholder="Select Office">
+                  <mat-option *ngFor="let office of offices" [value]="office.officeId">
+                    {{ office.officeName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('officeId')) {
+                <mat-error>Office is required for onboarding</mat-error>
+              } @else {
+                <!-- There is no error message to display when the field is valid. -->
+              }
+
+
+            </div>
+          } @else {
+          <div>
+            <div><strong>Entity: </strong>
+              @if (row.companyEntityAbbreviation) {
+                {{ row.companyEntityAbbreviation }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            <div><strong>Office: </strong>
+              @if (row.office) {
+                {{ row.office }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit & Reviewer</th>
+        <td mat-cell *matCellDef="let row">
+          @if (selectedUPN === row.upn && onboardingForms[row.upn]) {
+            <div class="combined-fields">
+              <mat-form-field class="search-bar" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Search for Unit</mat-label>
+                <input type="text" matInput [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.department"
+                  [matAutocomplete]="unitAuto" />
+                <mat-autocomplete #unitAuto="matAutocomplete">
+                  <mat-option *ngFor="let department of filteredUnits" [value]="department.unit">
+                    {{ department.unit }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('department')) {
+                <mat-error>Unit is required for onboarding</mat-error>
+              } @else if (onboardingForms[row.upn].controls.basicStaffDetails.controls.department.errors?.['invalidSelection']) {
+                <mat-error>Please select a valid unit from the dropdown</mat-error>
+              } @else {
+                <!-- There is no error message to display when the field is valid. -->
+              }
+
+              <mat-form-field class="search-bar" appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Search for Reviewer</mat-label>
+                <input type="text" matInput [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.manager"
+                  [matAutocomplete]="reviewerAuto" />
+                <mat-autocomplete #reviewerAuto="matAutocomplete">
+                  <mat-option *ngFor="let reviewer of filteredReviewers" [value]="reviewer.upn">
+                    <div>{{ reviewer.displayName }}</div>
+                    <small>{{ reviewer.upn}}</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('manager')) {
+                <mat-error>Reviewer is required for onboarding</mat-error>
+              } @else if (onboardingForms[row.upn].controls.basicStaffDetails.controls.manager.errors?.['invalidSelection']) {
+                <mat-error>Please select a valid reviewer from the dropdown</mat-error>
+              } @else {
+                <!-- There is no error message to display when the field is valid. -->
+              }
+
+            </div>
+          } @else {
+          <div>
+            <div><strong>Unit: </strong>
+              @if (row.department) {
+                {{ row.department }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            <div><strong>Reviewer: </strong>
+              @if (row.manager) {
+                {{ row.manager }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="staffType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Type</th>
+        <td mat-cell *matCellDef="let row">
+          @if (selectedUPN === row.upn && onboardingForms[row.upn]) {
+            <div class="combined-fields">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Select Contract Type</mat-label>
+                <mat-select [formControl]="onboardingForms[row.upn].controls.basicStaffDetails.controls.staffType" placeholder="Select Contract Type">
+                  <mat-option *ngFor="let staffType of staffTypes" [value]="staffType">
+                    {{ staffType }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              @if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('staffType')) {
+                <mat-error>Contract type is required for onboarding</mat-error>
+              } @else {
+                <!-- There is no error message to display when the field is valid. -->
+              }
+
+              @if (onboardingForms[row.upn].controls.basicStaffDetails.controls.staffType.value === 'Permanent') {
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Probationary Review Date</mat-label>
+                  <input 
+                    matInput 
+                    [formControl]="onboardingForms[row.upn].controls.permanentStaffDetails.controls.probationaryReviewDate"
+                    [min]="onboardingStaffFormControlRestrictions.permanentStaffDetails.probationaryReviewDate.minimumDate"
+                    [matDatepicker]="probationaryPicker">
+                  <mat-datepicker-toggle matIconSuffix [for]="probationaryPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #probationaryPicker></mat-datepicker>
+                </mat-form-field>
+                @if (onboardingForms[row.upn].controls.permanentStaffDetails.controls.probationaryReviewDate.hasError('required')) {
+                  <mat-error>Probationary review date is required for permanent staff</mat-error>
+                } @else if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('probationaryReviewDate')) {
+                  <mat-error>Probationary review date is required for onboarding</mat-error>
+                } @else if (
+                  onboardingForms[row.upn].controls.permanentStaffDetails.controls.probationaryReviewDate.hasError('minimumDate') 
+                  || onboardingForms[row.upn].controls.permanentStaffDetails.controls.probationaryReviewDate.hasError('matDatepickerMin')
+                ) {
+                  <mat-error>Probationary review date must be after {{ onboardingStaffFormControlRestrictions.permanentStaffDetails.probationaryReviewDate.minimumDate.toDate() | date }}</mat-error>
+                } @else {
+                  <!-- There is no error message to display when the field is valid. -->
+                }
+              } @else if (onboardingForms[row.upn].controls.basicStaffDetails.controls.staffType.value === 'Contract') {
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Contract Start Date</mat-label>
+                  <input 
+                    matInput 
+                    [formControl]="onboardingForms[row.upn].controls.contractStaffDetails.controls.contractStartDate"
+                    [matDatepicker]="contractStartPicker"
+                    [min]="onboardingStaffFormControlRestrictions.contractStaffDetails.contractStartDate.minimumDate"
+                  >
+                  <mat-datepicker-toggle matIconSuffix [for]="contractStartPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #contractStartPicker></mat-datepicker>
+                </mat-form-field>
+                @if (onboardingForms[row.upn].controls.contractStaffDetails.controls.contractStartDate.hasError('required')) {
+                  <mat-error>Contract start date is required</mat-error>
+                } @else if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('contractStartDate')) {
+                  <mat-error>Contract start date is required for onboarding</mat-error>
+                } @else if (
+                  onboardingForms[row.upn].controls.contractStaffDetails.controls.contractStartDate.hasError('minimumDate') 
+                  || onboardingForms[row.upn].controls.contractStaffDetails.controls.contractStartDate.hasError('matDatepickerMin')
+                ) {
+                  <mat-error>Contract start date must be after {{ onboardingStaffFormControlRestrictions.contractStaffDetails.contractStartDate.minimumDate.toDate() | date }}</mat-error>
+                } @else {
+                  <!-- There is no error message to display when the field is valid. -->
+                }
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Contract End Date</mat-label>
+                  <input matInput [formControl]="onboardingForms[row.upn].controls.contractStaffDetails.controls.contractEndDate"
+                    [matDatepicker]="contractEndPicker">
+                  <mat-datepicker-toggle matIconSuffix [for]="contractEndPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #contractEndPicker></mat-datepicker>
+                </mat-form-field>
+                @if (onboardingForms[row.upn].controls.contractStaffDetails.controls.contractEndDate.hasError('required')) {
+                  <mat-error>Contract end date is required</mat-error>
+                } @else if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('contractEndDate')) {
+                  <mat-error>Contract end date is required for onboarding</mat-error>
+                } @else {
+                  <!-- There is no error message to display when the field is valid. -->
+                }
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Contract Review Date</mat-label>
+                  <input matInput [formControl]="onboardingForms[row.upn].controls.contractStaffDetails.controls.contractReviewDate"
+                    [matDatepicker]="contractReviewPicker">
+                  <mat-datepicker-toggle matIconSuffix [for]="contractReviewPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #contractReviewPicker></mat-datepicker>
+                </mat-form-field>
+                @if (onboardingForms[row.upn].controls.contractStaffDetails.controls.contractReviewDate.hasError('required')) {
+                  <mat-error>Contract review date is required</mat-error>
+                } @else if (onboardingForms[row.upn].errors?.['requiredFieldsMissing']?.includes('contractReviewDate')) {
+                  <mat-error>Contract review date is required for onboarding</mat-error>
+                } @else {
+                  <!-- There is no error message to display when the field is valid. -->
+                }
+              }
+            </div>
+          } @else {
+          <div>
+            <div><strong>Type: </strong>
+              @if (row.staffType) {
+                {{ row.staffType }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            @if (row.staffType === 'Permanent') {
+            <div><strong>Probationary Review: </strong>
+              @if (row.probationaryReviewDate) {
+                {{ row.probationaryReviewDate | date }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            } @else if (row.staffType === 'Contract') {
+            <div><strong>Contract Start: </strong>
+              @if (row.contractStartDate) {
+                {{ row.contractStartDate | date }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            <div><strong>Contract End: </strong>
+              @if (row.contractEndDate) {
+                {{ row.contractEndDate | date }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            <div><strong>Contract Review: </strong>
+              @if (row.contractReviewDate) {
+                {{ row.contractReviewDate | date }}
+              } @else {
+                <span class="not-set-warning">{{ notSetText }}</span>
+              }
+            </div>
+            }
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="editMode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let row">
+          @let isSaving = updateOnboardingStaffResult?.status === 'loading' && selectedUPN === row.upn;
+          @let isError = updateOnboardingStaffResult?.status === 'error' && selectedUPN === row.upn;
+          @let isSuccess = updateOnboardingStaffResult?.status === 'success' && selectedUPN === row.upn;
+
+          @if (isSaving) {
+            <div class="action-buttons">
+              <button mat-raised-button color="primary" class="loading-button" disabled matTooltip="Onboard staff member">
+                <mat-icon><mat-spinner diameter="20"></mat-spinner></mat-icon>
+                Saving...
+              </button>
+              <button mat-raised-button (click)="cancelUpdate()">
+                <mat-icon>cancel</mat-icon>
+                Close
+              </button>
+            </div>
+          } @else if (isError) {
+            <div class="action-buttons">
+              <button mat-raised-button color="primary" (click)="resetUpdateOnboardingStaffResult()" matTooltip='Try again'>
+                <mat-icon>refresh</mat-icon>
+                Retry
+              </button>
+              <button mat-raised-button (click)="cancelUpdate()">
+                <mat-icon>cancel</mat-icon>
+                Close
+              </button>
+            </div>
+            <mat-error>Error saving staff details: {{ updateOnboardingStaffResult.errorMessage! }}</mat-error>
+          } @else if (isSuccess || selectedUPN === row.upn) {
+            <div class="action-buttons">
+              <button mat-raised-button color="primary" (click)="onboardStaffMember(row)" matTooltip="Onboard staff member">
+                <mat-icon>how_to_reg</mat-icon>
+                Onboard
+              </button>
+              <button mat-raised-button (click)="cancelUpdate()">
+                <mat-icon>cancel</mat-icon>
+                Close
+              </button>
+            </div>
+          } @else {
+            <mat-icon class="edit-date-icons" matTooltip="Update Staff details" matTooltipPosition="below"
+              (click)="openEditStaffDetailsForm(row)">edit_note</mat-icon>
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="staffColumns; sticky: true" class="header-row"></tr>
+      <tr mat-row *matRowDef="let row; columns: staffColumns" [class.selected-row]="selectedUPN === row.upn"></tr>
+    </table>
+
+    <mat-paginator #paginator [length]="onboardingStaffDataSource.data.length" [pageIndex]="0"
+      [pageSize]="this.tableService.getPageSize()"
+      [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+      [hidePageSize]="this.tableService.getHidePageSize()">
+    </mat-paginator>
+  } @else {
+    <app-error-card [title]="'Error fetching onboarding staff members'" [showRetry]="true" (retry)="getOnboardingStaff()">
+      <p>Something went wrong when trying to fetch onboarding staff members. Please try again or contact <a
+          [href]="generateSupportEmailForFetchingOnboardingStaffMembers(onboardingStaff.errorMessage)">The Hive
+          Support</a></p>
+    </app-error-card>
+  }
+</div>

@@ -1,0 +1,13 @@
+{
+  "name": "@the-hive/lib-reviews-shared",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "tslib": "^2.8",
+    "@the-hive/lib-shared": "0.0.1",
+    "@the-hive/lib-staff-shared": "0.0.1"
+  }
+}

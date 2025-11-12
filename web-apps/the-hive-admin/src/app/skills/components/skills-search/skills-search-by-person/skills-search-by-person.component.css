@@ -1,0 +1,16 @@
+.by-person-section {
+  display: flex;
+  flex-direction: column;
+}
+.clear-button, .go-back-button{
+  align-self: flex-start;
+}
+
+.staff-details {
+  padding-inline: var(--medium-padding);
+  color: var(--remaining-characters-hint-color);
+}
+
+.hidden-app-staff-filter{
+  display: none;
+}

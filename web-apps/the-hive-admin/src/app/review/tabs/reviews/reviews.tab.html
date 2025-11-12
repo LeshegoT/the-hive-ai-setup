@@ -1,0 +1,98 @@
+<div id="component" *ngIf="!generateReportMode"> 
+    <div id="reviewFilterPanel" *ngIf="!createReviewMode">
+                <div class="searchContainer">
+                    <h2>Search</h2>
+                    <mat-form-field appearance="outline">
+                    <mat-label>Search (requires atleast 3 characters)</mat-label>
+                    <input matInput placeholder="" [formControl]="searchFilterParametersForm.controls.searchTextForm" />
+                    </mat-form-field>
+                </div>
+
+                <div class="dateRange">
+                    <mat-form-field appearance="outline" class="dateRangePicker">
+                        <mat-label>From</mat-label>
+                        <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="this.filterDateRangeValues.from" (dateChange)="filterDateRange('from' , $event.value)">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFrom></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="dateRangePicker">
+                        <mat-label>To</mat-label>
+                        <input matInput [matDatepicker]="pickerTo" [(ngModel)]="this.filterDateRangeValues.to" (dateChange)="filterDateRange('to' , $event.value)">
+                        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerTo></mat-datepicker>
+                    </mat-form-field>
+                    
+                    <button mat-icon-button color="primary" type="button" 
+                        (click)="clearDateRange()"
+                        [disabled] = "!this.filterDateRangeValues.from || !this.filterDateRangeValues.to "
+                        matTooltip="Clear Date Range"
+                        matTooltipPosition="right">
+                            <mat-icon>remove_circle_outline</mat-icon>
+                    </button> 
+                </div>
+
+                <app-filter-drop-down-options
+                    [control]="searchFilterParametersForm.controls.selectedReviewTypes" 
+                    [options]="reviewTypes"
+                    displayProperty="name"
+                    label="Review Types">
+                </app-filter-drop-down-options>
+
+                <app-filter-drop-down-options 
+                    [control]="searchFilterParametersForm.controls.selectedReviewStatuses" 
+                    [options]="reviewStatuses"
+                    label="Review Statuses">
+                </app-filter-drop-down-options>
+
+                <mat-chip-list class="chip-list">
+                    @for(chip of (chipsToShow$ | async); track chip.option.id) {
+                        <mat-chip [selectable]="true" [removable]="true" (removed)="removeSelectedOption(chip.option, chip.optionsFormControl)">
+                            {{ chip.option.name ?? chip.option.description }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    }
+                </mat-chip-list>
+
+                <section class="checkboxContainer">
+                    <div class="checkListFilter" >
+                        <mat-checkbox [formControl]="searchFilterParametersForm.controls.userReviewsOnlyCheckbox">Only show my reviews</mat-checkbox>
+                    </div>
+                </section>
+    </div>
+     <div id="newReviewPanel" *ngIf="createReviewMode">
+        <h2>Create New Review</h2>
+        <h3>Please note:</h3>
+        <h3>Usage of this functionality should be avoided as much as possible, as it is only intended for unexpected interim
+            reviews.</h3>
+        <h3>Reviews that fall into a cycle, such as Annual and Probationary reviews, should be created using the Upcoming
+            Reviews selection in the 'To Do' tab.</h3>
+     </div>
+
+    <div id="reviewScreen">
+        <div id="reviewPanel" class="scroller">
+            <app-feedback-review  
+                (displayFeedbackAssignments)="displayFeedbackAssignments($event)"
+                (showSnackBar)="showSnackBar($event)"
+                [filterParameters]="filterParameters">
+            </app-feedback-review>
+        </div>
+        <div id="assignmentPanel">
+            <app-feedback-assignment 
+                (showSnackBar)="showSnackBar($event)"
+                
+                (toggleGenerateReportMode)="toggleGenerateReportMode()"
+                [review]="activeReview"
+                >
+            </app-feedback-assignment>
+        </div>
+    </div>
+</div>
+
+<div id="component" *ngIf="generateReportMode"> 
+    <app-review-report
+        (toggleGenerateReportMode)="toggleGenerateReportMode()"
+        (showSnackBar)="showSnackBar($event)" 
+        [review]="activeReview"
+    ></app-review-report>
+</div>

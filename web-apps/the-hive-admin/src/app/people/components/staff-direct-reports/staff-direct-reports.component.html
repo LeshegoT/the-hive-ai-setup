@@ -1,0 +1,173 @@
+@let directReportsResult = directReportsResult$ | async;
+@let paginatedDirectReports = paginatedDirectReports$ | async;
+
+@if (directReportsResult?.status === 'loading') {
+  <mat-spinner></mat-spinner>
+} @else if (directReportsResult?.status === 'success') {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <h2>Direct reports for {{manager().displayName}}</h2>
+    </mat-card-header>
+    <mat-card-content>
+
+      @let bulkReviewerReassignmentResult = bulkReviewerReassignmentResult$ | async;
+      @switch (bulkReviewerReassignmentResult?.status) {
+        @case ('loading') {
+          <mat-spinner></mat-spinner>
+        }
+        @case ('success') {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <h3>{{staffSelection.selected.length}} staff member(s) have been reassigned</h3>
+            </mat-card-header>
+            <mat-card-content>
+              <p>The staff members have been reassigned successfully.</p>
+            </mat-card-content>
+          </mat-card>
+        }
+        @case ('error') {
+          <app-error-card
+            [title]="'Error bulk reassigning staff'"
+            (retry)="reassignStaff(staffSelection.selected, bulkReassignmentForm)"
+          >
+            <p>Something went wrong when trying to bulk reassign staff.</p>
+            <details>
+              <summary>Error details</summary>
+              <p>{{ bulkReviewerReassignmentResult.errorMessage }}</p>
+            </details>
+            <p>This could be due to: </p>
+            <ul>
+              <li>The staff members selected to be reassigned no longer exist in the system.</li>
+              <li>No staff members were selected to be reassigned. Please select at least one staff member to be reassigned.</li>
+              <li>A technical issue encountered while attempting to bulk reassign staff. Please try again or contact <a [href]="generateSupportEmailForBulkReassignment(bulkReviewerReassignmentResult.errorMessage)">The Hive Support</a></li>
+            </ul>
+          </app-error-card>
+        }
+        @default {
+          <mat-card appearance="outlined" class="bulk-reassignment-card">
+            <mat-card-header>
+              <h3>{{staffSelection.selected.length}} staff member(s) have been selected to be reassigned</h3>
+            </mat-card-header>
+            <mat-card-content>
+              <form [formGroup]="bulkReassignmentForm" class="bulk-reassignment-form">
+                @let allStaff = getAllStaffOptions() | async;
+                <app-autocomplete-input
+                  [searchTextControl]="bulkReassignmentForm.controls.reviewerUpn"
+                  label="reviewer"
+                  [options]="allStaff"
+                  requiredFieldErrorMessage="Reviewer email is required"
+                  [showAddNewOption]="false"
+                ></app-autocomplete-input>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Effective date</mat-label>
+                  <input matInput [matDatepicker]="effectiveDatePicker" [formControl]="bulkReassignmentForm.controls.effectiveDate" placeholder="Effective date" />
+                  <mat-datepicker-toggle matIconSuffix [for]="effectiveDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #effectiveDatePicker></mat-datepicker>
+                  @if (bulkReassignmentForm.controls.effectiveDate.touched && bulkReassignmentForm.controls.effectiveDate.errors?.['required']) {
+                    <mat-error>Effective date is required</mat-error>
+                  } @else {
+                    <!-- No error to show -->
+                  }
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="reassignStaff(staffSelection.selected, bulkReassignmentForm)">
+                  Reassign
+                </button>
+                @if (bulkReassignmentForm.hasError('noSelectedStaff')) {
+                  <mat-error>Please select at least one staff member to reassign</mat-error>
+                } @else {
+                  <!-- No error to show -->
+                }
+              </form>
+            </mat-card-content>
+          </mat-card>
+        }
+      }
+
+      <table mat-table [dataSource]="paginatedDirectReports.data" matSort (matSortChange)="onSortChange($event)">
+
+        <ng-container matColumnDef="staffSelection">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleSelectAllStaff() : null"
+                          [checked]="staffSelection.hasValue() && areAllStaffSelected()"
+                          [indeterminate]="staffSelection.hasValue() && !areAllStaffSelected()">
+            </mat-checkbox>
+            Staff to reassign
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? staffSelection.toggle(row) : null"
+                          [checked]="staffSelection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="displayName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row"> {{row.displayName}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="jobTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title/Role</th>
+          <td mat-cell *matCellDef="let row"> {{row.jobTitle}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="upn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Email</th>
+          <td mat-cell *matCellDef="let row"> {{row.upn}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="bbdUserName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>BBD User Name</th>
+          <td mat-cell *matCellDef="let row"> {{row.bbdUserName}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+          <td mat-cell *matCellDef="let row"> {{row.department}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="office">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Office</th>
+          <td mat-cell *matCellDef="let row"> {{row.office}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns();" (click)="staffSelection.toggle(row)" [class.selected-row]="staffSelection.isSelected(row)"></tr>
+
+        <ng-container *matNoDataRow>
+          <tr>
+            <td class="empty-data-row" [attr.colspan]="displayedColumns().length">
+              There are no staff members who report to {{manager().displayName}}.
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+      <mat-paginator class="paginator-sticky"
+        #paginator
+        [length]="paginatedDirectReports.totalCount"
+        [pageSize]="paginatedDirectReports.pageSize"
+        [pageIndex]="paginatedDirectReports.pageIndex"
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+        [hidePageSize]="this.tableService.getHidePageSize()"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <app-error-card 
+    [title]="'Error fetching direct reports'"
+    (retry)="refreshDirectReports()"
+  >
+    <p>Something went wrong when trying to fetch direct reports.</p>
+    <details>
+      <summary>Error details</summary>
+      <p>{{ directReportsResult.errorMessage }}</p>
+    </details>
+    <p>This could be due to: </p>
+    <ul>
+      <li>A technical encountered while retrieving direct reports. Please try again or contact <a [href]="generateSupportEmailForFetchingDirectReports(directReportsResult.errorMessage, manager())">The Hive Support</a></li>
+    </ul>
+  </app-error-card>
+}

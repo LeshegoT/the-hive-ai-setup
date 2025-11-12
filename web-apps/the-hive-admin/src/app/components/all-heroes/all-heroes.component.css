@@ -1,0 +1,6 @@
+.mat-elevation-z8 tr td th {
+    white-space: nowrap;
+}
+.mat-column-startDate, .mat-column-endDate, .mat-column-lastHeroActivityDate{
+    padding-right: 1rem;
+}

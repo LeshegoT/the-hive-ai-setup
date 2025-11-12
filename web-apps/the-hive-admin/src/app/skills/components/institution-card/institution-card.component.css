@@ -1,0 +1,50 @@
+mat-card {
+  flex: 1;
+  padding: var(--standard-padding);
+  gap: var(--standard-gap);
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: auto;
+  gap: var(--standard-gap);
+}
+
+#approve-institution-button {
+  color: var(--app-button-text);
+  background-color: var(--app-review-button);
+}
+
+#reject-institution-button {
+  color: var(--app-button-text);
+  background-color: var(--accent-color);
+}
+
+#edit-institution-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#cancel-edit-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#save-edit-button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#new-name-input {
+  font-size: large;
+}
+
+#new-institution-name-form {
+  display: flex;
+  flex-direction: column;
+}

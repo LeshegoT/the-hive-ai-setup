@@ -1,0 +1,52 @@
+<div class="full-width">
+  <h3>Create New Group</h3>
+  <form [formGroup]="groupForm" #parentForm="ngForm" (ngSubmit)="createGroup()">
+
+    <mat-form-field class="full-width">
+      <mat-label>Group Name*</mat-label>
+      <input matInput formControlName="groupName" [errorStateMatcher]="matcher"/>
+    </mat-form-field>
+    <div class="full-witdh ">
+      <table mat-table #table [dataSource]="memberData" class="full-width">
+        <ng-container matColumnDef="member">
+          <th class="head" mat-header-cell *matHeaderCellDef >Member</th>
+          <td class="content" mat-cell *matCellDef="let member">
+            {{ member }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th class="head" mat-header-cell *matHeaderCellDef>Action</th>
+          <td class="content" mat-cell *matCellDef="let member; let i = index">
+            <button  mat-raised-button color="warn" type="button" (click)="removeMember(i)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let member; columns: columns;"></tr>
+      </table>
+    </div>
+    <div class="full-width addContentBlock">
+      <mat-form-field class="addMember">
+      <mat-label>Members*</mat-label>
+      <input type="email" matInput [formControl]="memberControl" ngModel email 
+[matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" >
+        <mat-option *ngFor="let option of filteredOptions | async " [value]="option" >
+          {{option}}
+       </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+     <button class="add-button" mat-raised-button color="primary" type="button" (click)="addMember()">
+        <mat-icon>add</mat-icon>
+      </button>
+      </div>
+    <div class="error" *ngIf="error">
+      Please ensure all required fields are filled in and that there are no errors above.
+    </div>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+</div>

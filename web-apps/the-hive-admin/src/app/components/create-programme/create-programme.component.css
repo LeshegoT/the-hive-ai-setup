@@ -1,0 +1,33 @@
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.contentPickerTitle {
+  padding: 1em 0;
+}
+
+.addContentBlock {
+  margin: 1em 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.addRestriction {
+  width: 90%;
+}
+
+.content-table {
+  width: 100%;
+  margin-top: 1em;
+}
+
+#actionButtons {
+  display: flex;
+  gap: var(--standard-gap);
+}

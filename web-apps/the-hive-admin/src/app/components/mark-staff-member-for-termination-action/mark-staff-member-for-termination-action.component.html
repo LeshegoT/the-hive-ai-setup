@@ -1,0 +1,32 @@
+@let staffMemberHasActiveOrOwnsReview = staffMemberHasActiveOrOwnsReview$ | async;
+@let markStaffMemberForTerminationResult = markStaffMemberForTerminationResult$ | async;
+@let isLoading = markStaffMemberForTerminationResult?.status === 'loading' || staffMemberHasActiveOrOwnsReview?.status === 'loading';
+@let isError = markStaffMemberForTerminationResult?.status === 'error' || staffMemberHasActiveOrOwnsReview?.status === 'error';
+@let isSuccess = markStaffMemberForTerminationResult?.status === 'success';
+@let loggedInUserHasManageStaffPermissions = loggedInUserHasManageStaffPermissions$ | async;
+@let staffMember = staffMember$ | async;
+@let isMarkedForTermination = !selectedStaffMemberIsActive$.value  || staffMember?.staffStatus === 'pending-delete';
+
+@if (!terminationEnabled || !userPrincipalName || !loggedInUserHasManageStaffPermissions) {
+  <!-- The termination feature is disabled or no user principal name is provided, so the mark for termination button is not shown -->
+} @else if (isLoading) {
+  <mat-spinner diameter="20"></mat-spinner>
+} @else if (isError) {
+  @let isErrorMarkingStaffMemberForTermination = markStaffMemberForTerminationResult?.status === 'error';
+  @let errorMessage = isErrorMarkingStaffMemberForTermination ? markStaffMemberForTerminationResult?.error : 'Error retrieving active reviews. Click to retry.';
+  <button mat-mini-fab color="warn" [matTooltip]="errorMessage" class="mark-for-termination-button" (click)="resetErrorsAndRefetchActiveReviews()">
+    <mat-icon>error</mat-icon>
+  </button>
+} @else if (isSuccess || isMarkedForTermination) {
+  <span class="staff-member-terminated-chip">Marked for termination</span>
+} @else {
+  @let hasActiveReviews = staffMemberHasActiveOrOwnsReview?.status === 'success' && staffMemberHasActiveOrOwnsReview?.hasActiveReviews;
+  @let ownsActiveReview = staffMemberHasActiveOrOwnsReview?.status === 'success' && staffMemberHasActiveOrOwnsReview?.ownsActiveReview;
+  @let isDisabled = hasActiveReviews || ownsActiveReview;
+
+  <span [matTooltip]="getTooltipText(hasActiveReviews, ownsActiveReview, staffMember?.displayName)">
+    <button mat-mini-fab color="warn" class="mark-for-termination-button" (click)="markStaffMemberForTermination($event, userPrincipalName)" [disabled]="isDisabled">
+      <mat-icon>person_off</mat-icon>
+    </button>
+  </span>
+}

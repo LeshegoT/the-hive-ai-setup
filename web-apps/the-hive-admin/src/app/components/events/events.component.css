@@ -1,0 +1,10 @@
+section {
+  display:  grid;
+  grid-template-columns: 1fr 3fr;
+  margin: 0 2rem;
+}
+app-add-event-organiser {
+  min-width: auto;
+  display: flex;
+  justify-content: center;
+}

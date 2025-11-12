@@ -1,0 +1,31 @@
+<div class="full-width">
+    <form [formGroup]="restrictionsForm" (submit)=saveRestrictions()>
+
+        <mat-checkbox (change)="restrictionChanged($event.checked)" formControlName="contentRestricted">Restrict {{contentName}}
+        </mat-checkbox>
+        <div *ngIf="restrictionsForm.value.contentRestricted">
+            <div class="contentPickerTitle" *ngIf="addedGroups && addedGroups.length">
+                <span>{{contentName}}, with ID: {{contentId}} will be restricted to the following groups:</span>
+                    <mat-chip-listbox aria-label="Restricted Groups">
+                        @for(group of addedGroups; track group){
+                            <mat-chip color="primary" [removable]="true" (removed)="deleteGroup(group)">
+                                {{group.groupName}}
+                                <mat-icon matTooltip="Remove Group" matTooltipPosition="above" matChipRemove>close</mat-icon>
+                            </mat-chip>
+                        }
+                    </mat-chip-listbox>
+            </div>
+
+            <div class="full-width addContentBlock">
+                <mat-form-field class="addCourse">
+                    <mat-label>Restrict content to group</mat-label>
+                    <mat-select formControlName="restrictGroup" multiple (closed)="onSelectClosed()">
+                        <mat-option [value]="group" *ngFor="let group of unassignedGroups">{{ group.groupName }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint align="end">Create new groups by selecting Group above</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>

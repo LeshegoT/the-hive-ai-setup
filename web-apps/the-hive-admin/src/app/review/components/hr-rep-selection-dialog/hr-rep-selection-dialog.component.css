@@ -1,0 +1,46 @@
+#hrReps{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1em 40% 1em 0em;
+}
+
+button{
+    align-self: center;
+    margin-top: 2em;
+}
+
+article, form, .reps{
+    display: flex;
+    flex-direction: column;
+}
+
+#buttonGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--standard-padding);
+}
+
+#closeButton{
+    margin-left: 3em;
+}
+
+.invalidMessage{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    color: var(--accent-color);
+    font-size: medium;
+    border: solid 1px  var(--accent-color);
+    padding: 1em 2em;
+    margin-left:2em;
+}
+
+.invalidMessage button{
+    margin-top: 0;
+    color: #25e6a5;
+}

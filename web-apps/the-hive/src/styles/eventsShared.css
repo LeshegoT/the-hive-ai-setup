@@ -1,0 +1,61 @@
+.red-button {
+  background: var(--app-warning-font-color);
+  color: white;
+  border: none;
+}
+
+.red-lined-button {
+  background: var(--app-header-background-color);
+  color: var(--app-warning-font-color);
+  border: solid 2px var(--app-warning-font-color);
+}
+
+.red-button,
+.red-lined-button {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem);
+  border-radius: 4px;
+}
+
+.red-button:hover {
+  background-color: var(--app-darker-warning-font-color);
+}
+
+.red-lined-button:hover {
+  background-color: var(--app-review-input-border-color);
+}
+
+.bouncy-button:active {
+  animation-duration: 300ms;
+  animation-name: button-bounce;
+}
+
+button:active {
+  animation-duration: 300ms;
+  animation-name: button-bounce;
+}
+
+input:enabled {
+  border: none;
+  box-shadow: 0 var(--small-border-size) 0 0 var(--app-review-primary-text-color);
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+@keyframes button-bounce {
+  from {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

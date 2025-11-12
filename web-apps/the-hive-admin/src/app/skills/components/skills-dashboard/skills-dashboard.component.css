@@ -1,0 +1,64 @@
+.graphs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1em;
+}
+
+.skills-dashboard {
+  padding-top: var(--standard-padding);
+}
+
+.cards-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--standard-gap);
+}
+
+.cards-container mat-card {
+  width: 100%;
+  height: var(--skills-dashboard-charts-height);
+}
+
+plotly-plot {
+  height: 100%;
+  width: 100%;
+}
+select-company-entity-list {
+  margin: 1em;
+}
+
+.transparent-panel {
+  background: transparent;
+}
+
+.section-heading {
+  text-align: center;
+  font-size: large;
+  padding: var(--standard-padding);
+}
+
+mat-panel-title {
+  justify-content: center;
+}
+
+.export-as-csv-button{
+  border-radius: 0.2em;
+  padding-inline: 1em;
+  margin-inline: 2em;
+  margin-block: auto;
+}
+
+.staff-summary {
+  display: flex;
+  flex-direction: column;
+  padding: var(--standard-padding);
+}
+
+.no-company-entities-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--error-message-color);
+}

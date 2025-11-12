@@ -1,0 +1,14 @@
+<div class="component">
+  <app-title iconName="quests" title="Side Quests"></app-title>
+  <mat-tab-group>
+      <mat-tab label="Side Quests">
+        @if(sideQuests){
+        <app-table-side-quest (triggerRefresh)="refreshSideQuests()" [allSideQuests]="sideQuests"></app-table-side-quest>
+        }@else{
+            <mat-spinner></mat-spinner>
+        }
+      </mat-tab>
+    <mat-tab label="Side Quest Types"><app-table-type (triggerRefresh)="refreshSideQuestsTypes()" [allTypes]="types"
+        [contentType]="contentTypeCodes.sideQuestType" createMethod="createSideQuestType" deleteMethod = "deleteSideQuestType" updateMethod="updateSideQuestType" ></app-table-type></mat-tab>
+  </mat-tab-group>
+</div>

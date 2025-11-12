@@ -1,0 +1,1 @@
+export const selectProgressBarState = (state) => state.progressBar.progressBarState;

@@ -1,0 +1,38 @@
+<section class="available-at-ratification-action-confirmation">
+    <h1> {{ratificationActionAndCanonicalNameDetails.attributeCanonicalNameDetailsWithInstitution.canonicalName}} </h1>
+    <p class="confirmation-text">
+        Are you sure you want to 
+        {{ratificationActionAndCanonicalNameDetails.ratificationAction}} :
+        {{ratificationActionAndCanonicalNameDetails.attributeCanonicalNameDetailsWithInstitution.canonicalName}}?
+    </p>
+    <section class="actions">
+        @let attributeCanonicalNameDetailsWithInstitution = (attributeCanonicalNameDetailsWithInstitution$ | async);
+        @if(attributeCanonicalNameDetailsWithInstitution) {
+            <button color="primary" mat-raised-button (click)="handleRatificationAction()"
+                [disabled]="attributeCanonicalNameDetailsWithInstitution === undefined">
+                <mat-icon>check</mat-icon> 
+                {{ratificationActionAndCanonicalNameDetails.ratificationAction}}
+            </button>
+        } @else{
+            <button mat-raised-button [disabled]="true">
+                <mat-spinner diameter="20"></mat-spinner>
+                {{ratificationActionAndCanonicalNameDetails.ratificationAction}}
+            </button> 
+        }
+        <button
+            [disabled]="attributeCanonicalNameDetailsWithInstitution === undefined"
+            mat-raised-button 
+            (click)="cancelAction()">
+            <mat-icon>close</mat-icon> 
+            cancel
+        </button>
+    </section>
+    @if(errorMessage){
+        <mat-error>
+            {{errorMessage.message}}, Try refreshing the page, or 
+            <a [href]="generateSupportEmail(errorMessage)">contact support</a> if the issue persists
+        </mat-error>
+    } @else{
+        <!-- Do not display error message as there is no error from the server -->
+    }
+</section>

@@ -1,0 +1,11 @@
+cd source
+echo "Running pre-commit hopk: FULL_LINT is $FULL_LINT"
+if [ "$FULL_LINT" = "true" ];
+then
+  echo "Running full lint"
+  npm run reset
+  npm run lint
+else
+  echo "Only linting staged files"
+  npm run check:precommit
+fi

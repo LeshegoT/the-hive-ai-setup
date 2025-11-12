@@ -1,0 +1,44 @@
+<div id="component">
+    <form>
+        <h1>Send Invite To Candidate</h1>
+        <mat-form-field>
+            <mat-label>Candidate Name</mat-label>
+            <input type="text" matInput [formControl]="nameFormControl" [errorStateMatcher]="matcher"
+                placeholder="John Doe">
+            <mat-error *ngIf="nameFormControl.hasError('minlength') && !nameFormControl.hasError('required')">
+            Please enter a valid Name (min length of 2 characters)
+            </mat-error>
+            <mat-error *ngIf="nameFormControl.hasError('required')">
+            Name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field >
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                placeholder="Ex. john@example.com">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field  >
+            <mat-label>Due Date</mat-label>
+            <input type="date" matInput [formControl]="dueDateFormControl" [errorStateMatcher]="matcher" value="{{dueDateFormControl.value | date: 'yyyy-MM-dd'}}" (change)="validateDate()">
+            <mat-error *ngIf="dueDateFormControl.hasError('invalidDate') && !dueDateFormControl.hasError('required')">
+            Please enter a valid Date
+            </mat-error>
+            <mat-error *ngIf="dueDateFormControl.hasError('required')">
+            Due Date is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" 
+        [disabled]="nameFormControl.errors || emailFormControl.errors || dueDateFormControl.errors "
+            (click)="inviteCandidate()"
+            >Send Invite</button>
+    </form>
+</div>

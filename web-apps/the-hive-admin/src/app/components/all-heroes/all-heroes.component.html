@@ -1,0 +1,116 @@
+<div>
+  <app-title iconName="quests" title="Heroes"></app-title>
+</div>
+<div class="filter">
+  <mat-form-field>
+    <input matInput (keyup)="filterName($event.target.value)" placeholder="Filter" />
+  </mat-form-field>
+
+  <mat-checkbox class="checkBox" (change)="filterInProgress($event.checked)"
+    >In-progress</mat-checkbox
+  >
+
+  <mat-checkbox class="checkBox" (change)="filterUnexpired($event.checked)"
+    >Unexpired</mat-checkbox
+  >
+</div>
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" [dataSource]="filteredData" matSort>
+    <ng-container matColumnDef="heroUserPrincipleName">
+      <th class="hero head" mat-header-cell *matHeaderCellDef mat-sort-header>Hero</th>
+      <td class="hero cont" mat-cell *matCellDef="let row">
+        <a href="hero/{{ encode(row.heroUserPrincipleName) }}">{{
+          row.heroUserPrincipleName
+        }}</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="specialisation">
+      <th class="spec head" mat-header-cell *matHeaderCellDef mat-sort-header>
+        Specialisation
+      </th>
+      <td class="spec cont" mat-cell *matCellDef="let row">{{ row.specialisation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="goal">
+      <th class="goal head" mat-header-cell *matHeaderCellDef mat-sort-header>Goal</th>
+      <td class="goal cont" mat-cell *matCellDef="let row">{{ row.goal }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="comment">
+      <th class="comment head" mat-header-cell *matHeaderCellDef mat-sort-header>
+        Admin's Last Comment
+      </th>
+      <td class="comment cont" mat-cell *matCellDef="let row">
+        <mat-form-field class="comment field">
+          <input
+            matInput
+            (blur)="updateCommentCheckEmpty(row.questId, $event.target.value)"
+            (keyup.enter)="updateComment(row.questId, $event.target.value)"
+            placeholder="comment:"
+            value="{{ row.comment }}"
+          />
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="guideUserPrincipleName">
+      <th class="guide head" mat-header-cell *matHeaderCellDef mat-sort-header>Guide</th>
+      <td class="guide cont" mat-cell *matCellDef="let row">
+        <a href="guide/{{ encode(row.guideUserPrincipleName) }}">{{
+          row.guideUserPrincipleName
+        }}</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startDate">
+      <th class="start head" mat-header-cell *matHeaderCellDef mat-sort-header>
+        Start Date
+      </th>
+      <td class="start cont" mat-cell *matCellDef="let row">
+        {{ row.startDate | dateFormat }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endDate">
+      <th class="end head" mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+      <td class="end cont" mat-cell *matCellDef="let row">
+        {{ row.endDate | dateFormat }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastHeroActivityDate">
+      <th class="active head" mat-header-cell *matHeaderCellDef mat-sort-header>
+        Last Active
+      </th>
+      <td class="active cont" mat-cell *matCellDef="let row">
+        {{ row.lastHeroActivityDate | dateFormat }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pointsTotal">
+      <th class="point head" mat-header-cell *matHeaderCellDef mat-sort-header>Points</th>
+      <td class="point cont" mat-cell *matCellDef="let row">
+        {{ row.pointsTotal }}
+      </td>
+    </ng-container>
+
+    <tr
+      class="sticky"
+      mat-header-row
+      *matHeaderRowDef="allHeroColumns; sticky: true"
+    ></tr>
+    <tr mat-row *matRowDef="let row; columns: allHeroColumns"></tr>
+  </table>
+
+  <mat-paginator
+    #paginator
+    [length]="filteredData.data.length"
+    [pageIndex]="0"
+    [pageSize]="this.tableService.getPageSize()" 
+    [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+    [hidePageSize]="this.tableService.getHidePageSize()"
+  >
+  </mat-paginator>
+</div>

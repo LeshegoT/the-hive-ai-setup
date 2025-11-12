@@ -1,0 +1,69 @@
+
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar> 
+<div id="mainContainer">
+    <h1>Report Options</h1>
+
+    <div id="inclusions">
+        <div id="reviewIncluded">
+            <mat-selection-list >
+                <mat-list-option checkboxPosition="before" [selected]='true' disabled="true" >
+                    <label id="reviewTemplate">{{review.template.name}} Review</label>
+                    <label id="reviewStatus" *ngIf="review.status" [ngClass]="review.status === 'Completed' ? 'completedStatus' : 'pendingStatus'" >{{review.status}}</label>
+                    <label id="reviewDate" *ngIf="review.dueDate"> {{review.dueDate}}</label>
+                    
+                </mat-list-option>
+            </mat-selection-list>
+        </div>
+        <div id="levelUpIncluded">
+            <mat-selection-list >
+                <mat-list-option checkboxPosition="before" [selected]="inclusions.levelup" (click)="inclusions.levelup = !inclusions.levelup">Include Level-Ups</mat-list-option>
+            </mat-selection-list>
+                <div class="levelUpDateRange" *ngIf="inclusions.levelup">
+                        <mat-form-field appearance="outline">
+                        <mat-label>From</mat-label>
+                        <input matInput [matDatepicker]="pickerFromLevelUp" [(ngModel)]="inclusions.levelUpFrom" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFromLevelUp"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFromLevelUp></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>To</mat-label>
+                        <input matInput [matDatepicker]="pickerToLevelUp" [(ngModel)]="inclusions.levelUpTo" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerToLevelUp"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerToLevelUp></mat-datepicker>
+                    </mat-form-field>
+                    
+                </div>
+        </div>
+
+         <div id="voluntaryIncluded">
+            <mat-selection-list>
+                <mat-list-option checkboxPosition="before" [selected]="inclusions.voluntary" (click)="inclusions.voluntary = !inclusions.voluntary" >Include Voluntary Feedback</mat-list-option>
+            </mat-selection-list>
+            <div class="voluntaryDateRange" *ngIf="inclusions.voluntary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>From</mat-label>
+                        <input matInput [matDatepicker]="pickerFromVoluntary" [(ngModel)]="inclusions.voluntaryFrom" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerFromVoluntary"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFromVoluntary></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>To</mat-label>
+                        <input matInput [matDatepicker]="pickerToVoluntary" [(ngModel)]="inclusions.voluntaryTo" >
+                        <mat-datepicker-toggle matSuffix [for]="pickerToVoluntary"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerToVoluntary></mat-datepicker>
+                    </mat-form-field>
+            </div>
+
+         </div>
+    </div>
+
+    <section *ngIf="spinnerLoading">
+        <mat-spinner></mat-spinner>
+    </section>
+
+
+    <div class="buttonPanel" >
+        <button mat-raised-button color="accent" class="roundedButton" (click)="cancelReportGeneration()"><mat-icon> close</mat-icon> Cancel</button>
+        <button mat-raised-button color="primary" class="roundedButton" (click)="getReportData()" [disabled]="loading"><mat-icon>save_alt</mat-icon> Export Report</button>
+    </div>
+</div>

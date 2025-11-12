@@ -1,0 +1,11 @@
+.filter {
+    justify-content: space-between;
+
+    & > mat-form-field {
+        margin: 0;
+    }
+}
+
+mat-spinner {
+    margin: auto;
+}

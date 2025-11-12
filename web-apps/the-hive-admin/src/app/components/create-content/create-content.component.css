@@ -1,0 +1,9 @@
+.component {
+    padding: 0 10em;
+}
+
+.contentBlock {
+    margin-top: 2em;
+    display: flex;
+    width: 100%;
+}

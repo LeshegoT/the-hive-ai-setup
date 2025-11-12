@@ -1,0 +1,23 @@
+<div [ngClass]="componentClass">
+  <app-title iconName="usage" title="Skills (ATC)"></app-title>
+  <mat-tab-group>
+    <mat-tab label="Overview">
+      <ng-template matTabContent>
+        <skills-atc-overview></skills-atc-overview>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Alias">
+      <ng-template matTabContent>
+        <app-manage-alias></app-manage-alias>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Ratification">
+        <app-ratification-tab></app-ratification-tab>
+    </mat-tab>
+    <mat-tab label="Advanced Usage">
+      <ng-template matTabContent>
+        <app-skills-imports></app-skills-imports>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

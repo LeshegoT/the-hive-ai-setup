@@ -1,0 +1,1 @@
+export const selectSpeechText = (state) => state.speech.speech;

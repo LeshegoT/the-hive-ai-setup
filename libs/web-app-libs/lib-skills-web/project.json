@@ -1,0 +1,19 @@
+{
+  "name": "lib-skills-web",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web-app-libs/lib-skills-web/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/web-app-libs/lib-skills-web",
+        "main": "libs/web-app-libs/lib-skills-web/src/index.ts",
+        "tsConfig": "libs/web-app-libs/lib-skills-web/tsconfig.lib.json",
+        "assets": ["libs/web-app-libs/lib-skills-web/*.md"]
+      }
+    }
+  }
+}

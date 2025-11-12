@@ -1,0 +1,123 @@
+.timeline {
+    margin: auto;
+    width: 100%;
+    padding-right: var(--standard-padding);
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 0;
+}
+  
+.content {
+    display: block;
+    padding: var(--standard-padding);
+    margin: var(--standard-padding);
+    background-color: var(--comments-background-color);
+    border-radius: var(--standard-border-radius);
+    max-width: 100%;
+}
+
+.comment-date {
+    font-size: small;
+    color: var(--remaining-characters-hint-color);   
+}
+
+.comment-text {
+    font-size: medium;
+    text-align: left;
+}
+
+.comment-author {
+    font-size: small;
+    color: var(--remaining-characters-hint-color);
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.new-comment-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.add-comment-button {
+    background-color: var(--tertiary-color);
+}
+
+#comment-header {
+    display: flex;
+    flex-direction: row;
+    padding: var(--standard-padding);
+}
+
+.no-comment-content {
+    margin: auto;
+    background: none;
+    text-align: center;
+}
+
+#comment-header h1 {
+    margin: auto;
+}
+
+.comments-container {
+    background-color: white;
+    padding: var(--standard-padding);
+    gap: var(--standard-gap);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.loading-spinner {
+    margin: auto;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: var(--standard-padding);
+    height: 15lh;
+}
+
+mat-card-footer {
+    padding: var(--standard-padding);
+}
+
+.staff-level-note {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--standard-padding);
+    background-color: var(--comments-background-color);
+    border-radius: var(--standard-border-radius);
+    border: solid var(--standard-border-width) var(--accent-color);
+    max-width: 100%;
+
+    .comment-text {
+        margin: 0;
+    }
+}
+
+.staff-level-comment-container {
+    display: flex;
+    gap: var(--standard-gap);
+    flex-direction: column;
+}
+
+mat-card {
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.no-comment-text {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.delete-comment-button {
+  background-color: var(--accent-color);
+  color: white;
+}

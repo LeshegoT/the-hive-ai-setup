@@ -1,0 +1,105 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter(filter)" #filterInput [(ngModel)]="filter" />
+  <button
+    mat-button
+    *ngIf="filter"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="filter = ''; applyFilter(filter)"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table multiTemplateDataRows matSort [dataSource]="programmeData" #programmeTable>
+    <ng-container matColumnDef="programmeId">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Programme ID</th>
+      <td class="content" mat-cell *matCellDef="let programme">
+        {{ programme.programmeID }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Programme Name</th>
+      <td class="content" mat-cell *matCellDef="let programme">
+        {{ programme.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="period">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Period</th>
+      <td class="content" mat-cell *matCellDef="let programme">
+        {{ programme.period }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startDate">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+      <td class="content" mat-cell *matCellDef="let programme">
+        {{ programme.startDate | dateFormat }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th class="head" mat-header-cell *matHeaderCellDef>Action</th>
+      <td class="content" mat-cell *matCellDef="let programme; let i = index">
+        <button
+          [disabled]="programme != selectedProgramme"
+          mat-raised-button
+          color="warn"
+          (click)="deleteProgramme(programme)"
+          type="button"
+          matTooltip="Delete Programme"
+          matTooltipShowDelay="1000"
+        >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let programme" [attr.colspan]="columns.length">
+        <div class="programme-detail" *ngIf="programme == selectedProgramme">
+          <app-manage-programme (onSave)="updateProgramme($event)" [programme]="programme" (cancel)='cancelCreate()'></app-manage-programme>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="createProgramme">
+      <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length">
+        <div class="programme-detail" *ngIf="creating">
+          <app-create-programme (triggerRefresh)='emitRefresh()' (cancel)='cancelCreate()'></app-create-programme>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let programme; columns: columns"
+      class="programme-row"
+      (click)="updateSelected(programme)"
+      [class.expanded-track-row]="selectedProgramme == programme"
+    ></tr>
+    <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']" class="detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="['createProgramme']" class="detail-row"></tr>
+  </table>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-raised-button color="primary" type="button" (click)="newProgramme()" matTooltip="Add New Programme"
+        matTooltipShowDelay="1000">
+        <mat-icon>add</mat-icon>
+      </button>
+      <mat-paginator
+        [pageSize]="this.tableService.getPageSize()"
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+        class="paginator"
+        (page)="cancelCreate()"
+        [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+        [hidePageSize]="this.tableService.getHidePageSize()"
+      ></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

@@ -1,0 +1,121 @@
+<section class="skills-search-form-container">
+  <section class="search-input-section">
+    <select-company-entity (entitySelected)="setSelectedEntities($event)"></select-company-entity>
+    <select-office (officeSelected)="onOfficeSelected($event)" [label]="'Filter by offices'" [selectionRequired]="true"></select-office>
+    <app-skills-search-bar class="search-bar" (searchOptionSelected)="onSearchOptionSelected($event)"></app-skills-search-bar>
+  </section>
+  @if( attributeList.data.length > 0 && !errorMessage){
+    <section class="search-options-container">
+      <button mat-stroked-button (click)="resetAttributeList()">Clear All</button>
+      <button mat-stroked-button id="search-button" (click)="generateReport()">Export as CSV</button>
+    </section>
+  } @else {
+    <!-- Don't display the table since it is empty -->
+  }
+</section>
+
+@if( attributeList.data.length > 0 && !errorMessage){
+  <section class="table-container">
+    <mat-table class="mat-elevation-z2" [dataSource]="attributeList">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Attribute Name</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'Attribute Name'">
+          {{ row.canonicalName }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="staffCount">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Staff Count</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'Staff Count'">
+          {{ row.staffCount }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="BBD">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>BBD</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'BBD'">
+          {{ row.BBD }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="BBi">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>BBi</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'BBi'">
+          {{ row.BBi }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="BBu">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>BBu</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'BBu'">
+          {{ row.BBu }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="BBn">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>BBn</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'BBn'">
+          {{ row.BBn }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="GNC">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>GNC</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'GNC'">
+          {{ row.GNC }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="ILI">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ILI</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'ILI'">
+          {{ row.ILI }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="BBs">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>BBs</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'BBs'">
+          {{ row.BBs }}
+        </mat-cell>
+      </ng-container>
+      
+      <ng-container matColumnDef="IND">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>IND</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'IND'">
+          {{ row.IND }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Skill Path</mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'Skill Path'">
+          {{ row.displayedSkillPath }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="controls">
+        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+        <mat-cell *matCellDef="let row" [attr.data-label]="'Skill Path'">
+          <button mat-icon-button (click)="removeItem(attributeList.data.indexOf(row))">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+  </section>
+
+  } @else if (errorMessage) {
+     <p class="message">
+      {{ errorMessage }} Please
+      <a [href]="generateSupportEmail">contact support</a> if the issue persists.
+    </p>
+
+} @else {
+  <!-- Don't display the table since it is empty -->
+}

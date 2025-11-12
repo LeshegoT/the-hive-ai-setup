@@ -1,0 +1,56 @@
+<mat-card class="staff-member-update-form-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Update {{selectedStaffMember().displayName}}'s unit</mat-card-title>
+    <mat-card-subtitle>Enter the new unit, reviewer, and start date for {{selectedStaffMember().displayName}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="unitCorrectionsForm">
+      <div class="staff-member-update-form-fields">
+        <mat-form-field>
+          <mat-label>Search for unit</mat-label>
+          <input type="text"
+                placeholder="Unit"
+                matInput
+                [formControl]="unitCorrectionsForm.controls.unit"
+                [matAutocomplete]="autoCompleteUnits">
+          <mat-autocomplete autoActiveFirstOption #autoCompleteUnits="matAutocomplete">
+            @for (option of filteredUnits$ | async; track option) {
+              <mat-option [value]="option">{{option}}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error *ngIf="unitCorrectionsForm.controls.unit.errors?.['required'] && unitCorrectionsForm.controls.unit.touched">Please select a unit</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Search for reviewer</mat-label>
+          <input type="text"
+                placeholder="Reviewer"
+                matInput
+                [formControl]="unitCorrectionsForm.controls.reviewerUpn"
+                [matAutocomplete]="autoCompleteManagers">
+          <mat-autocomplete autoActiveFirstOption #autoCompleteManagers="matAutocomplete">
+            @for (option of filteredStaff$ | async; track option.userPrincipleName) {
+              <mat-option [value]="option.userPrincipleName">
+                {{option.displayName}}
+                <small>{{option.userPrincipleName}}</small>
+              </mat-option>
+            }
+          </mat-autocomplete>
+          <mat-error *ngIf="unitCorrectionsForm.controls.reviewerUpn.errors?.['required'] && unitCorrectionsForm.controls.reviewerUpn.touched">Please select a reviewer</mat-error>
+          <mat-error *ngIf="unitCorrectionsForm.controls.reviewerUpn.errors?.['email'] && unitCorrectionsForm.controls.reviewerUpn.touched">Please enter a valid email</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Unit start date</mat-label>
+          <input matInput [matDatepicker]="picker" [formControl]="unitCorrectionsForm.controls.startDate">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="unitCorrectionsForm.controls.startDate.errors?.['required'] && unitCorrectionsForm.controls.startDate.touched">Please select a start date</mat-error>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" type="button" [disabled]="unitCorrectionsForm.invalid" (click)="submit()" matTooltip="Submit">
+        Submit <mat-icon>check_circle</mat-icon>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

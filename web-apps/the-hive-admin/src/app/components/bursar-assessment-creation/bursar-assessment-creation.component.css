@@ -1,0 +1,16 @@
+#component{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#component > form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60%;
+}
+
+form > mat-form-field {
+  margin-bottom: 1em;;
+}

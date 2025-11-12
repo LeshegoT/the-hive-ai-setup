@@ -1,0 +1,47 @@
+.button-container {
+    display: flex;
+    gap: var(--standard-gap);  
+    align-items: center;
+}
+
+.filter {
+    display: flex;
+    gap: var(--standard-gap);
+    justify-content: space-between;
+}
+
+.guides-container {
+    display: flex;
+    gap: var(--standard-gap);
+}
+
+.guides-list {
+    flex: 1;
+}
+
+.spinner {
+    margin: var(--standard-gap) auto;
+}
+
+.no-data-text {
+    margin: var(--standard-gap);
+    font-weight: bolder;
+    color: var(--remaining-characters-hint-color);
+}
+
+.guide-accepted-status, .guide-active-status {
+    color: var(--tertiary-color);
+}
+
+.guide-cancelled-status, .guide-pending-delete-status {
+    color: var(--secondary-color);
+}
+
+.guide-rejected-status, .guide-deleted-status {
+    color: var(--accent-color);
+}
+
+.guide-pending-status {
+    color: var(--primary-color);
+    font-weight: bolder;
+}

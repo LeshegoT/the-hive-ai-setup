@@ -1,0 +1,47 @@
+mat-card {
+  flex: 1;
+  padding: var(--standard-padding);
+  gap: var(--standard-gap);
+}
+
+mat-card-content {
+  display: flex;
+  padding: 0;
+  gap: var(--standard-gap);
+  align-items: baseline;
+
+  & > mat-form-field {
+    flex: 1;
+  }
+}
+
+mat-card-header {
+  justify-content: space-between;
+  padding: 0;
+}
+
+mat-card-title {
+  word-break: break-all;
+  display: flex;
+}
+
+mat-chip {
+  width: fit-content;
+}
+
+#active {
+  background-color: var(--app-review-green-button);
+}
+
+#inactive {
+  background-color: var(--app-cancel-button);
+  & p {
+    color: var(--app-button-text);
+  }
+}
+
+.edit-canonical-name-button{
+  cursor: pointer;
+  border: none;
+  background: none;
+}

@@ -1,0 +1,48 @@
+{
+  "allUserAttributes": [
+    {
+      "upn": "tebogo.motibana@bbd.co.za",
+      "attributes": [
+        {
+          "name": "Angular",
+          "yearsOfExperience": 1,
+          "experienceLevel": "Beginner",
+          "lastUsed": "active",
+          "status": "verified"
+        },
+        {
+          "name": "Angular certification",
+          "dateAchieved": "January 2024",
+          "expires": "February 2026",
+          "status": "outstanding documents"
+        },
+        {
+          "name": "React",
+          "yearsOfExperience": 1,
+          "experienceLevel": "Beginner",
+          "lastUsed": "November 2023",
+          "status": "pending verification"
+        }
+      ]
+    },
+    {
+      "upn": "stefan.dejager@bbd.co.za",
+      "attributes": [
+        {
+          "name": "Java",
+          "yearsOfExperience": 1,
+          "experienceLevel": "Beginner",
+          "lastUsed": "November 2023",
+          "status": "verified"
+        },
+        {
+          "name": "Angular",
+          "yearsOfExperience": 1,
+          "experienceLevel": "Beginner",
+          "lastUsed": "active",
+          "status": "verified"
+        }
+      ]
+    }
+  ]
+}

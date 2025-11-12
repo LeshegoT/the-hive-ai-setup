@@ -1,0 +1,17 @@
+.component {
+  display: flex;
+  flex-direction: column;
+}
+
+.component>div {
+  margin-top: 2em;
+}
+
+.button-container {
+  display: flex;
+  gap: 0.5em;
+}
+
+button {
+  cursor: pointer;
+}

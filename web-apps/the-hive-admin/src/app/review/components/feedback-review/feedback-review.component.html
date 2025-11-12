@@ -1,0 +1,82 @@
+
+<section class="loading" *ngIf="reviewData === undefined">
+    <mat-spinner></mat-spinner>
+</section>
+<section class="noDataToDisplayLabel" *ngIf="reviewData !== undefined && reviewData.data.length === 0"><label>There are no reviews to show</label></section>
+<table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="reviewData" *ngIf="reviewData?.data && reviewData.data.length > 0" matSort>
+    <ng-container matColumnDef="active" >
+    <th mat-header-cell *matHeaderCellDef width ="5%"></th>
+    <td mat-cell *matCellDef="let row" >
+        <mat-selection-list >
+            <mat-list-option [selected]="row.active"></mat-list-option>
+        </mat-selection-list>
+    </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="reviewee" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Member </th>
+        <td mat-cell *matCellDef="let row" >
+                {{ row.reviewee }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="assignedBy" >
+        <th mat-header-cell *matHeaderCellDef>HR Representative</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.hrRep }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="template" >
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.template.name }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deadline">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Review Date</th>
+        
+    <td mat-cell *matCellDef="let row" class="feedbackDeadline">
+        <section [ngClass]="feedbackService.getReviewDueDateColour(row)" id="dueDateColorIndicator">
+            <label>{{row.dueDate | date }}</label>
+        </section>
+    </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let row">
+    <mat-label *ngIf="row.status !== 'Completed'" class="pendingStatus"><mat-icon>restore</mat-icon> {{row.status}} </mat-label>
+        <mat-label *ngIf="row.status === 'Completed'" class="completedStatus"><mat-icon>check_circle_outline</mat-icon> {{row.status}}</mat-label>
+    </td>
+    </ng-container>
+
+    <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+            <button 
+                (click)="showHrNotes(row)" 
+                class="notesBtnSmall reviewActionButton" 
+                matTooltip="Review Notes"
+            >
+                <mat-icon>chat_bubble_outline</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="reviewColumns(); sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: reviewColumns();" (click)='setActiveReview(row)'  [ngClass]="row.active ? 'activeRow': ''"></tr>
+</table>
+<mat-paginator
+    *ngIf="reviewData?.data && reviewData.data.length > 0"
+    #paginator
+    [length]="currentPageInfo.resultSetSize"
+    [pageIndex]="currentPageInfo.pageNumber - 1"
+    [pageSize]="currentPageInfo.pageSize" 
+    [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+    [hidePageSize]="this.tableService.getHidePageSize()"
+    (page)="pageChanged($event)"
+></mat-paginator>

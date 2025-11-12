@@ -1,0 +1,49 @@
+<html>
+  <body>
+    <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align='center'>
+          <table width='75%' bgcolor='#FFFFFF' style='{{font}}'>
+            <tr>
+              <td width='128' height='128' valign='top'>
+                <img
+                  style='margin:auto'
+                  src='cid:{{image.name}}'
+                  alt='{{image.altText}}'
+                />
+              </td>
+              <td height='128'>
+                <table width='100%' border='0' cellspacing='5' cellpadding='0'>
+                  <tr>
+                    <td style='{{font}} color: #7a7a7a;font-size:20pt'>
+                      {{{context}}}
+                    </td>
+                  </tr>
+                  <tr style='padding-top:15px'>
+                    <td style='{{font}}'>
+                      {{{message}}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width='100' align='center'>
+                      <a
+                        href='{{url}}'
+                        style='{{font}}color:#ffffff;text-decoration:none;border:10px solid #db0000;display:inline-block;border-radius:15px;font-weight:bold; height: inherit; background-color: #db0000; margin-top: 15px;'
+                        target='_blank'
+                      >
+                        {{callToAction}}
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

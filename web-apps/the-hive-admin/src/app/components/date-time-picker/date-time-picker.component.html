@@ -1,0 +1,28 @@
+<div class="dateTimePicker" [formGroup]="dateForm">
+  <mat-form-field class="date">
+    <mat-label>{{ label }} date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="dp"
+      formControlName="date"
+      [min]="min"
+      (dateInput)="inputDate('input', $event)"
+    />
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="time">
+    <mat-label>{{ label }} time</mat-label>
+    <input
+      formControlName="time"
+      matInput
+      class="timePicker"
+      [ngxTimepicker]="timePicker"
+      [format]="24"
+    />
+    <ngx-material-timepicker
+      #timePicker
+      (timeSet)="updateTime($event)"
+    ></ngx-material-timepicker>
+  </mat-form-field>
+</div>

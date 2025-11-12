@@ -1,0 +1,28 @@
+<contracts-overview-filter #filter></contracts-overview-filter>
+<section class="overview-list overview-content">
+    <contracts-overview-list #contractsOverviewList 
+        [filterParameters]="filterParameters()" 
+        (selectedStaffAndAction)="selectedStaffAndAction.set($event)"></contracts-overview-list>
+    @if (selectedStaffAndAction()?.staff && selectedStaffAndAction()?.action === 'MakePermanent') {
+        <app-make-contractors-permanent  
+            [data]="selectedStaffAndAction()?.staff" 
+            (cancelButtonClicked)="clearSelectedStaffAndAction()"
+            (contractStaffTypeChanged)="reloadContractStaffData($event)">
+        </app-make-contractors-permanent>
+    }@else {
+        <!-- Nothing to display because nothing is selected -->
+    }
+
+    @if (selectedStaffAndAction()?.staff) {
+        <app-staff-contract-list [staff]="selectedStaffAndAction()?.staff">
+        </app-staff-contract-list>
+        <button 
+            mat-icon-button
+            (click)="clearSelectedStaffAndAction()">
+            <mat-icon>close</mat-icon>
+        </button>
+    } @else {
+        <!-- Contracts cannot be displayed because no staff member is selected -->
+    }
+</section>
+

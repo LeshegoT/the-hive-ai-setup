@@ -1,0 +1,13 @@
+<div class="component-container"
+  [class.hovering]="isDragging"
+  [class.error]="error"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="stopDrag($event)"
+  (dragend)="stopDrag($event)">
+
+  <p class="text">Drag files to upload</p>
+  <p class="text">or</p>
+  <button mat-button type="button" id="file-button" (click)="fileSelector.click()">Browse Files</button>
+  <input #fileSelector type="file" multiple (change)="onFilesSelected($event.target.files)" hidden>
+</div>

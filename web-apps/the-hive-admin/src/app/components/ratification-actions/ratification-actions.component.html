@@ -1,0 +1,12 @@
+<section class="ratification-actions">
+  <button
+    *ngFor="let actionConfig of actions"
+    mat-icon-button
+    [matTooltip]="actionConfig.tooltip"
+    (click)="onActionClick(actionConfig.action)"
+    [class]="cssClassForRatificationAction(actionConfig.action)"
+    [disabled]="selectedAction === actionConfig.action || disabled"
+  >
+    <mat-icon>{{ actionConfig.icon }}</mat-icon>
+  </button>
+</section>

@@ -1,0 +1,50 @@
+<div id="mainContainer" >
+    <div id="commentHeader">
+        <h1>Review Comments</h1>
+        <button mat-icon-button  type="button" id="closeButton"
+                    matTooltip="Close"
+                    matTooltipPosition="right"
+                    (click)="hideComments()">
+                    <mat-icon>close</mat-icon>
+        </button>
+    </div> 
+
+
+    <div class="timeline ">
+        @if (activeReviewComments) {
+            @for (entry of activeReviewComments; track entry) {
+                <div class="container" > 
+                    <div class="content">
+                        <label class="commentAuthor">{{entry.createdBy}} - </label> <label class="commentDate">{{entry.dateCreated | date}}</label>
+                        <p class="commentText">{{entry.comment}}</p>
+                    </div>
+                </div>
+            }
+            @empty {
+                <div class="container" > 
+                    <div class="content noCommentContent">
+                        <p class="noCommentText">There are no comments to show</p>
+                    </div>
+                </div>
+            }
+        }@else {
+            <mat-spinner></mat-spinner>
+        } 
+    </div>
+
+    
+    <div class="newCommentPanel">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>New Comment</mat-label>
+            <textarea matInput cdkTextareaAutosize cdkAutosizeMaxRows="10" placeholder="Type comment here ... " aria-multiline="true" [(ngModel)]="newComment" ></textarea>
+        </mat-form-field>
+        <button mat-fab class="addCommentButton" type="button" 
+                matTooltip="Save New Comment"
+                matTooltipPosition="right"
+                (click)="handleAddComments()">
+                <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
+
+</div>

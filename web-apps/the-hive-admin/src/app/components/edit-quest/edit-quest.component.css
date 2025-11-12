@@ -1,0 +1,38 @@
+.details {
+  display: flex;
+}
+
+.quest-details {
+  padding-left: 2em;
+  flex: 1 1 auto;
+}
+
+.guides {
+  flex: 1 1 auto;
+}
+
+.quest-details > div {
+  margin-bottom: 1em;
+  font-size: 1.2em;
+  display: flex;
+}
+
+.quest-details > div > label {
+  font-weight: bold;
+  display: inline-block;
+  min-width: 7em;
+  flex-basis: 20%;
+  margin: auto 0;
+}
+
+.guide {
+    display: flex
+}
+
+.guide > span {
+    margin-top: 0.6em;
+}
+
+.guide > * {
+    flex: 1 1 auto;
+}

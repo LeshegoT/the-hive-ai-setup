@@ -1,0 +1,16 @@
+<mat-card class="error-card">
+  <mat-card-header class="card-header">
+    <mat-icon>{{ icon() }}</mat-icon>
+    <span class="title">{{ title() }}</span>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+  @if (showRetry()) {
+    <mat-card-actions class="card-actions">
+      <button mat-raised-button color="primary" (click)="onRetryClicked()">Try again</button>
+    </mat-card-actions>
+  } @else {
+    <!-- if showRetry is false, don't show the retry button -->
+  }
+</mat-card>

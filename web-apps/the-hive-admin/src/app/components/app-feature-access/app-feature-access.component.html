@@ -1,0 +1,94 @@
+<div class="component">
+    <app-title iconName="usage" title="App Features Access Control"></app-title>
+    <br/>
+    <div id="viewPermissions">
+        <div class="leftPanel">
+            <app-staff-filter (selectStaff)="selectStaff()" searchLabel="Select Staff Member to Grant Access" searchType="search"></app-staff-filter>
+            <button mat-raised-button color="primary" (click)="addUserOrGroup()">Add</button>
+            <div *ngIf="allPermissions ">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container *ngFor="let column of displayedColumns">
+                        <ng-container matColumnDef="{{ column }}">
+                            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element[column] && element[column].value !== undefined">
+                                    {{ element[column].value }}
+                                    <button *ngIf="element[column].value !== '-'" mat-icon-button color="accent" (click)="revokePermission(element[column].permissionAssignmentId)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </span>
+                                <span *ngIf="!element[column] || element[column].value === undefined">{{ element[column] }}</span>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div> 
+        </div>
+        <div class="middlePanel">
+            <mat-form-field>
+                <mat-label>Select Module</mat-label>
+                <mat-select [(ngModel)]="selectedModule" (ngModelChange)="onModuleChange($event)">
+                    <mat-option *ngFor="let module of modules" [value]="module.moduleName">
+                    {{ module.moduleName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+           <mat-form-field class="permission-type">
+                <mat-label>Select Permission</mat-label>
+                <mat-select [(ngModel)]="selectedPermission">
+                    <mat-option *ngFor="let permissionOption of selectedPermissionOptions" [value]="permissionOption.actionName + permissionOption.resourceName">
+                    {{ permissionOption.actionName + ' ' + permissionOption.resourceName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="rightPanel">
+            <form class="staffFilter">  
+                <mat-form-field>
+                    <mat-label>Select Group to Grant Access</mat-label>
+                    <input
+                        type="text"
+                        matInput
+                        [formControl]="groupSearchControl"
+                        [matAutocomplete]="auto"
+                        [(ngModel)]="groupFieldText"
+                    />
+                    <button mat-icon-button matSuffix (click)="clearField($event)" >
+                        <mat-icon >search</mat-icon>
+                    </button>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectGroup($event.option.value)">
+                        <mat-option *ngFor="let group of filteredGroupOptions | async" [value]="group" class="multiline-mat-option">
+                            <div>{{ group.displayName }}</div>
+                            <div class="autoCompleteExtendedDetails">{{group.mail}}</div>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </form>
+            <button mat-raised-button color="primary" (click)="addUserOrGroup()">Add</button>
+            <div *ngIf="allPermissions">
+                <table mat-table [dataSource]="groupDataSource" class="mat-elevation-z8">
+                    <ng-container *ngFor="let column of displayedColumns">
+                        <ng-container matColumnDef="{{ column }}">
+                            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element[column] && element[column].value !== undefined">
+                                    {{ element[column].value }}
+                                    <button *ngIf="element[column].value !== '-'" mat-icon-button color="accent" (click)="revokePermission(element[column].permissionAssignmentId)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </span>
+                                <span *ngIf="!element[column] || element[column].value === undefined">{{ element[column] }}</span>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div> 
+        </div>
+    </div>
+</div>

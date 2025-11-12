@@ -1,0 +1,30 @@
+.component-container {
+    text-align: center;
+    display: flex;
+    gap: 0.2em;
+    flex-direction: column;
+    border: var(--standard-border-width) dashed rgb(150, 150, 150);
+    align-items: center;
+    padding: var(--standard-top-bottom-padding) 0;
+    transition: background-color 400ms;
+    transition-timing-function: ease-out;
+
+}
+#file-button {
+    background: var(--header-color);
+    color: var(--app-button-text);
+}
+
+.text {
+    margin: auto;
+}
+
+.hovering {
+    background-color: var(--hover-over-color);
+}
+
+.error {
+    border-color: var(--accent-color);
+}
+
+

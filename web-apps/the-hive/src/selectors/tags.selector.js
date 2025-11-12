@@ -1,0 +1,1 @@
+export const selectTagSearchOptions = (state) => state.tags.tagSearchOptions;

@@ -1,0 +1,33 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@the-hive/lib-shared": ["libs/shared-libs/lib-shared/src/index.ts"],
+      "@the-hive/lib-core": ["libs/server-libs/lib-core/src/index.ts"],
+      "@the-hive/lib-db": ["libs/server-libs/lib-db/src/index.ts"],
+      "@the-hive/lib-staff-shared": ["libs/shared-libs/lib-staff-shared/src/index.ts"],
+      "@the-hive/lib-skills-shared": ["libs/shared-libs/lib-skills-shared/src/index.ts"],
+      "@the-hive/lib-reviews-shared": ["libs/shared-libs/lib-reviews-shared/src/index.ts"],
+      "@the-hive/lib-learning-shared": ["libs/shared-libs/lib-learning-shared/src/index.ts"],
+      "@the-hive/lib-skills-logic": ["libs/server-libs/lib-skills-logic/src/index.ts"],
+      "@the-hive/lib-staff-logic": ["libs/server-libs/lib-staff-logic/src/index.ts"],
+      "@the-hive/lib-reviews-logic": ["libs/server-libs/lib-reviews-logic/src/index.ts"],
+      "@the-hive/lib-learning-logic": ["libs/server-libs/lib-learning-logic/src/index.ts"],
+      "@the-hive/lib-skills-web": ["libs/web-app-libs/lib-skills-web/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,17 @@
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--standard-gap);
+}
+
+.title {
+  font-weight: bold;
+}
+
+.error-card {
+  background-color: var(--warning-background-color);
+}
+
+.card-actions {
+  margin-block: var(--standard-gap);
+}

@@ -1,0 +1,33 @@
+<section id="container">
+    <section class='page'>
+        @let statusReviewsCounts = statusReviewsCounts$ | async;
+        <p class="toDoItem" *ngFor="let status of reviewStatusLabels; let i = index" (click)="activateItem(i)" [ngClass]="{'active': i == currentActiveSectionIndex}">
+            <span>{{status}}</span>
+            @if (!statusReviewsCounts) {
+              <span class="review-count badge-loader">
+                <mat-spinner diameter="16"></mat-spinner>
+              </span>
+            } @else if (statusReviewsCounts && statusReviewsCounts[status]!=undefined) {
+                <span class="review-count" matBadge="{{statusReviewsCounts[status]}}">
+                </span>
+            } @else {
+              <!-- No count retrieved for this status, rather show nothing than 0 -->
+            }
+        </p>
+    </section>
+    <section class="reviewList" [ngSwitch]="currentActiveSectionIndex">
+        <app-review-search-bar (fetchReviews)="updateReviewData($event)" (actionButton)="openHRRepDialog($event)" [actionButtonText]="createReviewsButtonText" [actionButtonHint]="createReviewsButtonHint" (currentlySelectedHrRep)="currentHrRep($event)"></app-review-search-bar>
+        <app-review-to-be-created [filterParameters]="filterParameters" (reloadData)="reloadData()" *ngSwitchCase="0"></app-review-to-be-created>
+        <app-review-new [filterParameters]="filterParameters" *ngSwitchCase="1" [buttonsEnabled]="buttonsEnabled"></app-review-new>
+        <app-review-providers-requested [filterParameters]="filterParameters" *ngSwitchCase="2" [buttonsEnabled]="buttonsEnabled"></app-review-providers-requested>
+        <app-review-providers-assigned [filterParameters]="filterParameters" *ngSwitchCase="3" [buttonsEnabled]="buttonsEnabled"></app-review-providers-assigned>
+        <app-review-in-progress [filterParameters]="filterParameters" *ngSwitchCase="4" [buttonsEnabled]="buttonsEnabled"></app-review-in-progress>
+        <app-review-completed [filterParameters]="filterParameters" *ngSwitchCase="5" [buttonsEnabled]="buttonsEnabled"></app-review-completed>
+        <app-review-report-downloaded [filterParameters]="filterParameters" *ngSwitchCase="6" [buttonsEnabled]="buttonsEnabled"></app-review-report-downloaded>
+        <app-review-exec-feedback-requested [filterParameters]="filterParameters"  *ngSwitchCase="7" [buttonsEnabled]="buttonsEnabled"></app-review-exec-feedback-requested>
+        <app-review-exec-feedback-received [filterParameters]="filterParameters" *ngSwitchCase="8" [buttonsEnabled]="buttonsEnabled"></app-review-exec-feedback-received>
+        <app-review-meeting-scheduled [filterParameters]="filterParameters" *ngSwitchCase="9" [buttonsEnabled]="buttonsEnabled"></app-review-meeting-scheduled>
+        <app-review-finalise-salary [filterParameters]="filterParameters" *ngSwitchCase="10" [buttonsEnabled]="buttonsEnabled"></app-review-finalise-salary>
+        <app-review-process-finalized [filterParameters]="filterParameters" *ngSwitchCase="11" [buttonsEnabled]="buttonsEnabled"></app-review-process-finalized>
+    </section>
+</section>

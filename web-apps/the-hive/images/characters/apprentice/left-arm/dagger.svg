@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 245.89 350.07">
+    <defs>
+        <style>
+            .dagger-1{isolation:isolate;}
+            .dagger-2{fill:#d7d7d7;}
+            .dagger-3{fill:#d3d3d3;}
+            .dagger-4{fill:url(#_4);}
+            .dagger-5{fill:#2a3e51;}
+            .dagger-6{fill:url(#_3);}
+            .dagger-7{fill:#99999a;}
+            .dagger-21,.dagger-8{mix-blend-mode:screen;}
+            .dagger-8{fill:url(#_40);}
+            .dagger-9{fill:#477087;}
+            .dagger-10{fill:#aeaeaf;}
+            .dagger-11,.dagger-12,.dagger-13,.dagger-14,.dagger-15,.dagger-16,.dagger-17,.dagger-18,.dagger-2 {stroke-miterlimit:10;}
+            .dagger-11,.dagger-12,.dagger-13,.dagger-14,.dagger-15,.dagger-16,.dagger-17,.dagger-18{stroke-width:0.09px;}
+            .dagger-11{fill:url(#dagger-gradient);stroke:url(#dagger-gradient-2);}
+            .dagger-12{fill:url(#dagger-gradient-3);stroke:url(#dagger-gradient-4);}
+            .dagger-13{fill:url(#dagger-gradient-5);stroke:url(#dagger-gradient-6);}
+            .dagger-14{fill:url(#dagger-gradient-7);stroke:url(#dagger-gradient-8);}
+            .dagger-15{fill:url(#dagger-gradient-9);stroke:url(#dagger-gradient-10);}
+            .dagger-16{fill:url(#dagger-gradient-11);stroke:url(#dagger-gradient-12);}
+            .dagger-17{fill:url(#dagger-gradient-13);stroke:url(#dagger-gradient-14);}
+            .dagger-18{fill:url(#dagger-gradient-15);stroke:url(#dagger-gradient-16);}
+            .dagger-19{fill:#a8a9ac;}
+            .dagger-20{fill:#d2d3d4;}
+            .dagger-21{fill:#fff;}
+            .dagger-22{fill:url(#dagger-gradient-17);}
+            .dagger-23{fill:none;stroke:#2a3e51;stroke-width:1.3px;}
+            .dagger-24{fill:url(#_160);}
+            .dagger-25{fill:url(#_4-2);}
+        </style>
+        <linearGradient id="_4" x1="205.13" y1="179.29" x2="204.9" y2="230.92" gradientUnits="userSpaceOnUse">
+            <stop offset="0.04" stop-color="#fff"/>
+            <stop offset="0.3" stop-color="#fbfbfb"/>
+            <stop offset="0.55" stop-color="#efefef"/>
+            <stop offset="0.7" stop-color="#e5e5e4"/>
+            <stop offset="0.8" stop-color="#dfdfde"/>
+            <stop offset="1" stop-color="#d7d7d7"/>
+        </linearGradient>
+        <linearGradient id="_3" x1="214.53" y1="205.44" x2="189.86" y2="135.54" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset="0.84" stop-color="#e8e7e7"/>
+        </linearGradient>
+        <linearGradient id="_40" x1="-1349.72" y1="2523.68" x2="-1327.6" y2="2523.68" gradientTransform="matrix(0.87, -0.47, 0.5, 0.88, 112.75, -2672.05)" gradientUnits="userSpaceOnUse">
+            <stop offset="0.17" stop-color="#bdb48e"/>
+            <stop offset="0.26" stop-color="#b3ab87"/>
+            <stop offset="0.41" stop-color="#999273"/>
+            <stop offset="0.6" stop-color="#6e6953"/>
+            <stop offset="0.82" stop-color="#333126"/>
+            <stop offset="1"/>
+        </linearGradient>
+        <linearGradient id="dagger-gradient" x1="186.95" y1="215.2" x2="191.12" y2="215.2" gradientUnits="userSpaceOnUse">
+            <stop offset="0.04" stop-color="#fff"/>
+            <stop offset="0.23" stop-color="#fbfbfb"/>
+            <stop offset="0.41" stop-color="#efefef"/>
+            <stop offset="0.52" stop-color="#e5e5e4"/>
+            <stop offset="0.68" stop-color="#dfdfde"/>
+            <stop offset="1" stop-color="#d7d7d7"/>
+        </linearGradient>
+        <linearGradient id="dagger-gradient-2" x1="186.9" y1="215.2" x2="191.17" y2="215.2" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#e5e5e4"/>
+            <stop offset="0.29" stop-color="#dfdfde"/>
+            <stop offset="0.88" stop-color="#d7d7d7"/>
+        </linearGradient>
+        <linearGradient id="dagger-gradient-3" x1="186.97" y1="217.07" x2="191.14" y2="217.07" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-4" x1="186.92" y1="217.07" x2="191.19" y2="217.07" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-5" x1="186.97" y1="218.94" x2="191.14" y2="218.94" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-6" x1="186.92" y1="218.94" x2="191.19" y2="218.94" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-7" x1="186.95" y1="220.81" x2="191.12" y2="220.81" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-8" x1="186.9" y1="220.81" x2="191.17" y2="220.81" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-9" x1="186.94" y1="222.72" x2="191.11" y2="222.72" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-10" x1="186.89" y1="222.72" x2="191.16" y2="222.72" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-11" x1="186.96" y1="224.59" x2="191.13" y2="224.59" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-12" x1="186.91" y1="224.59" x2="191.18" y2="224.59" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-13" x1="186.96" y1="226.46" x2="191.13" y2="226.46" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-14" x1="186.91" y1="226.46" x2="191.18" y2="226.46" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-15" x1="186.94" y1="228.33" x2="191.11" y2="228.33" xlink:href="#dagger-gradient"/>
+        <linearGradient id="dagger-gradient-16" x1="186.89" y1="228.33" x2="191.16" y2="228.33" xlink:href="#dagger-gradient-2"/>
+        <linearGradient id="dagger-gradient-17" x1="189.01" y1="198.52" x2="189.01" y2="214.71" xlink:href="#dagger-gradient"/>
+        <radialGradient id="_160" cx="177.26" cy="-63.97" r="6.29" gradientTransform="translate(76.87 252.55) scale(0.63 0.67)" gradientUnits="userSpaceOnUse">
+            <stop offset="0.01" stop-color="#22577e"/>
+            <stop offset="0.25" stop-color="#204f77"/>
+            <stop offset="0.63" stop-color="#1c3b62"/>
+            <stop offset="1" stop-color="#162048"/>
+        </radialGradient>
+        <linearGradient id="_4-2" x1="203.68" y1="209.66" x2="178.88" y2="237.19" gradientTransform="translate(-90.14 321.17) rotate(-68.68)" xlink:href="#_4"/>
+    </defs>
+    <title>small</title>
+    <g id="dagger" class="dagger-1">
+        <path class="dagger-2" d="M190.75,153.65c-7,5.38-13.51,10.73-20.43,16.1-.27,3.54-.59,7-1,10.59a384.79,384.79,0,0,1,4.3,43.72l29.95-14A343.32,343.32,0,0,0,190.75,153.65Z"/>
+        <path class="dagger-3" d="M190.75,153.65c-7,5.38-13.51,10.73-20.43,16.1-.27,3.54-.59,7-1,10.59,1.11,7.11,2.11,15.06,2.87,22.81,3.21-1.71,12.2-6.51,14.06-7.56,2-1.14,11.46-6.83,13.39-8Q196.15,170.85,190.75,153.65Z"/>
+        <path class="dagger-2" d="M173.65,224.06c3.63,1.88,8.72,5.49,12.16,7.72,10.87-2.93,23.82-8.34,33.64-12.7a106.93,106.93,0,0,0-15.85-9Z"/>
+        <path class="dagger-4" d="M190.75,153.65A343.32,343.32,0,0,1,203.6,210.1a106.93,106.93,0,0,1,15.85,9c-1-19.09-6.58-39.6-12.43-59.14A36,36,0,0,0,190.75,153.65Z"/>
+        <path class="dagger-5" d="M174.91,221.67a6.41,6.41,0,0,1,.66-4.28,57.39,57.39,0,0,1,17.63-3.51c4.73,2.81,8,6.84,9.16,11.59A25.49,25.49,0,0,1,201.12,240,68.79,68.79,0,0,1,185,238.77l.19-.13c-.1-.87-.48-1.69-.58-2.56l-8.08-1.49A38.27,38.27,0,0,1,174.91,221.67Z"/>
+        <path class="dagger-5" d="M189.46,170.2a11.7,11.7,0,0,1-1.64,8.58,11.43,11.43,0,0,1-7.14,4.89,5.91,5.91,0,0,1-2.71.05c-2.5-.63-2.16-3.14-2.56-5.2-.45-2.39-1-4.77-1.64-7.12a44.45,44.45,0,0,1,12.36-8.2C187.65,165.72,188.91,167.34,189.46,170.2Z"/>
+        <path class="dagger-6" d="M190.75,153.65q5.4,17.21,8.92,33.95l.35-.22a84,84,0,0,1,9.24,3.93c2.14,1.2,5.42,3.25,7,4.26-2.38-11.88-5.77-23.93-9.27-35.63A36,36,0,0,0,190.75,153.65Z"/>
+        <path class="dagger-7" d="M199.82,188.26l-.27-1.22h0l-.17.11c-7.74,5-16.89,10.19-27.2,15.53.05.42.09.84.13,1.25C182.73,198.54,192,193.28,199.82,188.26Z"/>
+        <path class="dagger-3" d="M216.13,194.78c-4.25-2.76-12.1-7.17-16.38-7.71l-.2,0,.27,1.22,0,0c4.51.69,13,5.7,16.61,8.11C216.34,195.83,216.24,195.3,216.13,194.78Z"/>
+        <path class="dagger-7" d="M190.47,193.23l-.54.11a86.55,86.55,0,0,1-1.77-10.11v-.14l.1-.09a40.86,40.86,0,0,1,5.79-4.53,99.75,99.75,0,0,0-6.3-22.52l.51-.2a100.82,100.82,0,0,1,6.37,22.84l0,.18-.15.09a39.09,39.09,0,0,0-5.76,4.47A85.82,85.82,0,0,0,190.47,193.23Z"/>
+        <path class="dagger-8" d="M205.68,160.38A216.27,216.27,0,0,1,217,215.51a29.32,29.32,0,0,0-7.86-4.47,263,263,0,0,0-8.51-44.19,26.78,26.78,0,0,0-5-2.74c-.88-2.73-1.85-5.6-2.73-8.33C196.84,156.77,202.14,158.37,205.68,160.38Z"/>
+        <path class="dagger-7" d="M176,212.21c-.92.46-1.84.87-2.77,1.23l-.22-.51a33.66,33.66,0,0,0,8.33-4.75,30.66,30.66,0,0,0-.59-9.39l.53-.11a30.42,30.42,0,0,1,.6,9.68v.11l-.09.07A33.93,33.93,0,0,1,176,212.21Z"/>
+        <path class="dagger-5" d="M171.23,153.77c-.19,5.09-.46,9.86-.8,14.53,2.26,2.86,4.39,5.82,6.35,8.88A9.67,9.67,0,0,0,183.6,175a10.15,10.15,0,0,0,3.28-6.58A102.76,102.76,0,0,0,171.23,153.77Z"/>
+        <path class="dagger-9" d="M181.58,164.78a80.64,80.64,0,0,0-10.4-9.85c-.09,2.33-.2,4.59-.32,6.81l1.35,1.38a19,19,0,0,0,3.35-3.16,14.7,14.7,0,0,1-1.35,2.24,13.8,13.8,0,0,1-1.36,1.61c1,1.1,2,2.23,3,3.37a17.27,17.27,0,0,0,1.53-1.75,16.66,16.66,0,0,0,1.51-2.3,14.78,14.78,0,0,1-1,2.61,13.42,13.42,0,0,1-1.36,2.17c1.33,1.54,2.63,3.1,3.88,4.71A13.05,13.05,0,0,0,181.58,164.78Z"/>
+        <rect class="dagger-10" x="187.36" y="210.15" width="3.49" height="17.77"/>
+        <path class="dagger-11" d="M191,215.24l-3.05,2.57s-.47.17-.63-.45-.67-1.13,0-1.91,2.82-2.87,2.82-2.87a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.76S191,215.24,191,215.24Z"/>
+        <path class="dagger-12" d="M191,217.11l-3,2.57s-.47.17-.63-.45-.67-1.12,0-1.91,2.82-2.87,2.82-2.87a.67.67,0,0,1,.86.63c.08.83.14,1.6.16,1.75S191,217.11,191,217.11Z"/>
+        <path class="dagger-13" d="M191,219l-3,2.57s-.47.17-.63-.45-.67-1.13,0-1.91,2.82-2.87,2.82-2.87a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.76S191,219,191,219Z"/>
+        <path class="dagger-14" d="M191,220.85l-3.05,2.57s-.47.17-.63-.45-.67-1.12,0-1.91,2.82-2.87,2.82-2.87a.67.67,0,0,1,.86.63c.08.83.14,1.61.16,1.75S191,220.85,191,220.85Z"/>
+        <path class="dagger-15" d="M191,222.76l-3,2.58s-.47.16-.63-.46-.67-1.12,0-1.91,2.82-2.86,2.82-2.86a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.75S191,222.76,191,222.76Z"/>
+        <path class="dagger-16" d="M191,224.63l-3.05,2.58s-.47.16-.63-.46-.67-1.12,0-1.91,2.82-2.86,2.82-2.86a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.75S191,224.63,191,224.63Z"/>
+        <path class="dagger-17" d="M191,226.5l-3.05,2.58s-.47.16-.63-.46-.67-1.12,0-1.91,2.82-2.86,2.82-2.86a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.75S191,226.5,191,226.5Z"/>
+        <path class="dagger-18" d="M191,228.37l-3,2.58s-.47.16-.63-.46-.67-1.12,0-1.91,2.82-2.86,2.82-2.86a.66.66,0,0,1,.86.62c.08.83.14,1.61.16,1.75S191,228.37,191,228.37Z"/>
+        <path class="dagger-19" d="M199.6,198.44c-3.92-2.71-5.73-12.35-2.62-40.77a99.9,99.9,0,0,0-7.5-49.85h0c-.1-.23-.16-.34-.16-.34v0L189,107l-.37.73h0a92,92,0,0,0-7.95,50c3.62,28.39,1.69,38-2.6,40.78l4.65.73,6.64-.69,6,.64ZM189.3,115l-.1,32.45-.34-32.84Z"/>
+        <path class="dagger-20" d="M188.82,113.28s-9.25,19.54-4.17,52S182.32,199,182.32,199l3.85,1.18,3.56-1.62Z"/>
+        <path class="dagger-20" d="M188.78,113.28s9.25,19.54,4.17,52S195.28,199,195.28,199l-3.86,1.18-3.55-1.62Z"/>
+        <path class="dagger-21" d="M188.92,174.74s-.24,14.69-3.47,25.4h7.68S188.74,186.82,188.92,174.74Z"/>
+        <path class="dagger-21" d="M188.83,174.83s-.52,14.39-3.75,25.1h7.68S188.65,186.91,188.83,174.83Z"/>
+        <ellipse class="dagger-9" cx="189.01" cy="206.86" rx="6.08" ry="9.05"/>
+        <ellipse class="dagger-22" cx="189.01" cy="206.62" rx="5.08" ry="8.09"/>
+        <ellipse class="dagger-23" cx="189.01" cy="206.62" rx="5.08" ry="8.09"/>
+        <path class="dagger-5" d="M188.92,217.09s6.67-15.58,0-15.75S188.92,217.09,188.92,217.09Z"/>
+        <path class="dagger-2" d="M188.92,216.52s6.19-14.45,0-14.61S188.92,216.52,188.92,216.52Z"/>
+        <path class="dagger-24" d="M188.92,215.33s4.11-11.45,0-11.27S188.92,215.33,188.92,215.33Z"/>
+        <path class="dagger-2" d="M184.2,232.72a11.92,11.92,0,0,0,.36,7.35,38.59,38.59,0,0,0,16.72,3.47c.36-.81,1-2.44,1.07-2.44a23,23,0,0,0,2.05-9.69,89.77,89.77,0,0,0-18.4-1Z"/>
+        <path class="dagger-2" d="M183.69,233.06a32.47,32.47,0,0,1-1.32-15.51c-2.42-1.51-5.38-3-8.2-2.42l-2.3,2.05a30.63,30.63,0,0,0,2.69,17,13.83,13.83,0,0,0,7.22,1.22Z"/>
+        <path class="dagger-2" d="M182.66,223a17.82,17.82,0,0,0,.24,3.5,6.12,6.12,0,0,0,1.36,3.19A54.46,54.46,0,0,0,204,228l.9-2.14a23.15,23.15,0,0,0-2.28-11.3c-6.16.66-13.12,2.54-18.14,6.26Z"/>
+        <path class="dagger-25" d="M203.45,233.66a22.63,22.63,0,0,1-2.17,9.88,38.59,38.59,0,0,1-16.72-3.47,12,12,0,0,1-.36-7.35A96.61,96.61,0,0,1,203.45,233.66ZM182.66,223a17.82,17.82,0,0,0,.24,3.5,6.12,6.12,0,0,0,1.36,3.19A54.46,54.46,0,0,0,204,228a22.85,22.85,0,0,0-2.35-11.5C195.22,217.19,187.92,219.14,182.66,223Zm-10.79-5.77a30.63,30.63,0,0,0,2.69,17,13.83,13.83,0,0,0,7.22,1.22,32.14,32.14,0,0,1-1.34-15.79C177.92,218.1,174.82,216.56,171.87,217.18Z"/>
+    </g>
+</svg>

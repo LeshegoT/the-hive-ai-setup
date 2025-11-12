@@ -1,0 +1,37 @@
+<section class="filter-container">
+    <app-staff-filter #staffFilter (selectStaff)="staffSearch()" searchLabel="Search for staff member" searchType="search"></app-staff-filter>
+    <button mat-icon-button color="primary" type="button"
+        (click)="clearStaffFilter()"
+        matTooltip="Clear staff search"
+        matTooltipPosition="right">
+            <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+    <app-unit-filter #unitFilter/>
+    <button mat-icon-button color="primary" type="button"
+        (click)="clearUnitFilter()"
+        matTooltip="Clear unit filter"
+        matTooltipPosition="right">
+            <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+    <select-company-entity (entitySelected)="onEntitySelection($event)"></select-company-entity>
+    <mat-checkbox 
+      [checked]="onlyContractorsWithNoContracts()"
+      (change)="onlyContractorsWithNoContracts.set(!onlyContractorsWithNoContracts())">
+      Only those contractors with no contracts
+    </mat-checkbox>  
+</section>
+@if(unitFilterComponent().selectedUnitList()) {
+    <section class="selected-filters">
+        @for (unit of unitFilterComponent().selectedUnitList(); track $index) {
+            <mat-chip (removed)="unitFilterComponent().remove(unit)">
+            {{unit}}
+            <button matChipRemove matTooltip="Remove {{unit}}">
+                <mat-icon>cancel</mat-icon>
+            </button>
+            </mat-chip>
+        }
+    </section>
+}@else {
+    <!-- Display nothing, no unit selected -->
+}
+<app-staff-profile [selectedStaffMember]="selectedStaffMember" ></app-staff-profile>

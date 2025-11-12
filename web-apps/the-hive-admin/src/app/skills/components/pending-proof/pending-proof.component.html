@@ -1,0 +1,93 @@
+<section id="proof-validation-filter-panel">
+  <!--Future section for search and loading spinner to come-->
+  <mat-form-field>
+    <mat-label>Search By Staff Name</mat-label>
+    <input matInput type="text" [ngModel]="searchText$ | async" (ngModelChange)="onSearchChange($event)">
+  </mat-form-field>
+</section>
+  @if (loading$ | async) {
+  <div class="loading-overlay">
+    <app-loading-indicator></app-loading-indicator>
+  </div>
+}@else{
+  <!--app not loading-->
+}
+<table
+    mat-table
+  [dataSource]="proofValidations$ | async"
+  matSort (matSortChange)="sortData($event)"
+  class="mat-elevation-z8 full-width-table"
+>
+  <!-- Staff Name -->
+  <ng-container matColumnDef="displayName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Name</th>
+    <td mat-cell *matCellDef="let row">{{ row.displayName }}</td>
+  </ng-container>
+
+  <!-- Staff Email -->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Email</th>
+    <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+  </ng-container>
+
+  <!-- Qualification -->
+  <ng-container matColumnDef="qualification">
+    <th mat-header-cell *matHeaderCellDef>Qualification</th>
+    <td mat-cell *matCellDef="let row">{{ row.qualification }}</td>
+  </ng-container>
+  
+  <!-- Download Proof -->
+  <ng-container matColumnDef="downloadProof">
+    <th mat-header-cell *matHeaderCellDef>Download Proof</th>
+    <td mat-cell *matCellDef="let row">
+      <button
+        mat-icon-button
+        color="secondary"
+        (click)="downloadProof(row.proofPath, row.qualification, row)"
+      >
+        <mat-icon>attach_file</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+ 
+  <!-- Validate -->
+  <ng-container matColumnDef="validate">
+    <th mat-header-cell *matHeaderCellDef>Validate</th>
+    <td mat-cell *matCellDef="let row">
+      <button
+        mat-raised-button
+        [disabled]="!row.enableValidationButton"
+        [color]="row.enableValidationButton ? 'primary' : ''"
+        (click)="onApprove(row)"
+      >
+        Approve
+      </button>
+      <button
+        mat-raised-button
+        class="ml-2"
+        [disabled]="!row.enableValidationButton"
+        [color]="row.enableValidationButton ? 'warn' : ''"
+        (click)="onReject(row)"
+      >
+        Reject
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Header and Row Definitions -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  
+</table>
+
+
+<mat-paginator
+  [length]="(totalCount$ | async) || 0"
+  [pageIndex]="(pageIndex$ | async) || 0"
+  [pageSize]="(pageLength$ | async) || 10"
+  [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+  [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+  [hidePageSize]="this.tableService.getHidePageSize()"
+  (page)="pageChanged($event)">
+</mat-paginator>
+

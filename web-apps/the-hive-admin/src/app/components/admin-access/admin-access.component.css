@@ -1,0 +1,80 @@
+#component{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 2em;
+}
+
+.bubbleClose{
+    cursor: pointer;
+    margin-left: 0.4em;
+}
+
+.bubbleClose:hover{
+    font-weight: bold;
+}
+
+#viewPermissions{
+     display:flex ; 
+}
+
+#viewPermissions  div{
+    margin: 1em;
+}
+
+.leftPanel{
+     flex: 1;
+}
+
+.leftPanel td{
+    cursor: pointer; 
+}
+
+.rightPanel{
+     flex: 3 ;
+}
+
+.rightPanel button{
+    margin-bottom: 1.5em;
+}
+
+.assignedRoutesContainer{
+    margin-bottom: 2em;
+}
+
+.cancelIcon:hover{
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight:bold;
+}
+
+#createUser{
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+    align-items: center;
+}
+
+#newUserContainer{
+     display: flex;
+    flex-direction: row;
+}
+
+#createUserTitle{
+    text-align: center;
+}
+
+#insertButton{
+    width: 88%;
+}
+
+#newSiteUserName{
+    padding: 1.5em;
+    margin-bottom: 2em;
+    width: 80%;
+}
+
+#routes-form {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,30 @@
+<section class="by-person-section">
+  <app-staff-filter
+    searchLabel="Search for a person to view their portfolio"
+    [selectedUPN]="selectedUPN"
+    (selectStaff)="selectStaff()"
+    searchType="search"
+    [class.hidden-app-staff-filter]="selectedUPN"
+  ></app-staff-filter>
+
+  @if(selectedUPN){
+    <button class="go-back-button" mat-raised-button color="primary" type="button" (click)="goBack.emit(selectedUPN)">  
+      <mat-icon>arrow_back</mat-icon>
+      Go back
+    </button>
+  } @else{
+    <!--The user does not need to go back as they are not viewing a staff members profile from talent search-->
+  }
+
+  @if(selectedPerson){
+    <app-staff-profile 
+      [selectedStaffMember]="selectedPerson" 
+      [includeSkills]="true" 
+      [selectedUPN]="selectedUPN"
+      (clearResults)="clearSearchResults()">
+    </app-staff-profile>
+    <app-search-by-staff-tabs [selectedStaffMember]="selectedPerson"></app-search-by-staff-tabs>
+  } @else{
+    <!-- no selected person was selected , no need to display staff profile and staff tabs -->
+  }
+</section>

@@ -1,0 +1,66 @@
+::ng-deep .cdk-overlay-pane {
+    overflow-y: auto;
+}
+
+.warning {
+    font-weight: bolder;
+    font-size: x-large;
+}
+
+.warning-message {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.note-alert {
+    color: var(--accent-color);
+    border-radius: var(--standard-border-radius);
+    border: var(--standard-border-width) solid  var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--standard-padding);
+    background-color: var(--background-shade-color);
+}
+
+.note-alert p {
+    margin: 0;
+    padding: 0;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+    padding: var(--standard-padding);
+}
+
+.button-panel{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: var(--standard-gap);
+}
+
+.notes-input {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font-size-small);
+}
+
+.meeting-attendees {
+    background-color: var(--background-shade-color);
+}
+
+.main-content textarea {
+    resize: vertical;
+    padding: var(--standard-padding);
+    box-sizing: border-box;
+    background-color: var(--background-shade-color);
+    border-bottom: var(--standard-border-width) solid var(--header-color);
+}
+
+.remaining-meeting-notes-characters {
+    color: var(--remaining-characters-hint-color);
+    text-align: right;
+}

@@ -1,0 +1,22 @@
+<cdk-accordion class="accordion">
+        <cdk-accordion-item #accordionItem="cdkAccordionItem" class="accordion-item">
+            <button class="accordion-item-header" (click)="accordionItem.toggle()" tabindex="0">
+                {{ header }}
+                <span class="accordion-item-description">
+                    Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+                </span>
+            </button>
+            
+            @if(accordionItem.expanded) {
+                <ul>
+            @for (item of list; track item; let index = $index) {
+                    <li>
+                        <mat-checkbox (change)="update($event.checked, index)" [checked]="false">
+                            {{ item[displayProperty] }}
+                        </mat-checkbox>
+                    </li>
+            }
+                </ul>
+            }
+        </cdk-accordion-item>
+</cdk-accordion>

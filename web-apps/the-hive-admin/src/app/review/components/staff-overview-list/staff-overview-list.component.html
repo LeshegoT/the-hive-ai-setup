@@ -1,0 +1,129 @@
+<table mat-table
+    class="mat-elevation-z8 full-width-table"
+    [dataSource]="staffOverviewTable"
+    matSort
+    #staffOverviewTableSort="matSort">
+
+    <ng-container matColumnDef="displayName" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Name</th>
+        <td mat-cell *matCellDef="let row">
+            {{row.displayName}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="reviewer" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reviewer</th>
+        <td mat-cell *matCellDef="let row">
+            {{row.reviewer}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unit" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+        <td mat-cell *matCellDef="let row">
+            {{row.unit}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="staffType" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contract Type</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.staffType }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="employmentDate" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Joined Date</th>
+        <td mat-cell *matCellDef="let row">
+            {{ row.joinedDate | date}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="entity" >
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Company entity</th>
+      <td mat-cell *matCellDef="let row">
+          {{ row.entity}}
+      </td>
+  </ng-container>
+
+    <ng-container matColumnDef="currentReview">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Current Review</th>
+        <td mat-cell *matCellDef="let row">
+            @if(row !== rowCurrentlyBeingEdited) {
+                @if(row.currentReview.templateName) {
+                    <p>Type: {{row.currentReview.templateName}}</p>
+                    <p>Due: {{row.currentReview.date | date}}</p>
+                    <p>HR Rep: {{ row.currentReview.currentHrRepDisplayName }}</p>
+                } @else {
+                    @if(row.nextReview.templateName) {
+                        <p>No current review. The staff member does, however, have a review scheduled.</p>
+                    } @else {
+                        <p>No current review.</p>
+                    }
+                }
+            } @else {
+                <mat-form-field appearance="outline">
+                    <mat-label>Review Type</mat-label>
+                    <mat-select  (focusout)="show=false" [(ngModel)]="row.nextReview.templateName">
+                        <mat-option [value]="template.templateName" *ngFor="let template of feedbackAssignmentTemplates">{{ template.templateName }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            }
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nextReview">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Upcoming Review</th>
+        <td mat-cell *matCellDef="let row">
+            @if(row !== rowCurrentlyBeingEdited) {
+                @if(row.nextReview.templateName) {
+                    <p>Type: {{row.nextReview.templateName}}</p>
+                    <p>Due: {{row.nextReview.date | date}}</p>
+                } @else {
+                    @if(row.currentReview.templateName) {
+                        <p>Scheduling is pending the finalisation of the current review.</p>
+                    } @else {
+                        <p>No reviews scheduled.</p>
+                    }
+                }
+            } @else {
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="pickerFrom"  [(ngModel)]="row.nextReview.date" placeholder="Choose next date">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFrom></mat-datepicker>
+                </mat-form-field>
+            }
+        </td>
+    </ng-container>    
+
+    <ng-container matColumnDef="controls" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+        <td mat-cell *matCellDef="let row" class="button-container">
+            <button class="actionBtnSmall reviewActionButton" *ngIf="row!==rowCurrentlyBeingEdited && (!row.nextReview.templateName && !row.currentReview.templateName) "  (click)="editReview(row)"><mat-icon >edit</mat-icon></button>
+            <mat-icon *ngIf="row===rowCurrentlyBeingEdited"  (click)="confirmCreateReview(row)" matTooltip="Confirm update" matTooltipPosition="right" class="saveIcon">check</mat-icon>
+            <mat-icon  *ngIf="row===rowCurrentlyBeingEdited" (click)="cancelCreateReview(row)" matTooltip="Cancel update" matTooltipPosition="right" class="cancelIcon">close</mat-icon> 
+            <button (click)="hrNotes($event, row)" class="notesBtnSmall reviewActionButton" title="Review Notes"><mat-icon>chat_bubble_outline</mat-icon></button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row
+        *matHeaderRowDef="staffOverviewColumns(); sticky: true">
+    </tr>
+    <tr mat-row
+        *matRowDef="let row; columns: staffOverviewColumns();"
+        (click)="rowSelectTask(row)"
+        [ngClass]="'selectable-row'"
+        [class.highlight-problem]="hasMissingCurrentOrNextReview(row)"
+        id= "{{row.staffId}}">
+    </tr>
+</table>
+<mat-paginator class="paginator-sticky"
+    #paginator
+    [length]="currentPageInfo.resultSetSize"
+    [pageIndex]="0"
+    [pageSize]="currentPageInfo.pageSize" 
+    [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+    [hidePageSize]="this.tableService.getHidePageSize()"
+    (page)="pageChanged($event)"
+></mat-paginator> 

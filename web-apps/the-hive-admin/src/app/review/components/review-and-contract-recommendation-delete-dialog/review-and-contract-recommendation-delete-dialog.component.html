@@ -1,0 +1,88 @@
+<section class="warning-container">
+  <h1 mat-dialog-title>You are attempting to delete a {{ deleteType.toLowerCase() }}</h1>
+  <p id="noteAlert"><strong>Warning:</strong>{{ data.warningMessage }}</p>
+  @if (deleteType === 'Review') {
+  <div class="notes">
+    <p class="note" *ngIf="reviewCompletedFlag || reviewHasCompletedFeedbackFlag">
+      Someone has already provided their feedback for this review. <br>
+      Deleting this review will result in the <b>permanent</b> loss of their feedback.
+    </p>
+    <p class="note" *ngIf="reviewCompletedFlag || reviewHasCompletedFeedbackFlag">
+      This action <b>cannot</b> be undone. This will permanently delete this review and all related feedback assignments
+    </p>
+
+    @if(data.feedbackAssignments?.total > 0) {
+      <p class="note">
+        Links that have already been emailed to assigned (internal and external) feedback providers will no longer work after deleting this {{ deleteType.toLowerCase() }}.</p>
+    } @else {
+      <!-- No feedback assignments, so no links were sent out already for this review -->
+    }
+
+  </div>
+  } @else {
+    <!-- The warning information is not displayed, as it only appears when a review is being deleted. -->
+  }
+</section>
+
+<div mat-dialog-content>
+  <mat-divider></mat-divider>
+
+  <div id="detailSummary">
+    <div id="leftPanel">
+        <label class="detailTitle">{{ deleteType }} for: </label>
+        <label *ngIf="data.status" class="detailTitle">{{ deleteType }} status: </label>
+        <label class="detailTitle">{{ deleteType }} deadline: </label>
+    </div>
+    <div id="rightPanel">
+        <label class="details"> {{data.reviewee}}</label>
+        <br>
+     
+        <label *ngIf="!reviewCompletedFlag && data.status" class="pendingStatus">{{data.status}}</label>
+        <label *ngIf="reviewCompletedFlag && data.status" class="completedWarningStatus">{{data.status}}</label>
+        <br *ngIf="data.status">
+    
+        <label class="details">{{data.deadline | date:'yyyy/MM/dd'}}</label>
+        <br>
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+
+  <form [formGroup]="deleteReviewForm" (ngSubmit)="onDelete()">
+    <mat-form-field>
+      <mat-label>Please select the reason for deleting this {{ deleteType.toLocaleLowerCase() }}:</mat-label>
+      <mat-select formControlName="selectedReason" required>
+        <mat-option value="" disabled></mat-option>
+        @if (data.contractRecommendationId) {
+          @for (cancelReason of (recommendationCancellationReasons$ | async); track cancelReason.contractRecommendationCancelReasonId) {
+            <mat-option [value]="cancelReason.reason">{{ cancelReason.reason }}</mat-option>
+          }
+        } @else {
+          @for (cancelReason of (reviewCancellationReasons$ | async); track cancelReason.reviewReasonsId) {
+            <mat-option [value]="cancelReason.reason ">{{ cancelReason.reason }}</mat-option>
+          }
+        }
+      </mat-select>
+      <mat-error *ngIf="deleteReviewForm.controls['selectedReason'].hasError('required')">You must select a reason</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="deleteReviewForm.controls['selectedReason'].value.toLocaleLowerCase() === 'special case'">
+      <mat-label>Please type a reason</mat-label>
+      <input matInput formControlName="finalReason" required />
+      <mat-error *ngIf="!deleteReviewForm.get('finalReason').valid && deleteReviewForm.get('finalReason').touched">Please provide a reason</mat-error>  
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>Please type the email of the reviewee to confirm</mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="deleteReviewForm.controls['email'].invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <div id="buttonPanel">
+      <div mat-dialog-actions>
+        <button mat-button (click)="onCancel()" cdkFocusInitial type="button">Cancel</button>
+        <button mat-button color="accent" type="submit">Confirm Deletion</button>
+      </div>
+    </div>
+  </form>
+</div>

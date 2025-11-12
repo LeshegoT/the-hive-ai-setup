@@ -1,0 +1,130 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.container-content {
+  width: 35%;
+}
+
+.container-content-right {
+  width: 60%;
+  margin-left: 5%;
+}
+
+.container-content-full {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error {
+  color: red;
+}
+
+.contentPicker {
+  padding: 0.5em 0.5em;
+  line-height: 36px;
+}
+
+.contentPickerBox {
+  border: 0.5px solid grey;
+  margin: 0.5em 0;
+}
+
+.contentPickerTitle {
+  padding: 1em 0;
+}
+
+.contentButton {
+  display: block;
+  float: right;
+}
+
+.addContentBlock {
+  margin: 1em 0;
+  gap: var(--standard-gap);
+}
+
+.addCourse {
+  width: 80%;
+}
+
+.add-facilitator {
+  margin: 1em 0;
+  width: 80%;
+}
+
+.addButton {
+  display: block;
+  float: right;
+}
+
+.addActivity {
+  width: 30%;
+}
+
+.align-start {
+  justify-content: flex-start;
+  margin-left: 0;
+}
+
+.marginTop {
+  margin-top: 1.5em;
+}
+
+.max-width {
+  max-width: 200px;
+}
+
+.content {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.duration {
+  padding: var(--standard-padding);
+  height: fit-content;
+  margin-left: 3%;
+  float: none;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 1em;
+}
+
+.activities {
+  padding: var(--standard-padding);
+  height: fit-content;
+  margin-left: .7em;
+  float: none;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 1em;
+}
+
+.date {
+  display: inline;
+  margin-left: 5%;
+}
+
+.marginLeft {
+  margin-left: 0;
+  display: flex;
+}
+
+.rightButton {
+  display: inline;
+  align-self: center;
+}
+
+.time {
+  margin-left: 6%;
+}
+
+.content-table {
+  width: 100%;
+  margin-top: 1em;
+}

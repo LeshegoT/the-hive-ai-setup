@@ -1,0 +1,113 @@
+@if (peopleData) {
+<div class="component">
+  <div class="filter">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+    </mat-form-field>
+    @if (showExportButtons()) {
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="copyEmails()" type="button">Copy Emails</button>
+      </div>
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="exportEmailsToText()" type="button">Export Emails to Text</button>
+      </div>
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="exportEmailsToCSV()" type="button">Export Emails to CSV</button>
+      </div>
+    } @else {
+      <!-- Parent component should decide whether to show export actions -->
+    }
+  </div>
+
+  <table mat-table class="full-width-table" [dataSource]="peopleData" matSort>
+
+    <ng-container matColumnDef="displayName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
+      <td mat-cell *matCellDef="let row">
+        @if( (userHasAdditionalInfoRights | async) ) {
+          @defer {
+            <app-staff-additional-info [upn]="row.userPrincipleName"></app-staff-additional-info>
+          } @loading {
+            <mat-spinner diameter="16"></mat-spinner>
+          }
+        } @else {
+          <!-- the additional staff info component should not be shown to users who don't have rights to view it -->
+        }
+        <span class="additional-info">{{ row.displayName }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="userPrincipleName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>BBD Email</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.userPrincipleName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="userName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>BBD User Name</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.userName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="jobTitle">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title/Role</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.jobTitle }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.department }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="office">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Office</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.office }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="manager">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reviewer</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.manager }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        @if (actions().includes('unitCorrections')) {
+          <button mat-icon-button matTooltip="View/Update Unit History" (click)="openUnitCorrectionForUpn(row)">
+            <mat-icon>history</mat-icon>
+          </button>
+        } @else {
+          <!-- Action not included, do not show unit move review button it in the table -->
+        }
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="reportColumns(); sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: reportColumns()" [class.selected]="addingUnitChangeReviewDetails === row.userPrincipleName"></tr>
+  </table>
+
+  <mat-paginator
+  #paginator
+  [length]="peopleData.data.length"
+  [pageIndex]="0"
+  [pageSize]="this.tableService.getPageSize()" 
+  [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+  [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+  [hidePageSize]="this.tableService.getHidePageSize()"
+>
+</mat-paginator>
+
+</div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

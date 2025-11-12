@@ -1,0 +1,22 @@
+#no-users-with-skills-message {
+    text-align: center;
+}
+
+mat-panel-title {
+    gap: var(--standard-gap)
+}
+
+mat-expansion-panel-header {
+    gap: var(--standard-gap);
+}
+
+.ratified,
+.ratified:hover,
+.mat-expanded.ratified {
+    background-color: var(--tertiary-color);
+}
+
+#ratify-available-at-button {
+    color: var(--app-button-text);
+    background-color: var(--app-review-button);
+}

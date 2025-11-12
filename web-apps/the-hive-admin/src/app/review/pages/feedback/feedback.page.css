@@ -1,0 +1,9 @@
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+.mat-tab-body-wrapper {
+  background: rgba(250, 250, 250, 1);
+}
+
+.mat-mdc-tab-group, mat-tab-group {
+  background: rgba(250, 250, 250, 1);
+}

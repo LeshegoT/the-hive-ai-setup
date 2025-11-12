@@ -1,0 +1,19 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.overview-content {
+    display: flex;
+    flex-direction: row;
+}
+
+app-make-contractors-permanent, contracts-overview-list, app-staff-contract-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.overview-list {
+    overflow-y: auto;
+}

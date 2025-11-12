@@ -1,0 +1,72 @@
+:host{
+  --table-data-padding: 1rem;
+}
+
+.header-row {
+  font-weight: bolder;
+  text-transform: capitalize;
+  padding: var(--table-data-padding);
+}
+
+.footer-row {
+  font-weight: bolder;
+  padding-left: var(--table-data-padding);
+}
+
+.primary-row {
+  background-color: var(--primary-color-alpha);
+  padding-left: var(--table-data-padding);
+}
+
+.number-of-reviews-link {
+  cursor: pointer;
+  padding: var(--table-data-padding);
+  text-decoration: underline;
+}
+
+.sub-total {
+  padding-left: var(--table-data-padding);
+}
+
+.category {
+  display: flex;
+  align-items: center;
+}
+
+.mat-mdc-row {
+  height: 100%;
+}
+
+.selected {
+  background-color: var(--secondary-color);
+  font-weight: bolder;
+}
+
+.error-card {
+  background-color: var(--warning-background-color);
+  margin-block: 1rem;
+}
+
+.error-card-content {
+  display: flex;
+  align-items: center;
+  gap: var(--standard-gap);
+  flex-wrap: wrap;
+}
+
+.mat-mdc-no-data-row > td {
+  height: auto;
+  width: 100%;
+  padding: var(--standard-padding);
+  text-align: center;
+}
+
+.refetch-icon {
+  cursor: pointer;
+  vertical-align: bottom;
+}
+
+.loading-spinner {
+  display: inline-block;
+  vertical-align: bottom;
+}

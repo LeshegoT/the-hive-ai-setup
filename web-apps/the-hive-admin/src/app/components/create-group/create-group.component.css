@@ -1,0 +1,14 @@
+.full-width {
+    width: 100%;
+}
+
+.error {
+    color: red;
+}
+.addContentBlock {
+    margin: 1em 0;
+}
+.addMember{
+    width: 90%;
+    margin-right: 5px;
+}

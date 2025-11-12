@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    max-height: var(--staff-overview-container-maxheight);
+}
+
+.item{
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+    justify-content: space-evenly;
+}
+
+#reviewList{
+    position: sticky;
+    align-self: flex-start;
+    top: 0em;
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+}

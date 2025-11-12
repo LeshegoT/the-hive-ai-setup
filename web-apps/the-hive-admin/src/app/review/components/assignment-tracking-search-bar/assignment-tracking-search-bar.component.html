@@ -1,0 +1,26 @@
+<section id="staff-overview-filter-panel">
+    <app-staff-filter (selectStaff)="staffSearch()" searchLabel="Search for staff member" searchType="search"></app-staff-filter>
+    <button mat-icon-button color="primary" type="button" class="leftComponent"
+        (click)="clearStaffSearch()"
+        matTooltip="Clear staff search"
+        matTooltipPosition="right">
+            <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+
+    <app-staff-filter #managerFilterComponent searchBy="manager" (selectStaff)="managerSearch()" searchLabel="Search for Reviewer" searchType="search"></app-staff-filter>
+    <button mat-icon-button color="primary" type="button" class="leftComponent"
+        (click)="clearManagerSearch()"
+        matTooltip="Clear manager search"
+        matTooltipPosition="right">
+            <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+
+</section>
+@if (managerDetails) {
+    <section class="selected-filters">
+        <p class="manager-text">Filtered by manager: {{ managerDetails.displayName }}</p>
+    </section>
+}
+@else {
+    <!-- No filters to display if the manager is not selected -->
+}

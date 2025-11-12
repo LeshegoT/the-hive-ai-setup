@@ -1,0 +1,24 @@
+<div class="full-width">
+<h3>{{ unit.unitId !== null ? 'Manage Unit: ' + unit.name : '' }}</h3>
+
+  <form [formGroup]="unitsForm">
+    <mat-form-field class="full-width" *ngIf="unit.unitId !== null">
+      <mat-label>Unit ID*</mat-label>
+      <input matInput formControlName="unitId" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Name*</mat-label>
+      <input matInput formControlName="name" [errorStateMatcher]="matcher"/>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Description*</mat-label>
+      <input matInput formControlName="description" [errorStateMatcher]="matcher"/>
+    </mat-form-field>
+    
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="button" (click)="updateUnit()">Save</button>
+    </div>
+  </form>
+</div>

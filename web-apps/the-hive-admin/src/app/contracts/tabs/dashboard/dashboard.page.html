@@ -1,0 +1,68 @@
+<div #dashboard id="dashboard">
+  <h1>Dashboard</h1>
+    <app-dashboard-filter (filterChange)="setDashboardFilterValue($event)" [statuses]="statuses"/>
+    <h2>
+      Contracts Summary
+    </h2>
+    @if (dashboardFilter) {
+    <section id="status-summary-section">
+      <review-status-summary-table [dashboardFilter]="dashboardFilter" (selectedStatusSummaryTableItem)="setSelectedStatusSummaryTableItem($event)" class="status-summary-section-content"/>
+      <aside class="status-summary-section-content">
+        <h3>Contracts</h3>
+        
+        @let selectedLatenessAndStatus = selectedStatusSummaryTableItem$ | async;
+        @let contractListItems = contractListItems$ | async;
+
+        @if (selectedLatenessAndStatus && contractListItems === undefined) {
+          <mat-spinner></mat-spinner>
+        } @else {
+          <main>
+            @if (selectedLatenessAndStatus) {
+              <mat-chip-set>
+
+                @if (selectedLatenessAndStatus.selectedItemType === 'numberOfUnchangedReviews') {
+                  <mat-chip>
+                    <mat-icon matChipAvatar>warning</mat-icon>
+                    Contracts with unchanged status
+                  </mat-chip>
+                } @else {
+                  <!-- If the item type is not numberOfUnchangedContracts, we don't need to show the chip -->
+                }
+
+                <mat-chip>
+                  <span class="chip-title">Ageing:</span> {{selectedLatenessAndStatus.lateness}}
+                </mat-chip>
+
+                <mat-chip>
+                  <span class="chip-title">Status:</span> {{selectedLatenessAndStatus.status}}
+                </mat-chip>
+
+                @if (selectedLatenessAndStatus.hrRep) {
+                  <mat-chip>
+                    <span class="chip-title">Hr Rep:</span> {{selectedLatenessAndStatus.hrRep ?? "(Not assigned)"}}
+                  </mat-chip>
+                } @else {
+                  <!-- No HR Rep was selected, don't show undefined -->
+                }
+
+                <mat-chip>
+                  <span class="chip-title">As at:</span> {{selectedLatenessAndStatus.asAtEndOf | date}}
+                </mat-chip>
+              </mat-chip-set>
+            } @else {
+              <!-- No lateness and status was selected, we should not show undefined values -->
+            }
+            <app-dashboard-contracts-list
+                #contractList
+                [displayedColumns]="contractRecommendationsColumns"
+                [dashboardContractsList]="contractListItems"
+            />
+          </main>
+        }
+
+      </aside>
+    </section>
+    } @else {
+      <mat-spinner></mat-spinner>
+    }
+</div>

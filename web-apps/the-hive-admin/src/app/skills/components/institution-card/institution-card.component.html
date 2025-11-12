@@ -1,0 +1,73 @@
+<mat-card>
+    <mat-card-title>
+      @if (editableInstitutionName !== undefined) {
+          <mat-card-header>
+            <mat-form-field id="new-institution-name-form" appearance="fill">
+              <input 
+                id="new-name-input"
+                matInput
+                type="text" 
+                [formControl]="institutionNameControl" 
+                placeholder="Enter new name" 
+                (change)="editableInstitutionName = institutionNameControl.value"
+              />
+              <mat-error>Institution name cannot be empty</mat-error>
+            </mat-form-field>
+            <button id="save-edit-button" (click)="saveEdit()">
+              <mat-icon>check</mat-icon>
+            </button>
+            <button id="cancel-edit-button" (click)="cancelEdit()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-card-header>
+      } @else {
+          {{ institution.canonicalName }}
+          @if (institution.needsRatification) {
+            <button id="edit-institution-button" (click)="editInstitutionName()">
+              <mat-icon>edit</mat-icon>
+            </button>
+          } @else {
+            <!-- Institution has already been ratified-->
+          }
+      }
+
+      @if (institution.needsRatification) {
+          <div class="button-container">
+            <mat-form-field appearance="fill">
+              <mat-select [(value)]="institutionType">
+                <mat-option value="Proctored">Proctored Certifier</mat-option>
+                <mat-option value="NonProctored">Non-proctored Certifier</mat-option>
+                <mat-option value="Tertiary Education">Tertiary Education</mat-option>
+                <mat-option value="University">University</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button
+              id="approve-institution-button"
+              mat-raised-button
+              type="button"
+              (click)="approveInstitution()"
+            >
+              Approve
+            </button>
+          </div>
+        } @else {
+          <!-- Institution has already been ratified-->
+        }  
+    </mat-card-title>
+
+    @for (qualification of institution.qualifications; track qualification.qualificationId){
+      <app-connected-qualification-details
+        [qualification]="qualification"
+        [institution]="institution"
+        [snackBarDuration]="snackBarDuration">
+      </app-connected-qualification-details>
+    }
+
+    @for (certification of institution.certifications; track certification.certificationId){
+      <app-connected-certification-details
+        [certification]="certification"
+        [institution]="institution"
+        [snackBarDuration]="snackBarDuration">
+      </app-connected-certification-details>
+    }
+</mat-card>

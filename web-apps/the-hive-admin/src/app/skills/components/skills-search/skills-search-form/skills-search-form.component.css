@@ -1,0 +1,317 @@
+:host{
+  --checkbox-size: 0.9em;
+  --border-radius: 1em;
+  --box-shadow: 0 2px 6px rgba(51, 51, 51, 0.2);
+  --or-border: #d3e8d3;
+  --empty-text: #666666;
+  --header-background: #1565c0;
+  --button-text: #ffffff;
+  --bold-weight: 500;
+  --spacing: 0.75rem;
+  --large-spacing: 1.25rem;
+  --small-gap: 0.375rem;
+  --muted-text: #666666;
+  --success: #1b5e20;
+  --primary: #1565c0;
+  --disabled-background: #bbbbbb;
+  --main-text-size: 0.95rem;
+  --sub-text-size: 0.8rem;
+  --attribute-explanation-background: #e0f2fa;
+  --attribute-explanation-border: #90caf9;
+  --attribute-explanation-radius: 6px;
+  --attribute-explanation-text-size: 0.85em;
+  --standard-border-radius: 8px;
+  --medium-large-gap: 1rem;
+  --medium-padding: 0.5rem;
+  --opacity-light: 0.15;
+  --line-height-compact: 1.3;
+  --margin-small: 0.2rem;
+  --margin-medium: 0.4rem;
+  --padding-small: 0.15em;
+  --padding-medium: 1em;
+  --min-width-company: 20rem;
+  --border-width: 1px;
+  --solid: solid;
+}
+
+.skill-search-content {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.skill-search-form{
+  width: 100%;
+}
+
+.skills-search-form-container{
+  display: flex;
+  width: 100%;
+  margin: var(--spacing);
+  flex-direction: column;
+  background: var(--button-text);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--large-spacing);
+  box-sizing: border-box;
+}
+
+.skills-search-form-container > :not(.full-width-section) {
+  grid-column: 1;
+}
+
+.full-width-section {
+  box-sizing: border-box;
+  height:fit-content;
+    margin: var(--spacing);
+
+}
+
+.skill-search-form-field-container{
+  display: grid;
+  gap: var(--spacing);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.search-options-container{
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing);
+  align-items: center;
+  flex-wrap: wrap;
+
+}
+
+.search-options-container button {
+  min-width: fit-content;
+  width: auto;
+}
+
+#search-button{
+  background: var(--header-background);
+  color: var(--button-text);
+}
+
+.query-container{
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+  width: 100%;
+}
+
+.attribute-query-cards-container{
+  display: flex;
+  flex-direction: row;
+  gap: var(--medium-spacing);
+  flex-wrap: wrap;
+}
+
+.field-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar{
+  flex-grow: 1;
+}
+.span-all-columns{
+  grid-column: 1 / -1; 
+}
+.span-all-columns.or-text{
+  font-weight: var(--bold-weight);
+  margin-inline: var(--spacing);
+  margin-block:0;
+}
+.checkBoxContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.search-section{
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing);
+}
+
+.search-container{
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+}
+
+mat-divider{
+  width: 100%;
+  margin: var(--spacing);
+}
+
+.search-From{
+  display: flex;
+  justify-content: center;
+}
+
+.search-input-section{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap:var(--small-gap);
+}
+select-company-entity{
+  align-self: flex-start;
+}
+select-company-entity ::ng-deep mat-form-field {
+  min-width:20rem;
+}
+h2{
+  margin: 0;
+}
+#saved-searches{
+  display:flex;
+  flex-direction: column;
+  gap: var(--spacing);
+  justify-content: flex-start;
+  box-shadow: var(--box-shadow);
+  background: var(--button-text);
+  border-radius: var(--standard-border-radius);
+  padding: var(--medium-large-gap);
+  max-width: 100%;
+  margin-left: 0;
+}
+
+.search-options-container{
+  display:flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  flex-shrink: 0;
+  padding-top: var(--spacing);
+}
+
+.panel-title {
+  margin-bottom: var(--spacing);
+}
+
+.section-title {
+  margin: 0;
+}
+
+.step-text {
+  margin-bottom: var(--spacing);
+  color: var(--muted-text);
+}
+
+.status-card {
+  border: var(--border-width) var(--solid) var(--or-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing);
+  margin: var(--spacing);
+}
+
+.status-card.success .status-title {
+  color: var(--success);
+}
+
+.status-card.neutral .status-title {
+  color: var(--header-background);
+}
+
+.status-title {
+  margin: 0;
+  font-weight: var(--bold-weight);
+}
+
+.status-sub {
+  margin-top: var(--margin-small);
+  color: var(--muted-text);
+}
+
+#search-button[disabled] {
+  background-color: var(--disabled-background);
+}
+
+.or-divider-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.or-divider {
+  flex: 1;
+  border: none;
+  border-top: var(--border-width) var(--solid) var(--disabled-background);
+  opacity: var(--opacity-light);
+}
+
+.or-text {
+  background: var(--button-text);
+  border-radius: var(--standard-border-radius);
+  padding: var(--padding-small) var(--padding-medium);
+  border: var(--border-width) var(--solid) var(--or-border);
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--empty-text);
+}
+
+.empty-icon {
+  color: var(--disabled-background);
+  vertical-align: middle;
+}
+
+.empty-state h3 {
+  font-weight: var(--bold-weight);
+  margin: var(--margin-medium) 0;
+}
+
+.main-text {
+  font-size: var(--main-text-size);
+  margin: 0;
+}
+
+.sub-text {
+  font-size: var(--sub-text-size);
+  color: var(--empty-text);
+  margin-top: var(--margin-small);
+}
+
+.attribute-explanation-card {
+  background: var(--attribute-explanation-background);
+  border: var(--border-width) var(--solid) var(--attribute-explanation-border);
+  border-radius: var(--attribute-explanation-radius);
+  padding: var(--spacing);
+  margin: var(--medium-padding);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--small-gap);
+}
+
+.attribute-explanation-icon{
+  color: var(--primary);
+  margin: var(--small-gap);
+}
+
+.attribute-explanation-content{
+  flex: 1;
+}
+
+.attribute-explanation-text{
+  margin: 0;
+  color: var(--primary);
+  font-size: var(--attribute-explanation-text-size);
+  line-height: var(--line-height-compact);
+}
+
+.filters-title {
+  margin-bottom: var(--spacing);
+}
+
+mat-checkbox mat-icon {
+  vertical-align: middle;
+   margin: var(--small-gap);
+}
+
+.error-message{
+  padding: var(--padding-medium);
+}

@@ -1,0 +1,16 @@
+.component{
+    margin: 20px;
+    margin-bottom: 60px;
+}
+
+.bubbleClose{
+    margin-left:5px;
+}
+
+.chipFilter{
+    margin:10px;
+}
+
+.chartDiv{
+    padding: 30px;
+}

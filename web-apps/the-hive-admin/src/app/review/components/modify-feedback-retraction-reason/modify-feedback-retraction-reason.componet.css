@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+
+.container-content {
+  width: 50%;
+}
+
+.full-width {
+  width: 100%;
+}

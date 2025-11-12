@@ -1,0 +1,32 @@
+:host .warning-chip {
+  background-color: var(--warning-background-color);
+  border: var(--standard-border-width) solid var(--secondary-color);
+  font-weight: bold;
+  margin-inline: 0.5rem;
+}
+
+.warning-chip div {
+  display: flex;
+  cursor: pointer;
+}
+
+.warning-icon {
+  color: var(--secondary-color);
+  font-size: 1rem;
+}
+
+.count {
+  font-size: 0.9rem;
+}
+
+:host .selected {
+  background-color: var(--secondary-color);
+}
+
+:host .selected .warning-icon {
+  color: var(--warning-background-color);
+}
+
+:host .selected .count {
+  color: var(--warning-background-color);
+}

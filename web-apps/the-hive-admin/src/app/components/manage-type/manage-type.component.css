@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.container-content {
+  width: 50%;
+}
+
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.buttons{
+  display: flex;
+  gap: var(--standard-gap);
+}

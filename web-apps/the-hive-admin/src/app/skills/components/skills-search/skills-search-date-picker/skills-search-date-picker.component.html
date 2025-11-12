@@ -1,0 +1,87 @@
+<section>
+  <skills-search-operator-selector [attributeType]="attributeType" (valueChange)="onOperatorSelected($event)" [disabled]="checkBox"></skills-search-operator-selector>
+  @if(range){
+    <section class="range-container">
+      <mat-form-field appearance="outline" id="input-container">
+        <mat-label>Start:</mat-label>
+        <input
+          readonly
+          matInput
+          [matDatepicker]="startPicker"
+          [formControl]="dateControlMinValue"
+          [disabled]="checkBox"
+          (keydown)="handleKeyDown($event, 'start')"
+          [value]="dateControlMinValue.value"
+        />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker
+          #startPicker
+          startView="multi-year"
+          (yearSelected)="selectYear($event, startPicker, 'start')"
+          (monthSelected)="selectMonth($event, startPicker, 'start')"
+          (daySelected)="selectDay($event, startPicker, 'start')"
+          panelClass="month-year-picker"
+        ></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" id="input-container">
+        <mat-label>End:</mat-label>
+        <input
+          readonly
+          matInput
+          [matDatepicker]="endPicker"
+          [formControl]="dateControlMaxValue"
+          [disabled]="checkBox"
+          (keydown)="handleKeyDown($event, 'end')"
+          [value]="dateControlMaxValue.value"
+        />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker
+          #endPicker
+          startView="multi-year"
+          (yearSelected)="selectYear($event, endPicker, 'end')"
+          (monthSelected)="selectMonth($event, endPicker, 'end')"
+          (daySelected)="selectDay($event, endPicker, 'end')"
+          panelClass="month-year-picker"
+        ></mat-datepicker>
+      </mat-form-field>
+    </section>
+  }@else{
+    <mat-form-field appearance="outline" id="input-container">
+      <mat-label>{{labelName}}</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [formControl]="dateControl"
+        [disabled]="checkBox"
+        (keydown)="handleKeyDown($event, defualt)"
+        [value]="dateControl.value"
+        readonly
+        >
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker
+        #picker
+        startView="multi-year"
+        (yearSelected)="selectYear($event, picker, defualt)"
+        (monthSelected)="selectMonth($event, picker, defualt)"
+        (daySelected)="selectDay($event, picker, defualt)"
+        panelClass="month-year-picker">
+      </mat-datepicker>
+    </mat-form-field>
+  }
+
+  @if(errorMessage() !== undefined){
+    <mat-error>{{ errorMessage() }}</mat-error>
+  }@else{
+    <!-- don't render the errorMessageComponent -->
+  }
+
+  @if(hasCheckBox){
+    <mat-checkbox color="primary" [(ngModel)]="checkBox"
+      (change)="checkBoxHandler($event)"
+      class="example-margin">Currently used</mat-checkbox>
+  }@else{
+    <!-- don't display the checkBox -->
+  }
+</section>
+
+

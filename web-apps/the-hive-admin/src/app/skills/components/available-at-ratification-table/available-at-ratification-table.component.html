@@ -1,0 +1,113 @@
+@let availableAtRatificationAttributes = availableAtRatificationAttributes$ | async;
+@let totalCount = totalCount$ | async;
+@if(availableAtRatificationTable && availableAtRatificationAttributes && isError(availableAtRatificationAttributes)){
+
+    <p class="message">
+        {{ availableAtRatificationAttributes.message }}. 
+        Try refreshing the page, or
+        <a [href]="generateSupportEmail(availableAtRatificationAttributes)">contact support</a> if the issue persists.
+    </p>
+    
+}
+
+@else if(availableAtRatificationTable && availableAtRatificationTable.data.length > 0) {
+
+    <mat-table [dataSource]="availableAtRatificationTable" class="table-container full-width-table" multiTemplateDataRows>
+
+        <ng-container matColumnDef="canonicalName">
+            <mat-header-cell *matHeaderCellDef>
+                <div class="header-content">
+                    <div class="header-title">Attribute name</div>
+                    <mat-form-field appearance="outline" class="search-field">
+                        <input
+                            matInput
+                            [formControl]="searchControl"
+                            placeholder="Search attributes"
+                        >
+                    </mat-form-field>
+                </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Attribute name'">
+                @if(isError(row)){
+                    {{ row.message }}
+                } @else {
+                    <mat-chip 
+                        [color]="selectedAttribute?.standardizedName === row.standardizedName ? 'primary' : 'accent'"
+                        [disabled]="selectedAttribute?.standardizedName === row.standardizedName"
+                        (click)="invokeAffectedStaffMembersView.emit(row)">
+                        {{ row.canonicalName}}
+                    </mat-chip>
+                }
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="institution">
+            <mat-header-cell *matHeaderCellDef>Institution name</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Institution name'">
+                @if(isError(row)){
+                    <!-- Error message already displayed in canonicalName column -->
+                } @else {
+                    @let institutionName = getInstitutionCanonicalName(row);
+                    @if(isError(institutionName)){
+                        {{ institutionName.message }}
+                    } @else{
+                        {{ institutionName }}
+                    }
+                }
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let row" [attr.data-label]="'Actions'">
+                <app-ratification-actions
+                    [disabled]="isError(row)"
+                    [isAvailableAtRatification]="true"
+                    [selectedAction]="isSelectedRow(row) ? editingRow.ratificationAction : undefined"
+                    (ratificationAction)="updateRatificationActionForAvailableAt($event, row)"
+                >
+                </app-ratification-actions>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="spinner">
+            <mat-cell *matCellDef [attr.colspan]="columns.length">
+                <mat-spinner diameter="32"></mat-spinner>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="paginator">
+            <mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length">
+                <mat-paginator
+                    #paginator
+                    [length]="totalCount"
+                    [pageIndex]="(pageIndex$ | async)" 
+                    [pageSize]="(pageSize$ | async)" 
+                    [pageSizeOptions]="tableService.getPageSizeOptions()"
+                    [showFirstLastButtons]="tableService.getShowFirstLastButtons()"
+                    [hidePageSize]="tableService.getHidePageSize()" 
+                    (page)="pageChanged($event)">
+                </mat-paginator>
+            </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columns;" [class.hidden]="!availableAtRatificationAttributes"></mat-row>
+        <mat-row *matRowDef="let row; columns: ['spinner'];" [class.hidden]="availableAtRatificationAttributes"></mat-row>
+        <mat-footer-row *matFooterRowDef="['paginator']; sticky: true"></mat-footer-row>
+
+    </mat-table>
+
+} 
+
+@else if(availableAtRatificationTable && availableAtRatificationTable.data.length === 0) {
+
+    <p class="message">
+        No available at edges need ratification
+    </p>
+
+} 
+
+@else {
+    <mat-spinner></mat-spinner>
+}

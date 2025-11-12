@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.container-content {
+  width: 50%;
+}
+
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.content {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+table {
+  width: 100%;
+}
+
+.members-table {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.add-members {
+  display: inline;
+}
+
+.members-field {
+  width: 50%;
+  margin: 2% 5% 2% 5%;
+}

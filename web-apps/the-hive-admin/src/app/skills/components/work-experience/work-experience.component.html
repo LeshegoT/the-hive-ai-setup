@@ -1,0 +1,292 @@
+<section class="work-experience-container">
+  @let workExperiences = workExperiences$ | async;
+  @let technologiesOptions = technologies$ | async;
+  @let selectedRow = selectedRow$ | async;
+  @let isLoggedInUserMemberOfModifyBioInformationUsers = isLoggedInUserMemberOfModifyBioInformationUsers$ | async;
+  @if(workExperiences && technologiesOptions) {
+    <table mat-table [dataSource]="workExperiences" class="mat-elevation-z8">
+      <ng-container *ngFor="let column of tableColumns; let isLast = last" [matColumnDef]="column.columnName">
+        <th mat-header-cell *matHeaderCellDef>{{ column.headerName }}</th>
+        <td mat-cell *matCellDef="let workExperience">
+          @if(column.columnName === 'startDate' || column.columnName === 'endDate') {
+              {{ formatDate(workExperience[column.columnName]) }}
+          } @else if(column.columnName === 'bbdExperience') {
+            {{ workExperience[column.columnName] ? 'Yes' : 'No' }}
+          } @else if(column.columnName === 'actions') {
+            <button mat-icon-button (click)="selectRow(workExperience, 'view')">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            @if(isLoggedInUserMemberOfModifyBioInformationUsers) {
+              <button mat-icon-button (click)="selectRow(workExperience, 'edit')">
+                <mat-icon>edit</mat-icon>
+              </button>
+            } @else {
+              <!-- user cannot edit work experience-->
+            }
+          } @else {
+            {{ workExperience[column.columnName] }}
+          }
+        </td>
+        <td mat-footer-cell *matFooterCellDef [class.last-column]="isLast">
+          @if(isLast) {
+            <button mat-stroked-button color="primary" (click)="addNewWorkExperience()" class="add-experience-button">
+              <mat-icon>add</mat-icon>Add experience
+            </button>
+          } @else {
+            <!-- is not the last column so don't display the add experience button-->
+          }
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columnNames"
+        [class.selected]="isRowSelected(row)">
+      </tr>
+      @if(isLoggedInUserMemberOfModifyBioInformationUsers) {
+        <tr mat-footer-row *matFooterRowDef="columnNames"></tr>   
+      } @else {
+        <!-- the user is not a member of the modify bio information users group so don't display the footer row-->
+      }
+      <tr *matNoDataRow><td class="mat-cell" [attr.colspan]="columnNames.length">Staff has no work experiences</td></tr>   
+    </table>
+  } @else {
+    <div class="spinner-container"><mat-progress-spinner mode="indeterminate"></mat-progress-spinner></div>
+  }
+
+  @if(selectedRow && selectedRow.action === 'edit' && isLoggedInUserMemberOfModifyBioInformationUsers) {
+    <form [formGroup]="workExperienceForm" #formGroupDirective="ngForm" (ngSubmit)="$event.preventDefault()">
+      <div class="form-header">
+        <button type="button" mat-icon-button aria-label="Close form" (click)="closeForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-label>Company Name</mat-label>
+          <input matInput formControlName="companyName" placeholder="Enter company name">
+          @if(companyName.hasError('required')) {
+            <mat-error>Company name is required</mat-error>
+          } @else if(companyName.hasError('minlength')) {
+            <mat-error>Must be at least {{ minimumInputText }} characters</mat-error>
+          } @else {
+            <!-- Company name is required -->
+          }
+        </mat-form-field>
+        @let sectorsOptions = getSectorsOptions() | async;
+        @if(sectorsOptions) {
+          <app-autocomplete-input
+            [options]="sectorsOptions"
+            label="sector"
+            [searchTextControl]="sectorName"
+            (addNewOption)="onAddNewSector($event)"
+            [showAddNewOption]="true"
+            requiredFieldErrorMessage="Sector is required"
+            [minimumLengthErrorMessage]="getMinimumLengthErrorMessage('Sector')"
+          ></app-autocomplete-input>
+        } @else {
+          <mat-spinner diameter="16"></mat-spinner>
+        }
+
+        <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-label>Start date</mat-label>
+          <input  matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="Select start date" [min]="minMaxStartDate.minimum" [max]="minMaxStartDate.maximum">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+          @if(startDate.hasError('matDatepickerParse') && startDate.touched) {
+            <mat-error>Enter a valid date</mat-error>
+          } @else if(startDate.hasError('required') && startDate.touched) {
+            <mat-error>Start date is required</mat-error>
+          } @else {
+            <!-- Start date is required -->
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field" subscriptSizing="dynamic">
+          <mat-label>End date</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="Select end date" [min]="minMaxEndDate.minimum" [max]="minMaxEndDate.maximum">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+          @if(endDate.hasError('dateRange') && (endDate.touched || startDate.touched)) {
+            <mat-error>End date must be after or equal to Start date</mat-error>
+          } @else if(endDate.hasError('matDatepickerParse') && endDate.touched) {
+            <mat-error>Enter a valid date</mat-error>
+          } @else if(endDate.hasError('required') && endDate.touched) {
+            <mat-error>End date is required</mat-error>
+          } @else {
+            <!-- End date is required -->
+          }
+        </mat-form-field>
+        @let rolesOptions = getRolesOptions() | async;
+        @if(rolesOptions) {
+          <app-autocomplete-input
+            [options]="rolesOptions"
+            label="role"
+            [searchTextControl]="roleName"
+            (addNewOption)="onAddNewRole($event)"
+            [showAddNewOption]="true"
+            requiredFieldErrorMessage="Role is required"
+            [minimumLengthErrorMessage]="getMinimumLengthErrorMessage('Role')"
+          ></app-autocomplete-input>
+        } @else {
+          <mat-spinner diameter="16"></mat-spinner>
+        }
+      </div>
+      <mat-checkbox formControlName="bbdExperience" class="form-field">
+        BBD Subcontracted
+      </mat-checkbox>
+
+      <mat-form-field appearance="outline" class="form-field full-width" subscriptSizing="dynamic">
+        <mat-label>Project Description (Optional)</mat-label>
+        <textarea matInput formControlName="projectDescription" placeholder="Enter project description" rows="4" [maxlength]="maximumProjectDescriptionCharacterLength"></textarea>
+        <mat-hint align="end">{{ projectDescription.value?.length || 0 }} / {{ maximumProjectDescriptionCharacterLength }}</mat-hint>
+      </mat-form-field>
+
+    <div class="outcomes-section">
+      <div class="section-header">
+        <h3>Delivery Outcomes</h3>
+        <button type="button" mat-mini-fab color="primary" (click)="addOutcome()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="outcomes-hint">
+        <div>
+          <mat-icon color="primary">info</mat-icon>
+          <p>When describing delivery outcomes, include:</p>
+        </div>
+        <ul>
+          <li>What the project’s purpose was</li>
+          <li>The methodologies the staff member used in the project</li>
+          <li>The team structure of the team they were part of</li>
+          <li>Any leadership responsibilities the staff member had</li>
+          <li>Challenges they encountered during the project</li>
+          <li>The unique value the staff member contributed to the project</li>
+        </ul>
+      </div>
+      <div
+        cdkDropList
+        [cdkDropListData]="outcomes.controls"
+        class="outcomes-list"
+        (cdkDropListDropped)="dropOutcome($event)"
+      >
+        @if(outcomes.controls.length === 0) {
+          <p class="empty-outcomes-message">
+            No outcomes added yet. Click the + button to add one.
+          </p>
+        } @else {
+          <div class="outcomes-item" *ngFor="let control of outcomes.controls; let i = index" cdkDrag>
+            <mat-icon (click)="$event.stopPropagation()" class="drag-handle">drag_indicator</mat-icon>
+            <div class="outcome-content">
+              <mat-form-field appearance="outline" class="outcomes-field" subscriptSizing="dynamic">
+                <textarea matInput [formControl]="control" placeholder="Enter delivery outcome" rows="5" [maxlength]="maximumOutcomeCharacterLength"></textarea>
+                <mat-hint align="end">{{ control.value?.length || 0 }} / {{ maximumOutcomeCharacterLength }}</mat-hint>
+                @if(control.hasError('required')) {
+                  <mat-error>Delivery outcome is required</mat-error>
+                } @else if(control.hasError('minlength')) {
+                  <mat-error>Must be at least {{ minimumInputText }} characters</mat-error>
+                } @else {
+                  <!-- Delivery outcome is required -->
+                }
+              </mat-form-field>
+              <button type="button" mat-raised-button color="warn" (click)="removeOutcome(i)" class="remove-outcome-btn">
+                <mat-icon>delete</mat-icon>
+                Remove
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+      <div class="technologies-section">
+        <h3>Technologies Used</h3>
+        @if(technologiesOptions && technologiesOptions.length > 0) {
+          <app-multi-select-input
+            [options]="technologiesOptions"
+            label="Technologies"
+            [initialSelection]="technologies.value"
+            [displayKey]="'canonicalName'"
+            (selectionChange)="onTechnologySelected($event)"
+          ></app-multi-select-input>
+        } @else if (technologiesOptions) {
+          <div class="notice">
+            <div class="notice-text">
+              <p><mat-icon color="primary">info</mat-icon> Staff member has not added any skills in their portfolio.</p>
+              <button mat-stroked-button color="primary" class="contact-staff-button">
+                <mat-icon>mail</mat-icon>
+                Contact staff
+              </button>
+            </div>
+          </div>
+        } @else {
+          <mat-spinner diameter="50"></mat-spinner>
+        }
+      </div>
+      <div class="action-buttons">
+        <button type="button" mat-raised-button color="secondary" (click)="revertChanges()">
+          <mat-icon>undo</mat-icon>
+          Revert
+        </button>
+        <button type="button" mat-raised-button color="primary" (click)="saveChanges()" [disabled]="saveChanges$">
+          <span class="button-content">
+            @if (saveChanges$) {
+              <mat-progress-spinner
+                class="button-spinner"
+                mode="indeterminate"
+                diameter="16">
+              </mat-progress-spinner>
+            } @else {
+              <mat-icon>save</mat-icon>
+            }
+            Save
+          </span>
+        </button>
+      </div>
+    </form>
+  } @else if(selectedRow && selectedRow.action === 'view') {
+    <div class="view-container">
+      <div class="form-header">
+        <button type="button" mat-icon-button aria-label="Close View" (click)="closeForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      @if(selectedRow$.value.workExperience.projectDescription) {
+        <div class="readonly-section">
+          <h3>Project Description</h3>
+          <p class="project-description-text">{{ selectedRow$.value.workExperience.projectDescription }}</p>
+        </div>
+      } @else {
+        <!-- No project description to display -->
+      }
+      <div class="readonly-section">
+        <h3>Delivery outcomes</h3>
+        @if(selectedRow$.value.workExperience.outcomes.length > 0) {
+          <ul class="outcomes-list">
+            @for(outcome of selectedRow$.value.workExperience.outcomes; track outcome) {
+              <li class="outcome-item">
+                {{ outcome.body }}
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="notice-text"><mat-icon color="primary">info</mat-icon> The work experience has no delivery outcomes.</p>
+        }
+      </div>
+      <div class="readonly-section">
+        <h3>Technologies</h3>
+        @if(selectedRow$.value.workExperience.technologies.length > 0) {
+          <div class="technologies-list">
+            @for(technology of selectedRow$.value.workExperience.technologies; track technology) {
+              <mat-chip class="technology-item">
+                {{ technology.canonicalName }}
+              </mat-chip>
+            }
+          </div>
+        } @else {
+          <p class="notice-text"><mat-icon color="primary">info</mat-icon> The work experience has no technologies used.</p>
+        }
+      </div>
+    </div>    
+  } @else {
+    
+  }
+</section>

@@ -1,0 +1,66 @@
+@let unitChangeReviewCreating = unitChangeReviewCreating$ | async;
+@let unitChangeReviewError = unitChangeReviewError$ | async;
+@let fetchingUnitChangeReview = fetchingUnitChangeReview$ | async;
+@let activeUnitChangeReview = activeUnitChangeReview$ | async;
+
+<mat-card class="card" [class.error-card]="unitChangeReviewError">
+  @if (unitChangeReviewCreating || fetchingUnitChangeReview) {
+    <mat-card-content>
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+  } @else if (unitChangeReviewError) {
+    <mat-card-content>
+      <p>We were unable to fetch the unit move review details for {{ selectedStaffMember().displayName }}. Please try again.</p>
+      <p>If the issue persists, please contact <a [href]="generateSupportEmail(selectedStaffMember(), unitChangeReviewError)">the support team</a>.</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="button" (click)="getActiveUnitChangeReview()" matTooltip='Retry'>
+        <mat-icon>autorenew</mat-icon> Retry
+      </button>
+    </mat-card-actions>
+  } @else if (activeUnitChangeReview) {
+    <mat-card-header>
+      <mat-card-title>{{ selectedStaffMember().displayName }}'s Active Unit Move Review</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="review-details">
+        <div class="review-info">
+          <p><span class="review-info-label">Status:</span> {{ activeUnitChangeReview.status }}</p>
+          <p><span class="review-info-label">Created:</span> {{ activeUnitChangeReview.dateCreated | date }}</p>
+          <p><span class="review-info-label">Due date:</span> {{ activeUnitChangeReview.dueDate | date }}</p>
+          <p><span class="review-info-label">HR Rep:</span> {{ activeUnitChangeReview.hrRep }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  } @else {
+    <mat-card-header>
+      <mat-card-title>Create a Unit Move Review for {{ selectedStaffMember().displayName }}</mat-card-title>
+      <mat-card-subtitle>Set the unit move review deadline and click 'Create' to start the review process</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card class="notice-card">
+        <mat-card-content>
+          <p>The current unit of record for {{ selectedStaffMember().displayName }} is <span class="unit-of-record">{{ selectedStaffMember().department }}</span>.</p>
+          <p>If you are creating a unit move review, please ensure that the unit move review is for the correct unit. To correct the unit of record, please use the 'Unit Corrections' page.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <form [formGroup]="unitChangeReviewForm">
+        <mat-form-field>
+          <mat-label>Review Deadline</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="unitChangeReviewDeadline" [min]="minimumUnitChangeReviewDate">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (unitChangeReviewForm.get('unitChangeReviewDeadline').errors?.['matDatepickerMin']) {
+            <mat-error>Review deadline must be in the future</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="button" (click)="createUnitChangeReview(unitChangeReviewForm.get('unitChangeReviewDeadline').value)" matTooltip="Create">
+        <mat-icon>check_circle</mat-icon> Create
+      </button>
+    </mat-card-actions>
+  }
+</mat-card>

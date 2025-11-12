@@ -1,0 +1,28 @@
+<div class="full-width">
+  <h3>Modify Feedback Retraction Reason</h3>
+  <form [formGroup]="modifyRetractionReasonForm" >
+    <div class="container">
+      <mat-form-field class="container-content">
+        <mat-label>Feedback Retraction Reason ID*</mat-label>
+        <input  matInput formControlName="retractionReasonID" [errorStateMatcher]="matcher"/>
+      </mat-form-field>
+      <mat-form-field class="container-content-right">
+        <mat-label>Feedback Retraction Reason*</mat-label>
+          <input matInput formControlName="retractionReason" [errorStateMatcher]="matcher"/>
+      </mat-form-field>
+    </div>     
+    <div class="error" *ngIf="error">
+      Please fill in Feedback Retraction Reason field.
+    </div>
+   
+    <div class="buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="modifyFeedbackRetractionReasons()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

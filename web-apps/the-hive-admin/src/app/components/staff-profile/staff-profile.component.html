@@ -1,0 +1,336 @@
+@if(selectedStaffMember){
+  @let isLoggedInUserMemberOfModifyBioInformationUsers = isLoggedInUserMemberOfModifyBioInformationUsers$ | async;
+  <section class="staff-profile-and-department-history-container">
+    <header class="staff-member-personal-profile">
+      <section class="staff-profile-image-and-display-name">
+        <app-profile [selectedUpn]="selectedStaffMember.userPrincipleName"></app-profile>
+        <h2>{{selectedStaffMember.displayName}} ({{selectedStaffMember.jobTitle}})</h2>
+      </section>
+      <section class="staff-profile-actions">
+        <app-mark-staff-member-for-termination-action
+          [userPrincipalName]="selectedStaffMember.userPrincipleName"
+          [skipActiveReviewsCheck]="false"
+        >
+        </app-mark-staff-member-for-termination-action>
+        @let isLoggedInUserMemberOfGenerateBioADGroups = isLoggedInUserMemberOfGenerateBioADGroups$ | async;
+        @if(isLoggedInUserMemberOfGenerateBioADGroups === undefined){
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          <a mat-raised-button color="primary" href="mailto:{{selectedStaffMember.userPrincipleName}}">
+            <mat-icon> mail_outline</mat-icon>
+            contact
+          </a>
+          @if(isLoggedInUserMemberOfGenerateBioADGroups){
+            @if(isGeneratingStaffBio){
+              <button mat-raised-button [disabled]="true">
+                <mat-spinner diameter="20" class="spinner"></mat-spinner>
+                Generating
+              </button>
+            }@else {
+              <button mat-raised-button [matMenuTriggerFor]="menu" [disabled]="isGeneratingStaffBio" color="primary">
+                <mat-icon>description</mat-icon>
+                Generate bio
+              </button>
+            }
+          } @else {
+            <!-- user cannot generate bio-->
+          }
+        }
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item *ngFor="let bioTemplate of bioTemplateOptions" (click)="generateStaffBio(bioTemplate)">
+            {{ bioTemplate.bioTemplateName }}
+          </button>
+        </mat-menu>
+        @if(includeSkills && !selectedUPN){
+          <button mat-raised-button (click)="clearResults.emit()">Clear results</button>
+        } @else{
+          <!--The user does need to clear results as they are not viewing a staff member portfolio-->
+        }
+      </section>
+    </header>
+    <main class="staff-profile">
+      <article>
+        <p class="unit">
+          <mat-icon>assignment_ind</mat-icon>
+          {{ selectedStaffMember.department }}
+        </p>
+        <p class="office">
+          <mat-icon> business</mat-icon>
+          {{ selectedStaffMember.office }}
+        </p>
+        <p class="entity">
+          <mat-icon>location_on</mat-icon>
+          {{ selectedStaffMember.entityDescription}}
+        </p>
+        @if(isLoggedInUserMemberOfModifyBioInformationUsers){ 
+          <section>
+            @if(nationalityControl.value === undefined){
+              <div class="nationality-display">
+                <mat-icon>flag</mat-icon>
+                <p [class.nationality-display-error]="!selectedStaffMember.nationality">{{ selectedStaffMember.nationality || 'Nationality not set' }}</p>
+                <button mat-icon-button (click)="startEditingNationality()">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            } @else {
+              <div class="nationality-edit">
+                <mat-form-field>
+                  <mat-label>Nationality</mat-label>
+                  <input matInput [formControl]="nationalityControl">
+                  @if(nationalityControl.hasError('serverError')){
+                    <mat-error>{{ nationalityControl.errors.serverError }}</mat-error>
+                  } @else {
+                    <!-- There is no error message to display when the field is valid. -->
+                  }
+                </mat-form-field>
+                <button mat-raised-button color="warn" (click)="cancelEditingNationality()" [disabled]="saveNationality$">Cancel</button>
+                <button mat-raised-button color="primary" (click)="saveNationality()" [disabled]="saveNationality$">Save</button>
+              </div>
+            }
+            @if(dateOfBirthControl.value === undefined){
+              <div class="date-of-birth-display">
+                <mat-icon>cake</mat-icon>
+                <p [class.date-of-birth-display-error]="!selectedStaffMember.dateOfBirth">{{ formatDateOfBirth() }}</p>
+                <button mat-icon-button (click)="startEditingDateOfBirth()">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            } @else {
+              <div class="date-of-birth-edit">
+                <mat-form-field>
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput [matDatepicker]="picker" [formControl]="dateOfBirthControl">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  @if(dateOfBirthControl.hasError('serverError')){
+                    <mat-error>{{ dateOfBirthControl.errors.serverError }}</mat-error>
+                  } @else if(dateOfBirthControl.invalid && dateOfBirthControl.touched){
+                    <mat-error>Date of birth is invalid</mat-error>
+                  } @else {
+                    <!-- There is no error message to display when the field is valid. -->
+                  }
+                </mat-form-field>
+                <button mat-raised-button color="warn" (click)="cancelEditingDateOfBirth()" [disabled]="saveDateOfBirth$">Cancel</button>
+                <button mat-raised-button color="primary" (click)="saveDateOfBirth()" [disabled]="saveDateOfBirth$">
+                  @if(saveDateOfBirth$){
+                    <mat-spinner diameter="16" class="spinner"></mat-spinner>
+                  } @else {
+                    <!-- There is no spinner to display when the save is not in progress. -->
+                  }
+                  Save
+                </button>
+              </div>
+            }
+          </section>
+          <section class="spoken-languages">
+            @let staffSpokenLanguages = staffSpokenLanguages$ | async;
+            @let spokenLanguageProficiencies = spokenLanguageProficiencies$ | async;
+            @let spokenLanguages = spokenLanguages$ | async;
+            
+            @if(!isEditingLanguages){
+              <div class="languages-display">
+                @if(!staffSpokenLanguages){
+                  <mat-spinner diameter="16"></mat-spinner>
+                } @else if(staffSpokenLanguages && staffSpokenLanguages.message){
+                  <p>{{ staffSpokenLanguages.message }}</p>
+                } @else if(staffSpokenLanguages.length > 0){
+                  <mat-icon>language</mat-icon>
+                  @for(spokenLanguage of staffSpokenLanguages; track spokenLanguage){
+                    <mat-chip disableRipple>
+                      <p>{{ spokenLanguage.language }} ({{ spokenLanguage.proficiency }})</p>
+                    </mat-chip>
+                  }
+                  <button mat-icon-button (click)="startEditingLanguages(staffSpokenLanguages)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                } @else {
+                  <button mat-raised-button color="primary" (click)="startEditingLanguages(staffSpokenLanguages)" class="add-language-button">
+                    <mat-icon>add</mat-icon>
+                    Add Language
+                  </button>
+                }
+              </div>
+            } @else {
+              <div class="languages-edit">
+                <div class="edit-header">
+                  <h4>Edit Languages</h4>
+                  <button mat-icon-button (click)="cancelEditingLanguages()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                @for(staffSpokenLanguage of editingLanguages; track staffSpokenLanguage){
+                  <div class="language-item">
+                    <p>{{ staffSpokenLanguage.language }}</p>
+                    <mat-form-field>
+                      <mat-label>Proficiency</mat-label>
+                      <mat-select [value]="staffSpokenLanguage.proficiency" (selectionChange)="updateLanguageProficiency(staffSpokenLanguage, $event.value)">
+                        @for(proficiency of spokenLanguageProficiencies; track proficiency){
+                          <mat-option [value]="proficiency">{{ proficiency }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-icon-button (click)="removeLanguage(staffSpokenLanguage)" color="warn">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+                
+                @if(availableToAddMoreLanguages()){
+                  <div class="add-language">
+                    <mat-form-field>
+                      <mat-label>Language</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        [matAutocomplete]="languageAuto"
+                        [formControl]="newLanguageControl"
+                        placeholder="Search for a language"
+                      />
+                      <mat-autocomplete #languageAuto="matAutocomplete">
+                        @for(language of filteredLanguages$ | async; track language){
+                          <mat-option [value]="language">{{ language }}</mat-option>
+                        }
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label>Proficiency</mat-label>
+                      <mat-select [(ngModel)]="newLanguageProficiency">
+                        @for(proficiency of spokenLanguageProficiencies; track proficiency){
+                          <mat-option [value]="proficiency">{{ proficiency }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="addLanguage()" [disabled]="!newLanguageControl.value || !newLanguageProficiency">
+                      <mat-icon>add</mat-icon>
+                      Add
+                    </button>
+                  </div>
+                } @else {
+                  <p class="max-languages-note">Maximum of {{ maximumNumberOfAllowedLanguages }} languages reached</p>
+                }
+                
+                <button mat-raised-button color="primary" (click)="saveLanguages()">Done</button>
+              </div>
+            }
+          </section>
+          <section class="staff-residence">
+          @if (!isEditingResidence) {
+            <div class="residence-display">
+              @if (selectedStaffMember.residence) {
+                <mat-icon>home</mat-icon>
+                <mat-chip disableRipple>
+                  {{ selectedStaffMember.residence }}
+                </mat-chip>
+                <button mat-icon-button (click)="toggleEditResidence()">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              } @else {
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="toggleEditResidence()"
+                  class="add-residence-button"
+                >
+                  <mat-icon>add</mat-icon>
+                  Add Residence
+                </button>
+              }
+            </div>
+          } @else {
+            <div class="residence-edit">
+              <div class="edit-header">
+                <h4>Edit Residence</h4>
+                <button mat-icon-button (click)="toggleEditResidence()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+
+            <app-residence-input
+                (residenceSelected)="onResidenceSelected($event)">
+              </app-residence-input>
+
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="saveResidence()"
+              >
+                Done
+              </button>
+            </div>
+          }
+        </section>
+        } @else {
+          <!--The user is not a member of the modify bio information users group so don't display the spoken languages section-->
+        }
+      </article>
+      @if(includeSkills){
+        <article>
+          <section class="on-supply">
+            <mat-icon>date_range</mat-icon>
+            @let staffOnSupply = staffOnSupply$ | async;
+            @if(staffOnSupply && staffOnSupply.message){
+              {{ staffOnSupply.message }}
+            } @else{
+              <p>
+                {{ staffOnSupply && staffOnSupply.onSupplyAsOf ? "On supply as of: " + (staffOnSupply.onSupplyAsOf | date) : "Staff not on supply" }}
+              </p>
+            }
+          </section>
+          <section class="core-tech">
+            <mat-icon>code</mat-icon>
+            @let staffCoreTech = staffCoreTech$ | async;
+            @if(!staffCoreTech){
+              <mat-spinner diameter="16"></mat-spinner>
+            }@else if(staffCoreTech && staffCoreTech.message){
+              {{ staffCoreTech.message }}
+            }
+            @else if(staffCoreTech && staffCoreTech.length > 0){
+              @for(coreTech of staffCoreTech; track coreTech){
+                <mat-chip disableRipple>
+                  <p>{{ coreTech.attribute.canonicalName }}</p>
+                </mat-chip>
+              }
+            } @else {
+              Staff core tech not set
+            }
+          </section>
+        </article>
+      } @else{
+        <!--The user is not on a skills page and should not see core tech or on supply date-->
+      }
+      <article>
+        @let userDepartmentHistory = userDepartmentHistory$ | async;
+        @if(!userDepartmentHistory){
+          <!--No department history is available-->
+        }@else if(userDepartmentHistory.message){
+          {{ userDepartmentHistory.message }}
+        }@else{
+          <section *ngFor="let departmentHistory of filterInVisibleDepartmentHistory(userDepartmentHistory); let i = index"
+            [class]="i === 0 ? 'department-history-card-active' : 'department-history-card'">
+            <section>
+              <h6>{{ departmentHistory.department }}{{ i === 0 ? ' (Current unit)' : '' }}</h6>
+              <p>{{ departmentHistory.managerDisplayName }}</p>
+            </section>
+            <section class="department-date">{{ ( departmentHistory.startDate | date ) }}</section>
+          </section>
+          <section class="department-history-footer">
+            @if(userDepartmentHistory.length <= 2){
+              <!--The user does not have enough department history to enable the show more button-->
+            }@else{
+              <button mat-raised-button [color]="showAllDepartmentHistory ? 'none' : 'primary'" (click)="toggleShowAllDepartmentHistory()">
+                @if(showAllDepartmentHistory){
+                  see less
+                } @else {
+                  see more
+                }
+              </button>
+            }
+          </section>
+        }
+      </article>
+    </main>
+  </section>
+} @else{
+  <!--No staff member has been selected-->
+}

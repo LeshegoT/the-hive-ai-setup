@@ -1,0 +1,15 @@
+{
+  "name": "@the-hive/lib-db",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "@the-hive/lib-core": "0.0.1",
+    "applicationinsights": "^1.4.0",
+    "mssql": "^11.0.0",
+    "pino": "^8.19.0",
+    "tslib": "^2.8"
+  }
+}

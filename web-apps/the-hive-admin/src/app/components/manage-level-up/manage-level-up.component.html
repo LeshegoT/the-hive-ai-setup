@@ -1,0 +1,164 @@
+<div class="full-width marginTop">
+  <form [formGroup]="manageLevelUpForm">
+    <div class="container">
+      <mat-form-field class="container-content">
+        <mat-label>Name*</mat-label>
+        <input matInput formControlName="name" [errorStateMatcher]='matcher'/>
+      </mat-form-field>
+      <mat-form-field class="container-content-right">
+        <mat-label>Icon*</mat-label>
+        <mat-select formControlName="icon">
+          <mat-option [value]="icon.path" *ngFor="let icon of icons$ | async">{{ icon.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="container">
+      <mat-form-field class="container-content">
+        <mat-label>Link</mat-label>
+        <input matInput formControlName="link" [errorStateMatcher]="matcher" />
+      </mat-form-field>
+      <mat-form-field class="container-content-right">
+        <mat-label>Description*</mat-label>
+        <textarea matInput matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="8" formControlName="description" [errorStateMatcher]="matcher" ></textarea>
+        <mat-hint align="end">Markdown supported</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="marginBottom">
+      <app-manage-restrictions
+      contentIdString="levelUpId"
+      [contentId]='levelUp.levelUpId' 
+      contentType="Level-up" 
+      [contentName]='levelUp.name'
+      (currentRestrictions)="restrictions=$event"
+      >
+      </app-manage-restrictions>
+    </div> 
+
+    <div class="container">
+      <div class="container-content">
+        <div class="contentPickerTitle" *ngIf="addedCourses && addedCourses.length">
+          <span>Courses making up the Track:</span>
+          <table mat-table class="content-table mat-elevation-z8" [dataSource]="courseDataSource">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Course </th>
+              <td mat-cell *matCellDef="let course"> {{ course.name }} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let course"> 
+                <button mat-stroked-button color="error" (click)="deleteCourse(course.courseId)" type="button">Delete</button>
+              </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedCourseColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedCourseColumns;"></tr>
+          </table>
+        </div>
+        
+        <div class="full-width addContentBlock">
+          <mat-form-field class="addCourse">
+            <mat-label>Add courses</mat-label>
+            <mat-select formControlName="courses" (selectionChange)="addCourse()">
+              <mat-option [value]="course" *ngFor="let course of courses$">{{ course.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="container-content-right">
+        <div class="contentPickerTitle" *ngIf="addedFacilitators && addedFacilitators.length">
+          <span>Facilitators:</span>
+          <table mat-table class="content-table mat-elevation-z8" [dataSource]="facilitatorDataSource">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Facilitator </th>
+              <td mat-cell *matCellDef="let facilitator"> {{ facilitator.displayName ? facilitator.displayName : facilitator.userPrincipleName }} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let facilitator"> 
+                <button mat-stroked-button color="error" (click)="deleteFacilitator(facilitator.userPrincipleName)" type="button">Delete</button>
+              </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedFacilitatorColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedFacilitatorColumns;"></tr>
+          </table>
+        </div>
+        
+        <div class="full-width">
+          <div class="add-facilitator">
+            <app-staff-filter formControlName="facilitators" (selectStaff)="addFacilitator()" searchLabel="Add Facilitator" searchType="add"></app-staff-filter>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-content-full">
+        <div class="contentPickerTitle" *ngIf="addedActivities && addedActivities.length">
+          <span>Activities to be added:</span>
+          <table mat-table class="content-table mat-elevation-z8" [dataSource]="activityDataSource"  formArrayName="activityTable">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Activity </th>
+              <td class="content" mat-cell *matCellDef="let activity"> {{ activity.name }} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="duration">
+              <th mat-header-cell *matHeaderCellDef> Duration </th>
+              <td class="content" mat-cell *matCellDef="let activity; let i = index" [formGroupName]="i"> 
+                <mat-form-field class="duration">
+                <input matInput formControlName="duration" [errorStateMatcher]="matcher" />
+              </mat-form-field> </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef> Date </th>
+              <td mat-cell *matCellDef="let activity; let i = index" [formGroupName]="i"> 
+                <app-date-time-picker formControlName="startDate" label="Activity" [date]="activity.startDate"></app-date-time-picker> 
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td class="content" mat-cell *matCellDef="let activity; let i = index"> 
+                <button mat-stroked-button color="error" (click)="deleteActivity(activity.levelUpActivityTypeId, i)" type="button">Delete</button>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedActivityColumns"></tr>
+            <tr mat-row *matRowDef="let row; let i = index; columns: displayedActivityColumns;"></tr>
+          </table>
+        </div>
+    
+        <div class="full-width addContentBlock">
+          <div class="container align-start">
+            <mat-form-field class="activities max-width">
+              <mat-label>Add activities</mat-label>
+              <mat-select formControlName="activities" [errorStateMatcher]="matcher">
+                <mat-option [value]="activity" *ngFor="let activity of activities$ | async">{{ activity.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field class="duration max-width">
+              <mat-label>Duration (minutes)</mat-label>
+              <input matInput formControlName="duration" [errorStateMatcher]="matcher" />
+            </mat-form-field>
+            <div class="marginLeft container align-start">
+              <app-date-time-picker formControlName="startDate" label="Activity"></app-date-time-picker>
+              <button mat-raised-button color="primary" class="addButton rightButton" (click)="addActivity()" type="button">Add</button>          
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="error" *ngIf="error">
+      Please ensure all required fields are filled in and that there are no errors above.
+    </div>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="button" (click)="updateLevelUp()">Save</button>
+    </div>
+  </form>
+</div>

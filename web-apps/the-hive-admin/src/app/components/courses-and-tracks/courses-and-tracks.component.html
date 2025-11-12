@@ -1,0 +1,45 @@
+<section class="component">
+  <h1>Courses and Tracks</h1>
+  <mat-tab-group preserveContent>
+      <mat-tab label="Courses">
+        <ng-template matTabContent>
+          @if (courses !== undefined) {
+            <app-table-course
+              (triggerRefresh)="refreshContent()"
+              [allCourses]="courses"
+            ></app-table-course>
+            } @else {
+              <mat-spinner></mat-spinner>
+            }         
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Tracks">
+        <ng-template matTabContent>
+          @if (tracks !== undefined) {
+            <app-table-track (triggerRefresh)="refreshTracks()" [allTracks]="tracks"></app-table-track>
+          } @else {
+            <mat-spinner></mat-spinner>
+          } 
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Users Progress">
+        <ng-template matTabContent>
+          @if (userProgress$ | async; as progress){
+            <app-table-course-progress [userProgess]="progress"></app-table-course-progress>
+          } @else {
+            <mat-spinner></mat-spinner>
+          } 
+        </ng-template>
+      </mat-tab>
+    <mat-tab label="Assign">
+      <ng-template matTabContent>
+        <app-prescribed-training></app-prescribed-training>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Reports">
+      <ng-template matTabContent>
+        <app-prescribed-training-report></app-prescribed-training-report>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</section>

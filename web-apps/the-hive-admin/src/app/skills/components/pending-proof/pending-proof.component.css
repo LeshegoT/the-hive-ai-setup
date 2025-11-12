@@ -1,0 +1,32 @@
+app-loading-indicator {
+  width: 4em;
+}
+#proof-validation-filter-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.message{
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.ml-2 {
+  margin-left: 8px;
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-overlay app-loading-indicator {
+  width: 80px;
+  height: 80px;
+}

@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+}
+
+.staff-contract-list-title {
+    text-align: center;
+    margin: var(--standard-gap);
+    font-weight: bold;
+}
+
+.no-contract-text {
+    text-align: center;
+    margin: var(--standard-gap);
+    color: var(--remaining-characters-hint-color);
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    gap: var(--standard-gap);
+}
+
+.edit-date-icons {
+    cursor: pointer;
+}

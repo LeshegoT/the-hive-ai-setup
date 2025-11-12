@@ -1,0 +1,32 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin2 {
+  from {
+    stroke-dashoffset: -618;
+    stroke-dasharray: 0 1800;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 1300 1800;
+  }
+
+}
+
+.loader {
+  aspect-ratio: 1;
+  width: auto;
+  stroke: var(--header-color);
+}
+
+.loader-inner {
+  transform-origin: center;
+  animation: spin 1.6s linear infinite,
+    spin2 1s ease-in-out infinite alternate;
+  stroke-width: 3em;
+  stroke: var(--stroke-color);
+}

@@ -1,0 +1,161 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.container-content-right {
+  width: 45%;
+  margin-left: 5%;
+}
+
+.container-content {
+  width: 50%;
+}
+
+.margin-bottom {
+  margin-bottom: 0.5em;
+}
+
+.error {
+  color: red;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-wrap: wrap;
+  }
+  .container-content {
+    width: 100%;
+  }
+  .container-content-right{
+    width: 100%;
+    margin-left: 0;
+  }
+  .drag-container {
+    width: 100%;
+    list-style: none;
+    justify-items: flex-start;
+  }
+  .drag-container-right {
+    width: auto;
+    overflow: hidden;
+    align-items: center;
+  }
+}
+
+.save-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5em;
+}
+
+.small-label {
+  font-size: small;
+  color: rgb(155, 155, 155);
+}
+
+.drag-container {
+  max-width: 70%;
+  list-style: none;
+  justify-items: flex-start;
+}
+
+.drag-container-right {
+  max-width: 25%;
+  overflow: hidden;
+  align-items: center;
+  padding: 0.5em;
+}
+
+.item-list {
+  padding: 0;
+  margin: 0;
+  border-radius: 0.75em;
+}
+
+.item-box {
+  margin-bottom: 5px;
+  padding: 0.2em 0.5em;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14.5px;
+  border-radius: 15px;
+  background-color: rgba(128, 128, 128, 0.103);
+}
+
+@media screen and (max-width: 1000px) {
+  .item-box {
+    font-size: 1.4vw;
+  }
+}
+
+.item-box:hover{
+  background-color: rgba(37, 230, 166, 0.3);
+}
+
+.parameter-label {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.parameter-scroll-block {
+  max-height: 12.2em;
+  overflow: hidden scroll;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.templateQuestions{
+  background-color: #888;
+  color: black ; 
+}
+
+.templateQuestions:hover{
+  font-weight: bold;
+}
+
+.bubbleClose{
+    margin-left:5px;
+}
+
+.chipFilter{
+    margin:10px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
+.mat-mdc-chip.mat-mdc-standard-chip .mat-chip-remove{
+  border: none;
+  color: gray;
+  display: contents;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version. */
+.mat-mdc-chip.mat-mdc-standard-chip .mat-chip-remove:hover{
+  color: var(--accent-color);
+}

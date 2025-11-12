@@ -1,0 +1,1 @@
+export const selectMultiplier = (state) => state.multiplier.value;

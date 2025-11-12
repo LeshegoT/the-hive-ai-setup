@@ -1,0 +1,88 @@
+<div *ngIf="activity$ | async as activity" class="component">
+  <app-title title="{{ activity.levelUpName }}: {{ activity.activityName }}"></app-title>
+
+  <div class="details">
+    <div>
+      <h3>Details:</h3>
+      <div>
+        <strong>Date:</strong>
+        {{ activity.activityDate | dateFormat }}
+      </div>
+      <div>
+        <strong>Time:</strong>
+        {{ activity.activityDate | timeFormat }}
+      </div>
+      <div>
+        <strong>Duration:</strong>
+        {{ activity.durationInMinutes }} minutes
+      </div>
+    </div>
+
+    <div>
+      <h3>Facilitators:</h3>
+      <ul>
+        <li *ngFor="let facilitator of activityFacilitators | async">
+          {{ facilitator.displayName ? facilitator.displayName : facilitator.userPrincipleName }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="download">
+      <button mat-raised-button (click)="downloadSheet()">Download Attendance Sheet</button>
+    </div>
+  </div>
+
+  <div>
+    <h3>
+      Add attendees:
+      <span>(list all email addresses)</span>
+    </h3>
+    <div>
+         <app-staff-filter (selectStaff)="selectStaff()" [searchLabel]="searchLabel" [searchType]="searchType"></app-staff-filter>
+    </div>
+        <div id="Attendees" >
+        <mat-chip-listbox aria-label="added Attendees" class="chipFilter" >
+            <span *ngFor="let person of newAttendeesList">
+                <mat-chip-option color="primary" *ngIf="person.includes('bbd.co.za')" selected>
+                {{person}} <mat-icon class="bubbleClose" (click)="removeEmployee(person)" >close</mat-icon>
+               </mat-chip-option>
+               <mat-chip-option color="dark" *ngIf="!person.includes('bbd.co.za')" selected>
+                {{person}} <mat-icon class="bubbleClose" (click)="removeEmployee(person)" >close</mat-icon>
+               </mat-chip-option>
+            </span>
+            
+        </mat-chip-listbox>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="addAttendees()">Add</button>
+    </div>
+  </div>
+
+  <div *ngIf="activityAttendees$">
+    <h3>Attendees</h3>
+    <table mat-table class="full-width-table" [dataSource]="activityAttendees$">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.displayName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>BBD Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.userPrincipleName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bbdnet">
+        <th mat-header-cell *matHeaderCellDef>BBD User Name</th>
+        <td mat-cell *matCellDef="let row">{{ row.bbdUserName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>Unit</th>
+        <td mat-cell *matCellDef="let row">{{ row.department }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="activityColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: activityColumns"></tr>
+    </table>
+  </div>
+</div>

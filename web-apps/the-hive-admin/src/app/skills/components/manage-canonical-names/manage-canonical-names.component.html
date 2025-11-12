@@ -1,0 +1,38 @@
+<section class="component">
+  <section class="search-bar-container">
+    <mat-form-field class="search-bar" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="searchText"
+        [matAutocomplete]="auto"
+        (optionSelected)="onSelectCanonicalName($event.option.value)"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of filteredOptions; track option) {
+          <mat-option [value]="option">
+            {{ option }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </section>
+
+  <section class="card-container">
+    @if(!searchText.value){
+      <p>Please use the search box to find a name you want to edit</p>
+    }
+    @else if ((displayedCanonicalNames$ | async) === undefined){
+        <mat-spinner></mat-spinner>
+    } @else {
+      @for (canonicalName of displayedCanonicalNames$ | async; track canonicalName.canonicalNamesId) {
+        <app-canonical-name-card
+          [canonicalName]="canonicalName"
+        ></app-canonical-name-card>
+      } @empty {
+        <p>No results found</p>
+      }
+    }
+  </section>
+</section>

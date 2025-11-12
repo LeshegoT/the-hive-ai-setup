@@ -1,0 +1,54 @@
+.assignmentButtonPanel{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 3em;
+}
+
+.roundedButton{
+    min-width: 11em;
+    border-radius: 25px; 
+    margin-left: 0.5em;
+}
+
+.mainContent{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-tip{
+    color: var(--accent-color);
+    border-radius: var(--standard-border-radius);
+    border-color: var(--accent-color);
+    border-width: var(--standard-border-width);
+    border-style: solid;
+    padding: var(--standard-padding);
+}
+
+.feedback-providers-container {
+    padding: var(--standard-padding);
+}
+
+.container{
+    max-height: 30vh;
+    overflow-y: scroll;
+}
+
+::ng-deep mat-error {
+    font-size: var(--font-size-tiny);
+    line-height: 1.2 ;
+}
+
+.input-container {
+    display: flex;
+    gap: var(--standard-gap);
+
+    app-staff-filter {
+        flex:1;
+    }
+
+    .add-reviewer-button {
+        align-self: center;
+        background-color: var(--tertiary-color);
+    }
+}

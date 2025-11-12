@@ -1,0 +1,10 @@
+<div *ngIf="activity">
+  <h1>{{ activity.levelUpName }}: {{ activity.activityName }}</h1>
+  <h2>Date: {{ activity.activityDate | dateFormat }}</h2>
+  <h2>Duration: {{ activity.durationInMinutes }} minutes</h2>
+  <h2>Time: {{ activity.activityDate | timeFormat}}</h2>
+</div>
+
+<div *ngIf="link" class="qr-div">
+  <qrcode [qrdata]="link" [size]="430" [level]="'M'"></qrcode>
+</div>

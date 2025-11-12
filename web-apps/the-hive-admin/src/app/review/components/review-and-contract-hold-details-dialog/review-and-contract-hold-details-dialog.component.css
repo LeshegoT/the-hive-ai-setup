@@ -1,0 +1,20 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--standard-padding);
+    gap: var(--standard-gap);
+}
+
+.dialog-container section {
+    background-color: #f0f0f0;
+    padding: var(--standard-padding);
+    border-radius: var(--standard-border-radius);
+}
+
+.dialog-container section label {
+    font-weight: bold;
+}
+
+.dialog-container button {
+    align-self: flex-end;
+}

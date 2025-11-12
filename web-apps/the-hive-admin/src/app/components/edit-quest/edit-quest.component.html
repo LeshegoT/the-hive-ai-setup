@@ -1,0 +1,50 @@
+<div>
+  <app-title iconName="quests" title="Edit Quest"></app-title>
+</div>
+<div *ngIf="quest" class="details">
+  <div class="quest-details">
+    <h2>Hero Details</h2>
+    <div>
+      <label>Hero:</label>
+      <span><a href="hero/{{ encode(quest.heroUserPrincipleName) }}">{{ quest.heroUserPrincipleName }}</a></span>
+    </div>
+    <div>
+      <label>Current Guide:</label>
+      <span><a *ngIf="quest.guideUserPrincipleName" href="guide/{{ encode(quest.guideUserPrincipleName) }}">{{ quest.guideUserPrincipleName }}</a><strong *ngIf="!quest.guideUserPrincipleName">None!</strong></span>
+    </div>
+    <div>
+      <label>Goal:</label>
+      <span>{{ quest.goal }}</span>
+    </div>
+    <div>
+      <label>Specialisation:</label>
+      <span>
+        <mat-form-field>
+          <mat-select [formControl]="select" [(value)]="selectedSpecialisation">
+            <mat-option *ngFor="let spec of specialisations" value="{{ spec.name }}">{{ spec.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </span>
+    </div>
+    <div>
+      <label>Start Date:</label>
+      <span>{{ quest.startDate | dateFormat }}</span>
+    </div>
+    <div>
+      <label>End Date:</label>
+      <span><app-date-picker [initDate]="quest.endDate" (dateValue)='changeEndDate($event)'></app-date-picker></span>
+    </div>
+  </div>
+  <div class="guides">
+    <h2>Guides for {{ quest.specialisation }}</h2>
+    <div *ngIf="!guides || !guides.length">
+      <h3>There are no guides for this specialisation 😱</h3>
+    </div>
+    <ul *ngFor="let guide of guides">
+      <li class="guide">
+        <span><a href="guide/{{ encode(guide.userPrincipleName) }}">{{ guide.userPrincipleName }}</a> - heroes: {{ guide.heroes }}</span>
+        <button mat-button (click)="assignGuide(guide.userPrincipleName)">Assign</button>
+      </li>
+    </ul>
+  </div>
+</div>

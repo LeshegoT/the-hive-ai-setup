@@ -1,0 +1,20 @@
+<svg id="Layer_1" data-name="Layer 1" 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 245.89 350.07">
+    <defs>
+        <style>
+            .pattern-1-1{fill:url(#pattern-1-gradient);}
+            .pattern-1-2{fill:url(#pattern-1-gradient-2);}
+        </style>
+        <linearGradient id="pattern-1-gradient" x1="150.25" y1="128.52" x2="121.27" y2="111.79" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#162048"/>
+            <stop offset="1" stop-color="#22577e"/>
+        </linearGradient>
+        <linearGradient id="pattern-1-gradient-2" x1="157.06" y1="219.45" x2="113.95" y2="194.56" xlink:href="#pattern-1-gradient"/>
+    </defs>
+    <title>small robot</title>
+    <g id="pattern-1">
+        <path class="pattern-1-1" d="M135.5,124.64a30.05,30.05,0,0,1,14.3,4.65,69,69,0,0,1,2.65-10.8l-31.23-6.6a75.17,75.17,0,0,1,4.7,13.88A27.92,27.92,0,0,1,135.5,124.64Z"/>
+        <path class="pattern-1-2" d="M137.06,199.09c-.54,0-1.07,0-1.61,0a31.14,31.14,0,0,1-19.24-8.41,199.78,199.78,0,0,1-13,23.41l57.3-.65q-3.18-10.74-5.59-20.83A28,28,0,0,1,137.06,199.09Z"/>
+    </g>
+</svg>

@@ -1,0 +1,102 @@
+
+<mat-card>
+    <mat-card-header id="comment-header">
+        <h1>Comments for {{ data.userDisplayName }}</h1>
+        <button mat-icon-button  type="button"
+                matTooltip="Close"
+                matTooltipPosition="right"
+                (click)="close()">
+                <mat-icon>close</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content>
+        <section class="staff-level-comment-container">
+            <section class="staff-level-note">
+                @if(staffLevelComment()) {
+                    <section>
+                        <label class="comment-author">  {{staffLevelComment().createdBy}} - </label> 
+                        <label class="comment-date">{{staffLevelComment().dateCreated | date}}</label>
+                        <p class="comment-text">{{staffLevelComment().comment}}</p>    
+                    </section>
+
+                    <button mat-mini-fab class="delete-comment-button" title="Delete comment" (click)="deleteStaffLevelComment()">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                }@else {
+                    <p class="no-comment-text">There is no staff level comment</p>
+                }
+            </section>
+            <mat-form-field appearance="outline">
+                <mat-label>Add new staff level comment</mat-label>
+                <input matInput placeholder="Type comment here ..." [formControl]="staffLevelCommentControl"/>
+                    <button matSuffix  mat-mini-fab class="add-comment-button" type="button"
+                        matTooltip="Save new staff level comment"
+                        matTooltipPosition="right"
+                        (click)="addStaffLevelComment()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                <mat-error *ngIf="staffLevelCommentControl.hasError('required')">
+                    Please type comment before submitting.
+                </mat-error>
+            </mat-form-field>
+        </section>
+        
+        <mat-tab-group class="main-container" (selectedTabChange)="activeTab.set($event.tab.textLabel)" mat-stretch-tabs="false" mat-align-tabs="start">
+
+            <mat-tab label="Upcoming">
+                <div class="comments-container">
+                    <div class="timeline">
+                        @if (upcomingReviewComments) {
+                            @for (comment of upcomingReviewComments; track comment) {
+                                <div class="content">
+                                    <label class="comment-author">{{comment.createdBy}} - </label> <label class="comment-date">{{comment.dateCreated | date}}</label>
+                                    <p class="comment-text">{{comment.comment}}</p>
+                                </div>
+                            }
+                            @empty {
+                                <p class="no-comment-content">There are no Upcoming Review comments to show</p>
+                            }
+                        }@else {
+                            <mat-spinner class="loading-spinner"></mat-spinner>
+                        } 
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Review">
+                <div class="comments-container">
+                    <div class="timeline">
+                        @if (reviewComments) {
+                            @for (comment of reviewComments; track comment) {
+                                <div class="content">
+                                    <label class="comment-author">{{comment.createdBy}} - </label> <label class="comment-date">{{comment.dateCreated | date}}</label>
+                                    <p class="comment-text">{{comment.comment}}</p>
+                                </div>
+                            }
+                            @empty {
+                                <p class="no-comment-content">There are no Review comments to show</p>
+                            }
+                        }@else {
+                            <mat-spinner class="loading-spinner"></mat-spinner>
+                        } 
+                    </div>
+                </div>
+              </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+    <mat-card-footer>
+            <mat-form-field appearance="fill">
+                    <mat-label>New Comment</mat-label>
+                    <textarea matInput placeholder="Type comment here ..." [formControl]="newCommentControl"></textarea>
+                <button matSuffix mat-icon-button class="add-comment-button" type="button"
+                        matTooltip="Save New Comment"
+                        matTooltipPosition="right"
+                        (click)="handleCommentsForTab(activeTab())"
+                        [disabled]="!canAddComment()">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <mat-error *ngIf="newCommentControl.hasError('required')">
+                    Please type comment before submitting.
+                  </mat-error>
+            </mat-form-field>
+    </mat-card-footer>
+</mat-card>

@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-title>
+    @if (certificationNameControl !== undefined) {
+        <mat-card-header>
+          <mat-form-field id="new-certification-name-form" appearance="fill">
+            <input 
+              matInput
+              type="text" 
+              [formControl]="certificationNameControl" 
+              placeholder="Enter new name" 
+            />
+            <mat-error>Name cannot be empty</mat-error>
+          </mat-form-field>
+          <button class="edit-certification-name-buttons" (click)="saveEdit()">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button class="edit-certification-name-buttons" (click)="cancelEdit()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card-header>
+    } @else {
+        {{ certification.canonicalName  }}
+        @if (certification.needsRatification) {
+          <button class="edit-certification-name-buttons" (click)="editCertificationName()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        } @else {
+          <!-- Certification has already been ratified -->
+        }
+    }
+    @if (certification.expires) {
+      <mat-chip>Expires</mat-chip>
+    } @else {
+      <!-- Does not expire -->
+    }
+  </mat-card-title>
+  @if (certification.needsRatification) {
+    <div class="button-container">
+      <button
+        id="ratify-certification-button"
+        mat-raised-button
+        type="button"
+        (click)="ratifyCertification()"
+      >
+        Approve
+      </button>
+    </div>
+  } @else {
+    <!-- Certification has already been ratified -->
+  }
+
+  @for (institution of certification.institutions; track institution.institutionId){
+    <app-users-with-certification-for-institution
+      [certification]="certification"
+      [institution]="institution"
+      [snackBarDuration]="snackBarDuration">
+    </app-users-with-certification-for-institution>
+  }
+</mat-card>

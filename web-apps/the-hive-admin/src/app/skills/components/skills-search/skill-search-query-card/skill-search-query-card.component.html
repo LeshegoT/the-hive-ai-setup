@@ -1,0 +1,24 @@
+@if(fieldConfigs !== undefined){
+    <section class="search-card">
+        <button mat-icon-button (click)="onRemoveAttributeFilterFromSearch(attributeFilters)" matTooltip="Remove search filter">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <strong>{{ displayName }}: </strong>
+        <section class="value-container">
+            @if(attributeFilters.fieldFilters.length === 0){
+                <div class="field-value">everyone</div>
+            }@else{
+            @for(field of attributeFilters.fieldFilters; track field){
+                @for(operator of returnOperatorForField(field); track operator){
+                    <div class="field-value">{{lookupDisplayValue(field.field, operator)}} </div>
+                }
+            }}
+        </section>
+        <button mat-icon-button (click)="onEditAttributeFilterFromSearch(attributeFilters)" matTooltip="Edit search filter">
+            <mat-icon>edit</mat-icon>
+        </button>
+</section>
+}@else{
+    <!-- fieldConfigs has not been generated yet so we can't display field values, we display nothing  -->
+}
+

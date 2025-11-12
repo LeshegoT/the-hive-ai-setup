@@ -1,0 +1,15 @@
+<div [formGroup]="answerGroup" class="answerDiv">
+  <mat-form-field class="answerInput">
+    <input matInput type="text" formControlName="answerText" [readonly]="!editAnswer">
+    <mat-hint *ngIf="editAnswer" align="end">Edit Answer Text</mat-hint>
+  </mat-form-field>
+  <mat-checkbox [checked]="answer.correct" formControlName="correctAnswer">Correct Answer?</mat-checkbox>
+  <button mat-stroked-button color="primary" (click)="editAnswerText()" type="button"
+    *ngIf="!editAnswer">
+    Edit
+  </button>
+  <button mat-stroked-button color="primary" (click)="doneAnswerText()" type="button"
+    *ngIf="editAnswer">
+    Done
+  </button>
+</div>

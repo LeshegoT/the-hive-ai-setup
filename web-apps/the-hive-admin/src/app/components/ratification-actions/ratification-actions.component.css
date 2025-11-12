@@ -1,0 +1,45 @@
+button[mat-icon-button] {
+  border-radius: 50%;
+  color: var(--app-button-text);
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  padding: var(--medium-spacing);
+  aspect-ratio: 1;
+  margin-inline: var(--small-gap);
+}
+
+mat-icon {
+  font-size: var(--font-size-small);
+  width: var(--font-size-small);
+  height: var(--font-size-small);
+}
+
+.ratification-actions {
+  display: flex;
+  flex-direction: row;
+  gap: var(--small-spacing);
+  justify-content: center;
+  align-items: center;
+  padding-block: var(--standard-spacing);
+}
+
+.accept-action{
+  background-color: var(--completed-status);
+}
+
+.reject-action{
+  background-color: var(--app-cancel-button);
+}
+
+.change-canonical-name-action{
+  background-color: var(--primary-color);
+}
+
+.merge-action{
+  background-color: var(--app-almost-overdue);
+}
+
+.disabled-ratification-action {
+  background-color: var(--app-release-button);
+}

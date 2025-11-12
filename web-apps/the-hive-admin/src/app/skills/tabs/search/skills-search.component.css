@@ -1,0 +1,95 @@
+:host {
+  --count-background-color: #4f72c5;
+  --count-text-color: white;
+  --count-padding-block: 0.25em;
+  --count-padding-inline: 0.625em;
+  --count-border-radius: 0.75em;
+}
+
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.component h1 {
+  margin: var(--medium-spacing);
+}
+
+.skill-search-form-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%
+}
+
+.people-card-container{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--responsive-card-size), 1fr)
+  );
+  column-gap: var(--extra-large-gap);
+  row-gap: var(--standard-spacing);
+  padding: var(--standard-spacing);
+  margin-inline:0;
+}
+
+.search-by-person-container{
+  width: 100%;
+}
+
+mat-divider{
+  width: 100%;
+  margin: var(--standard-spacing);
+}
+
+.search-form{
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.none-found{
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+mat-tab-group {
+  width: 100%;
+  flex-grow: 1;
+  margin-inline: var(--standard-padding);
+}
+app-search-by-person{
+  margin-block:var(--large-spacing);
+}
+#report-buttons{
+  display:flex;
+  gap:var(--medium-gap)
+}
+.hidden-search-by-person-container{
+  display: none;
+}
+
+.search-results-header {
+  display: flex;
+  width:100%;
+  justify-content: space-between;
+}
+
+.search-results-header h3,
+.search-result-total {
+  margin: 0;
+  padding: 0;
+}
+
+.search-result-total .count {
+  background-color: var(--count-background-color);
+  color: var(--count-text-color);
+  padding-block: var(--count-padding-block);
+  padding-inline: var(--count-padding-inline);
+  border-radius: var(--count-border-radius);
+  text-align: center;
+}

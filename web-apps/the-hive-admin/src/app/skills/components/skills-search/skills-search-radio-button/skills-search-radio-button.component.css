@@ -1,0 +1,15 @@
+#input-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.range-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.radio-button-section{
+    display: flex;
+    flex-direction: column;
+}

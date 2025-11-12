@@ -1,0 +1,39 @@
+.dateTimePicker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+  gap: var(--standard-gap);
+  padding: var(--standard-padding);
+}
+
+.date {
+  float: none;
+  flex-grow: 2;
+  flex-shrink: 2;
+  flex-basis: 1em;
+  min-width: 50px;
+}
+
+.time {
+  float: none;
+  flex-grow: 1;
+  flex-shrink:1;
+  flex-basis: 1em;
+  min-width: 50px;
+}
+
+.timePicker {
+  display: flex;
+}
+
+input.mat-mdc-input-element {
+  margin-top: 0;
+}
+
+.toggleIcon {
+  margin-left: auto;
+  margin-right: 0;
+  float: right;
+}

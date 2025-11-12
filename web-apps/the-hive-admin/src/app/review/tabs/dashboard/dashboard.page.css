@@ -1,0 +1,20 @@
+#dashboard {
+  padding: var(--standard-padding);
+}
+
+.chip-title {
+  font-weight: bolder;
+}
+
+#status-summary-section {
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--standard-gap);
+  width: 100%;
+}
+
+.status-summary-section-content {
+  justify-self: stretch;
+  min-width: 50%;
+}

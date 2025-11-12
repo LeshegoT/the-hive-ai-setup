@@ -1,0 +1,1 @@
+export const selectAllLearningTasks = (state) => state.learningTasks.user;  

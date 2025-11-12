@@ -1,0 +1,27 @@
+.hero {
+    padding-left: 2em;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.hero > * {
+    flex: 1 1 auto;
+}
+
+h2 > span,
+h3 > span {
+    font-weight: lighter;
+}
+
+.small {
+    margin-top: 1.6em;
+}
+
+.smaller {
+    margin-top: 1.3em;
+}
+
+.detail {
+    margin: 2em 5em;
+    border-top: 1px solid black;
+}

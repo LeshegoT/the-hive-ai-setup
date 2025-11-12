@@ -1,0 +1,11 @@
+<app-review-list
+  [reviewData]="reviewData"
+  [reviewColumns]="reviewColumns"
+  (actionButton)="selectFeedbackProviders($event.review, $event.actionButton)"
+  [showHrNotesButton]="true"
+  [actionButtonText]="assignProvidersButtonText"
+  [actionButtonIconName]="actionButtonIconName"
+  [cancelButtonText]="cancelButtonText"
+  [buttonsEnabled]="buttonsEnabled"
+  [displayNudgeButton]="displayNudgeButton"
+></app-review-list>

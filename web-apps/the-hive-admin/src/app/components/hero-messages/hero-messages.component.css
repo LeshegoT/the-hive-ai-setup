@@ -1,0 +1,17 @@
+tr {
+    display: flex;
+}
+
+.date, .from, .to, .desc {
+    flex-basis: 10%;
+}
+
+.text {
+    flex-basis: 70%;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}

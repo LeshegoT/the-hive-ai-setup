@@ -1,0 +1,74 @@
+<section class="person-card-container">
+    <mat-card class="user-skill-card">
+        <mat-card-header 
+            class="header"
+            matTooltip="See {{personInfo.userName}}'s portfolio"
+            matTooltipPosition="right"
+            matTooltipHideDelay="200"
+            (click)="selectUPN.emit(personInfo.userPrincipleName)">
+            <mat-card-title>{{personInfo.userName}}</mat-card-title>
+            <mat-card-subtitle>{{personInfo.jobTitle}}</mat-card-subtitle>
+            <mat-card-subtitle>{{personInfo.entity}}, {{personInfo.office}}</mat-card-subtitle>
+            @let departmentDisplay = departmentDisplayString(personInfo);
+            <mat-card-subtitle>{{departmentDisplay}}</mat-card-subtitle>
+
+        </mat-card-header>
+        <mat-card-content>
+            <mat-accordion>
+                @for(userAttribute of personInfo.userAttributes; track userAttribute){
+                    @if(isError(userAttribute)){
+                      <p class="message">{{userAttribute.message}}. Try refreshing the page, or
+                        <a [href]="generateSupportEmail(userAttribute.message)">contact support</a> if the issue persists.
+                      </p>
+                    } @else{
+
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> {{userAttribute.attribute.canonicalName}} </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-card-content>
+                          @for(fieldValue of userAttribute.fieldValues; track fieldValue){
+                            @let fieldLabel = lookupFieldLabel(userAttribute.attribute.standardizedName, fieldValue.standardizedName);
+                            @let displayValue = lookupDisplayValue(userAttribute.attribute.standardizedName, fieldValue.standardizedName);
+                            @if(!fieldLabel || !displayValue){
+                              <!-- field values are still being prepared -->
+                            } @else if(isError(displayValue)){
+                              <p class="message">{{displayValue.message}} for '{{fieldLabel}}'. Try refreshing the page, or
+                                <a [href]="generateSupportEmail(displayValue.message)">contact support</a> if the issue persists.
+                              </p>
+                            } @else if(fieldValue.standardizedName === proofFieldName && displayValue !== skillFileDefault) {
+                              <p>{{ fieldLabel }}:
+                                <button mat-icon-button (click)="downloadProof(displayValue, personInfo.userName + personInfo.bbdUserName)">
+                                  <mat-icon>file_copy</mat-icon>
+                                </button>
+                              </p>
+                            } @else if(fieldValue.standardizedName === proofFieldName) {
+                              <p>{{ fieldLabel }}:
+                                <a [href]="'mailto:' + personInfo.userPrincipleName +
+                                '?subject=Request for supporting documents' +
+                                '&body=Hello ' + personInfo.userName +
+                                ',%0D%0A%0D%0A' +
+                                'Please kindly provide us with the necessary proof of your ' + userAttribute.attribute.attributeType + ': ' + userAttribute.attribute.canonicalName +
+                                getObtainedFromTextForEmail(userAttribute.attribute.standardizedName) +
+                                'As part of our ongoing efforts to maintain accurate records, we require the relevant supporting documents.%0D%0A%0D%0A' +
+                                'Please upload the required proof on the Hive using the following link:%0D%0A' +
+                                'https://the-hive.bbd.co.za/skills/%0D%0A%0D%0A' +
+                                'Feel free to reach out if you have any questions or need assistance.%0D%0A%0D%0A' +
+                                'Thank you.%0D%0A%0D%0A'">
+                                  Request proof
+                                </a>
+                              </p>
+                            } @else {
+                              <p>{{ fieldLabel }}: {{ displayValue }}</p>
+                            }
+                            <mat-divider></mat-divider>
+                          }
+                        </mat-card-content>
+                    </mat-expansion-panel>
+
+                    }
+                }
+            </mat-accordion>
+        </mat-card-content>
+    </mat-card>
+</section>

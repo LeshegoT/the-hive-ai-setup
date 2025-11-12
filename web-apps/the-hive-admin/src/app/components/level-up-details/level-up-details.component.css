@@ -1,0 +1,113 @@
+.component {
+  padding: 0 10em;
+}
+
+.dates {
+  display: flex;
+}
+
+.dates > * {
+  flex: 1 1 auto;
+}
+
+.last {
+  text-align: right;
+}
+
+.component > div {
+  margin-top: 2em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+
+ul {
+  padding-inline-start: 0;
+}
+
+.drag-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  max-width: 100%;
+}
+
+.ideaList {
+  max-width: 100%;
+  margin: 1em;
+  vertical-align: top;
+  background-color: #97b6d6;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.item-list {
+  min-height: 30%;
+  min-width: 30%;
+  border-radius: 0.75em;
+}
+
+.item-box {
+  padding: 8px 10px;
+  border: solid 1px #ccc;
+  margin-bottom: 5px;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+  border-radius: 20px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.item-list.cdk-drop-list-dragging .item-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+textarea {
+  width: 100%;
+  font-size: 1em;
+}
+
+.facilitator-input{
+  margin: 15px 0;
+  width: 100%;
+}
+
+.bubble-close{
+  cursor: pointer;
+}
+
+::ng-deep .emphasis-tooltip{
+  white-space: pre;
+  background-color: #666;
+  border: 3px solid red;
+  font-size: 14px; ;
+}

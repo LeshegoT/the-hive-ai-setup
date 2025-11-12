@@ -1,0 +1,39 @@
+:host {
+    display: flex;
+}
+
+.card {
+    flex: 1;
+}
+
+.contract-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+    margin-inline: auto;
+    border-radius: var(--standard-border-radius);
+    gap: var(--standard-gap);
+}
+
+.contract-form-date-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--standard-gap);
+}
+
+.contract-form-date-fields mat-form-field {
+    flex: 1;
+}
+
+.contract-form-save-button {
+    align-self: flex-end;
+}
+
+.alert-warning-text {
+    border-radius: var(--standard-border-radius);
+    border: solid var(--standard-border-width)  var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--selected-row-background-colour);
+    padding: var(--standard-padding);
+}

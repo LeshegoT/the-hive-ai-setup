@@ -1,0 +1,40 @@
+.card {
+  padding: var(--standard-padding);
+}
+
+.error-card {
+  background-color: var(--warning-background-color);
+}
+
+.review-details {
+  margin-block: var(--standard-margin);
+}
+
+.review-info {
+  margin-block: var(--standard-gap);
+  background-color: var(--background-shade-color);
+  padding: var(--standard-padding);
+  border-radius: var(--standard-border-radius);
+  border-left: var(--standard-border-width) solid var(--primary-color);
+}
+
+.review-info p {
+  margin-block: var(--standard-gap);
+  line-height: 1.5;
+}
+
+.review-info-label {
+  font-weight: bold;
+}
+
+.unit-of-record {
+  color: var(--primary-color);
+  font-weight: bolder;
+}
+
+.notice-card {
+  background-color: var(--warning-background-color);
+  padding: var(--standard-padding);
+  border-radius: var(--standard-border-radius);
+  margin-block: var(--standard-gap);
+}

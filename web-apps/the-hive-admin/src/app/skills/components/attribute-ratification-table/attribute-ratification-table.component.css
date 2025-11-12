@@ -1,0 +1,57 @@
+mat-header-row {
+    font-weight: bold;
+}
+
+.table-container{
+  height: calc(var(--app-page-height) - 3.125rem);
+  overflow-y: auto;
+}
+
+.mat-column-actions, .mat-column-paginator {
+  justify-content: flex-end;
+}
+
+.message{
+  text-align: center;
+  width: 100%;
+}
+
+.spinner-and-paginator{
+  display: flex;
+}
+
+.spinner-and-paginator > mat-paginator{
+  flex-grow: 1;
+}
+
+.mat-column-spinner{
+  padding-block: var(--standard-padding);
+  color: var(--app-button-text);
+}
+
+.header-content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--medium-large-gap);
+  width: 100%;
+}
+
+.search-input {
+    padding:var(--standard-padding);
+}
+
+::ng-deep .search-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+::ng-deep .mat-mdc-chip .mdc-evolution-chip__text-label {
+  white-space: normal;
+  word-break: break-word;
+}
+
+::ng-deep .mat-mdc-chip {
+  height: fit-content;
+  padding-inline: 0;
+  padding-block: var(--medium-spacing);
+}

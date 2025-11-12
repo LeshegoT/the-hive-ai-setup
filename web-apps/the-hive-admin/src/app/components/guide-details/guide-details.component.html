@@ -1,0 +1,31 @@
+<div *ngIf="guide$ | async as guide" class="component">
+  <app-title iconName="usage" title="Guide Details"></app-title>
+  <div class="guide">
+    <h2>
+      Guide: <span>{{ guide.userPrincipleName }}</span>
+    </h2>
+    <div>
+      <strong>Status:</strong>
+      {{ guide.guideStatus }}
+      <button
+        type="button"
+        *ngIf="guide.guideStatus === 'pending-delete'"
+        (click)="confirmDelete(guide.userPrincipleName)"
+      >
+        Confirm Delete
+      </button>
+    </div>
+    <div>
+      <strong>Specialisations:</strong> {{ guide.specialisations }}
+    </div>
+    <div>
+      <strong>Last activity:</strong>
+      {{ guide.lastGuideActivityDate | dateFormat }}
+    </div>
+  </div>
+  <div class="hide info" *ngIf="guide.guideStatus === 'pending-delete'">
+    This guide has possibly left BBD. Please confirm this and re-assign all their Heroes
+    below before confirming the guide delete
+  </div>
+  <app-all-heroes [guide]="guide.userPrincipleName"></app-all-heroes>
+</div>

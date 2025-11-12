@@ -1,0 +1,76 @@
+div.component {
+    display: flex;
+    flex-direction: column;
+}
+
+div.component > div {
+    flex: 1 1 auto;
+}
+
+textarea {
+    width: 100%;
+    font-size: large;
+    box-sizing: border-box;
+}
+
+h4 > span {
+    font-weight: lighter;
+}
+
+.progress-spinner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#assigned-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: var(--standard-gap);
+}
+
+table {
+  table-layout: fixed;
+  float: right;
+}
+
+th, td {
+  overflow: hidden;
+  width: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.due-date{
+    display: flex;
+    align-items: center;
+}
+
+.paginator {
+    background: var(--mat-toolbar-container-background-color);
+}
+
+.toolbar {
+    justify-content: end;
+}
+
+.filter > mat-form-field {
+    margin: 0;
+    flex-grow: 0;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.course-title {
+    display: flex;
+    justify-content: center;
+}
+
+mat-spinner {
+    margin: auto;
+}

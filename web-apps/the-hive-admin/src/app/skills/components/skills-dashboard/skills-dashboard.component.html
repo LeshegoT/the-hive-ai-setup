@@ -1,0 +1,90 @@
+<section class="skills-dashboard">
+  <section class="graphs">
+    <select-company-entity-list (entitySelected)="selectedEntities$.next($event)"></select-company-entity-list>
+    
+    @if(selectedEntities$ | async; as selectedEntities) {
+      <section class="cards-container">
+        @if (selectedEntities.length === 0) {
+          <p class="no-company-entities-message">Please select at least one company entity</p>
+        } @else {
+          @if (staffTrace$ | async; as staffTrace) {
+            <mat-card appearance="raised">
+              <plotly-plot [data]="[staffTrace]" [layout]="staffGraph.layout" [config]="staffGraph.config"></plotly-plot>
+            </mat-card>
+          } @else {
+            <mat-spinner></mat-spinner>
+          }
+          @if (skillsLayoutConfiguration$ | async; as skillsLayoutConfiguration) {
+            <mat-card appearance="raised">
+              <plotly-plot [data]="[skillsLayoutConfiguration]" [layout]="layoutConfiguration.layout" [config]="layoutConfiguration.config"></plotly-plot>
+            </mat-card>
+          } @else {
+            <mat-spinner></mat-spinner>
+          }
+        }
+      </section>
+    }
+  </section>  
+    @if(selectedEntities$ | async; as selectedEntities){
+  <section class="staff-summary">
+    <mat-expansion-panel class="transparent-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="section-heading">Staff who have a portfolio</mat-panel-title>
+        @let exportingMap = isExportingMap$ | async;
+        <button class="export-as-csv-button" mat-raised-button color="primary" type="button"
+          [disabled]="exportingMap['used']"
+          (click)="exportEmployeesSkillsUsageStatisticsAsCSV($event, true)">{{ exportingMap['used'] ? 'exporting…' : 'export as csv' }}</button>
+        </mat-expansion-panel-header>
+        <section>
+        <app-staff-overview-skills [staffWithSkills]="true" [companyEntities]="selectedEntities" (staffNameSearchTextChanged)="onStaffNameSearchTextChange($event)" (searchDateChanged)="onSearchDateChange($event)"></app-staff-overview-skills>
+        </section>
+        </mat-expansion-panel>
+
+        @if(staffSummaryPanels$ | async; as staffSummaryPanels){
+          <ng-container *ngFor="let panel of staffSummaryPanels">
+            <mat-expansion-panel class="transparent-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="section-heading">
+                  <p>Staff who have <strong> not </strong> added any {{panel.attributeTypeCanonicalName}} to their portfolio</p>
+                </mat-panel-title>
+                <button 
+                  class="export-as-csv-button" 
+                  mat-raised-button 
+                  color="primary" 
+                  type="button"
+                  [disabled]="exportingMap['used_type_' + panel.attributeType]"
+                  (click)="exportEmployeesSkillsUsageStatisticsAsCSV($event, true, panel.attributeType)">
+                  {{ exportingMap['used_type_' + panel.attributeType] ? 'exporting…' : 'export as csv'  }}
+                </button>
+              </mat-expansion-panel-header>
+              <section>
+                <app-staff-overview-skills 
+                  [staffWithSkills]="true" 
+                  [companyEntities]="selectedEntities" 
+                  [attributeType]="panel" 
+                  [hasAttributeType]="false"
+                  (staffNameSearchTextChanged)="onStaffNameSearchTextChange($event)"
+                  (searchDateChanged)="onSearchDateChange($event)">
+                </app-staff-overview-skills>
+              </section>
+            </mat-expansion-panel>
+          </ng-container>  
+        } @else {
+          <!-- Show nothing -->
+        }
+
+        <mat-expansion-panel class="transparent-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="section-heading"> <p>Staff who do <strong>not</strong> have a portfolio</p> </mat-panel-title>
+            <button class="export-as-csv-button" mat-raised-button color="primary" type="button"
+              [disabled]="exportingMap['notused']"
+              (click)="exportEmployeesSkillsUsageStatisticsAsCSV($event, false)">{{ exportingMap['notused'] ? 'exporting…' : 'export as csv' }}</button>
+            </mat-expansion-panel-header>
+            <section>
+        <app-staff-overview-skills [staffWithSkills]="false" [companyEntities]="selectedEntities" (staffNameSearchTextChanged)="onStaffNameSearchTextChange($event)" (searchDateChanged)="onSearchDateChange($event)"></app-staff-overview-skills>
+        </section>
+        </mat-expansion-panel>
+  </section>
+  }
+</section>
+

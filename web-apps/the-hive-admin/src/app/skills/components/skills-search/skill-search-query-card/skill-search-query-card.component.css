@@ -1,0 +1,21 @@
+.search-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--medium-gap);
+    justify-content: center;
+    border-radius: var(--large-gap);
+    background-color: var(--background-color-light);
+}
+
+.value-container{
+    display: flex;
+    flex-direction: row;
+    gap: var(--medium-gap);
+}
+
+.field-value:not(:last-child)::after {
+    content: "";
+    border-right: 0.1em solid black;
+    margin-left: 0.5em;
+}

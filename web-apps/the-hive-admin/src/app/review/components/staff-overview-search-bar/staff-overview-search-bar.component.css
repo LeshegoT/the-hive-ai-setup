@@ -1,0 +1,17 @@
+.filterSearch{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.filterSearch app-staff-filter {
+    overflow: hidden;
+}
+
+#staff-overview-filter-panel .staff-type {
+    margin: 0;
+}
+
+#staff-overview-filter-panel {
+    flex-wrap: wrap;
+}

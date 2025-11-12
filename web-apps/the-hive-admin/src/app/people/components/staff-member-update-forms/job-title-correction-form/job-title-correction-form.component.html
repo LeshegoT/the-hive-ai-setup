@@ -1,0 +1,27 @@
+<mat-card class="staff-member-update-form-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Update {{selectedStaffMember().displayName}}'s job title</mat-card-title>
+    <mat-card-subtitle>Enter the new job title for {{selectedStaffMember().displayName}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="jobTitleCorrectionsForm">
+      <mat-form-field class="staff-member-update-form-fields">
+        <mat-label>Search for job title</mat-label>
+        <input type="text"
+              placeholder="Job title"
+              matInput
+              [formControl]="jobTitleCorrectionsForm.controls.jobTitle"
+              [matAutocomplete]="autoCompleteJobTitles">
+        <mat-autocomplete autoActiveFirstOption #autoCompleteJobTitles="matAutocomplete">
+          @for (option of filteredJobTitles$ | async; track option) {
+            <mat-option [value]="option">{{option}}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-error *ngIf="jobTitleCorrectionsForm.controls.jobTitle.errors?.['required'] && jobTitleCorrectionsForm.controls.jobTitle.touched">Please select a job title</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="button" [disabled]="jobTitleCorrectionsForm.invalid" (click)="submit()" matTooltip="Submit">
+        Submit <mat-icon>check_circle</mat-icon>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

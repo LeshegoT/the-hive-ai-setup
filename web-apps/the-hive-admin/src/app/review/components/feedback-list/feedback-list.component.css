@@ -1,0 +1,37 @@
+.controlButtons{
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    align-items: center;
+    gap: 1rem;
+}
+
+#emailDetails{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input-button-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.client-email-display {
+    margin: 0.25rem 0;
+}
+
+#emailDetailsContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline-end: 1em;
+    align-items: center;
+    gap: 1em;
+}
+
+.no-data-found-row {
+  text-align: center;
+  padding: var(--standard-padding);
+}

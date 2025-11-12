@@ -1,0 +1,52 @@
+mat-card {
+  flex: 1;
+  padding: var(--standard-padding);
+  gap: var(--standard-gap);
+}
+
+mat-card-header {
+  justify-content: space-between;
+  padding: 0;
+}
+
+mat-card-content {
+  word-break: break-all;
+  display: flex;
+  width: 100%;
+}
+
+mat-form-field {
+  width:100%;
+}
+
+mat-chip {
+  width: fit-content;
+}
+
+#active {
+  background-color: var(--app-review-green-button);
+}
+
+#inactive {
+  background-color: var(--app-cancel-button);
+  & p {
+    color: var(--app-button-text);
+  }
+}
+
+.edit-canonical-name-button{
+  cursor: pointer;
+  border: none;
+  background: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  padding-right: 3rem;
+}
+
+.support-email-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--error-color);
+}

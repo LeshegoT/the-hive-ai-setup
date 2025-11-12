@@ -1,0 +1,73 @@
+.mat-mdc-card-header .mat-mdc-card-title {
+  font-size: 65%;
+  margin: 15% 12% 12% -18%;
+}
+
+.mat-grid-tile .mat-figure {
+  position: absolute;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.mat-grid-list {
+  display: flex;
+  position: relative;
+  flex-wrap: nowrap;
+}
+
+.mat-mdc-card {
+  display: block;
+  position: relative;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.mat-mdc-card-image {
+  width: calc(20% + 10%);
+  margin: 9% 12% 12% 33%;
+  position: relative;
+}
+
+.card {
+  max-width: 65%;
+}
+
+.material-icons.md-100 {
+  font-size: 305%;
+  margin: 0% 20% 0% 12%;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+.span {
+  display: flex;
+  border: 0 solid var(--app-secondary-color);
+  border-width: 0 0 2px 0;
+  font-size: 1.5em;
+  margin: 0.65em 0 1.17em -0.3em;
+  font-weight: lighter;
+}
+
+.title {
+  display: -webkit-inline-box;
+  font-size: 100%;
+}
+
+.name span {
+  margin-right: 39%;
+  margin-left: 15%;
+  font-size: x-large;
+  display: initial;
+}
+
+#Layer_1 {
+  display: inline-flex;
+  margin: -3% 0% -10% -1%;
+  min-width: 2em;
+  min-height: 2em;
+  max-width: 6.5%;
+}

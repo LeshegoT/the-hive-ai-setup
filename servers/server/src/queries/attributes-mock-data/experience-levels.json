@@ -1,0 +1,7 @@
+{
+  "experienceLevels": [
+    { "name": "Beginner", "type": 1 },
+    { "name": "Intermediate", "type": 2 },
+    { "name": "Advanced", "type": 3 }
+  ]
+}

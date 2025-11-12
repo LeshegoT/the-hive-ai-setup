@@ -1,0 +1,81 @@
+<mat-card class="create-specialisation-container">
+    <mat-card-title class="create-specialisation-title">Create new guide</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="saveSpecialisations()" class="specialisation-form">
+        @if (guideUserPrincipleName == undefined) {
+          @if (form.get('guideUserPrincipleName').invalid && form.get('guideUserPrincipleName').touched) {
+            <p class="error">Please select a staff member.</p>
+          } @else {
+            <!-- Select staff member error is not displayed -->
+          }
+          <app-staff-filter class="guide" id="guideUserPrincipleName" (selectStaff)="selectGuide()" searchLabel="Guide User Principle Name" searchType="add"></app-staff-filter>
+        } @else {
+          <section class="guide">
+            <h2>Guide: </h2>
+            <h2>{{ guideUserPrincipleName }}</h2>
+          </section>
+
+          @if (guideSpecialisations?.length > 0) {
+            <section>
+              <p class="specialisation-list-title">Specialisations</p>
+              <mat-chip-set>
+                @for (specialisation of guideSpecialisations; track specialisation.specialisationId) {
+                  <mat-chip>
+                    {{ specialisation.name }}
+                  </mat-chip>
+                }
+              </mat-chip-set>
+            </section>
+          } @else {
+            <!-- Guide doesn't have specializations. -->
+          }
+        }
+
+        @if (selectedSpecialisations.length > 0) {
+          <section>
+            <p class="specialisation-list-title">Selected Specialisations</p>
+            <mat-chip-listbox multiple>            
+                @for (specialisation of selectedSpecialisations; track specialisation.specialisationId) {
+                  <mat-chip-option selected matTooltip="Remove Specialisation" (click)="unselectSpecialisation(specialisation)">
+                    <section class="specialisation">
+                      <span>{{ specialisation.name }}</span>
+                      <mat-icon class="close-icon">cancel</mat-icon>
+                    </section>
+                  </mat-chip-option>
+                }
+            </mat-chip-listbox>
+          </section>
+        } @else {
+          <!-- No specialisation has been selected. -->
+        }
+
+        <section>
+          @if (form.get('selectedSpecialisations').invalid && form.get('selectedSpecialisations').touched) {
+            <p class="error">Please select a specialisation.</p>
+          } @else {
+            <!-- Select specialisation error is not displayed -->
+          }
+          <p class="specialisation-list-title">Available Specialisations</p>
+          <mat-chip-listbox>
+            @if (specialisations?.length > 0) {
+              @for (specialisation of specialisations; track specialisation.specialisationId) {
+                <mat-chip-option matTooltip="Add Specialisation" (click)="selectSpecialisation(specialisation)">
+                  <section class="specialisation">
+                    <span>{{ specialisation.name }}</span>
+                    <mat-icon>add</mat-icon>
+                  </section>
+                </mat-chip-option>
+              }
+            } @else {
+              <p class="no-specialisation-text">No available specialisations<p>
+            }
+          </mat-chip-listbox>
+        </section>
+
+        <section class="buttons-container">
+          <button mat-raised-button color="primary" type="submit">Save</button>
+          <button mat-raised-button color="warn" (click)="clearSelection()">Cancel</button>
+        </section>
+      </form>
+  </mat-card-content>
+</mat-card>

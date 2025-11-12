@@ -1,0 +1,107 @@
+@if(levelUpData) {
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter(filter)" #filterInput [(ngModel)]="filter">
+  <button *ngIf="filter" matSuffix mat-icon-button aria-label="Clear" (click)="filter=''; applyFilter(filter)">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <table mat-table multiTemplateDataRows #table matSort matSortDirection="desc" matSortActive="levelUpId" [dataSource]="levelUpData">
+    <ng-container matColumnDef="levelUpId">
+      <th class="head content" mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.levelUpId }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="icon">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Icon</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.icon }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.description | limitLength:160 }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="startDate">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.startDate | dateFormat }} {{ levelUp.startDate | timeFormatNoAdjust }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="endDate">
+      <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index">
+        {{ levelUp.endDate | dateFormat }} {{ levelUp.endDate |  timeFormatNoAdjust }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let levelUp" [attr.colspan]="columns.length">
+        <div class="level-up-detail" 
+        [@detailExpand]="levelUp == expandedLevelUp ? 'expanded' : 'collapsed'"
+        *ngIf="levelUp == expandedLevelUp">
+          <app-manage-level-up (OnSave)="onSave($event)" [levelUp]='levelUp'></app-manage-level-up>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td class="content" mat-cell *matCellDef="let levelUp; let i = index"> 
+        <button 
+          mat-raised-button 
+          color="warn" 
+          (click)="openWarningDialog(levelUp.levelUpId)" 
+          type="button" 
+          [disabled]="levelUp.totalAttendees > 0"
+          [matTooltip]="levelUp.totalAttendees === 0 ? 'Delete Level Up' : 'Deletion is not allowed because users have participated in this level-up'" 
+          matTooltipShowDelay="1000"
+        >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="createLevelUp">
+      <td mat-cell *matCellDef="let levelUp; let i = index; let l = last" [attr.colspan]="columns.length">
+        <div class="level-up-detail" 
+        [@detailExpand]="creating ? 'expanded' : 'collapsed'"
+        *ngIf="l && creating">
+          <h3>Creating New Level Up</h3>
+          <button mat-raised-button color="warn" type="button" (click)="cancelCreate()" matTooltip="Cancel" matTooltipShowDelay="1000">
+            Cancel
+          </button>
+          <app-manage-level-up (OnSave)="onSave($event)" [levelUp]='newLevelUpValues'></app-manage-level-up>         
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let levelUp; columns: columns" 
+      class="levelup-row"
+      (click)="updateSelected(levelUp)"
+      [class.expanded-level-up-row]="expandedLevelUp === levelUp">
+    </tr>
+    <tr mat-row *matRowDef="let detail; columns: ['expandedDetail']" class="detail-row"></tr>
+    <tr mat-row *matRowDef="let create; columns: ['createLevelUp']" class="detail-row"></tr>
+  </table>
+    <mat-paginator 
+      [pageSize]="this.tableService.getPageSize()" 
+      [pageSizeOptions]="this.tableService.getPageSizeOptions()" 
+      class="paginator" 
+      (page)="cancelCreate()" 
+      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()" 
+      [hidePageSize]="this.tableService.getHidePageSize()">
+    </mat-paginator>
+</div>
+} @else {
+  <mat-spinner></mat-spinner>
+}

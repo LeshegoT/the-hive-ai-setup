@@ -1,0 +1,83 @@
+.container {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  border-top: var(--standard-border-width) solid lightgray;
+}
+
+.sidenav {
+  border-right: var(--standard-border-width) solid lightgray;
+}
+
+.sidenav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidenav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--medium-padding);
+  cursor: pointer;
+}
+
+.sidenav-item:hover {
+  background-color: var(--hover-over-color);
+}
+
+.sidenav-item.active {
+  background-color: var(--header-color);
+  color: white;
+}
+
+.sidenav-count {
+  background-color: var(--header-color);
+  color: white;
+  padding: var(--small-spacing);
+  border-radius: 0.75rem;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+.sidenav-item.active .sidenav-count {
+  background-color: var(--primary-color-alpha);
+}
+
+.table {
+  display: flex;
+  max-height: fit-content;
+}
+
+app-attribute-ratification-table, app-available-at-ratification-table{
+  flex-grow: 1;
+}
+
+.affected-staff-members-and-confirmation{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+app-affected-staff-members{
+  width: var(--responsive-card-size);
+  margin: var(--standard-padding);
+  position: relative;
+}
+
+app-ratification-action-confirmation, app-available-at-ratification-action-confirmation{
+  width: var(--responsive-card-size);
+  margin: var(--standard-padding);
+  box-shadow: var(--small-shadow);
+  border-radius: var(--standard-border-radius);
+}
+
+.affected-staff-members-and-confirmation{
+  height: calc(var(--app-page-height) - 3.125rem);
+  overflow-y: auto;
+}
+
+mat-error{
+  text-align: center;
+  padding: var(--standard-padding);
+}

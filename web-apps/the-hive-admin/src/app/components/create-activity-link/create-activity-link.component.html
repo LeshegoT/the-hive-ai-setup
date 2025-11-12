@@ -1,0 +1,37 @@
+<div class="component">
+  <div *ngIf="activity">
+    <app-title iconName="level-up" title="{{ activity.levelUpName }}: {{ activity.activityName }}"></app-title>
+
+    <div class="dates">
+      <div><strong>Start date:</strong> {{ activity.activityDate | dateFormat }} {{ activity.activityDate | timeFormat }}</div>
+      <div class="last">
+        <strong>Duration:</strong> {{ activity.durationInMinutes }} minutes
+      </div>
+    </div>
+
+    <h3>Create Level Up Activity Link:</h3>
+
+    <form [formGroup]="linkForm" (submit)=createLink()>
+      <mat-form-field class="full-width">
+        <mat-label>Type*</mat-label>
+        <mat-select formControlName="type">
+          <mat-option [value]="type.code" *ngFor="let type of types$ | async">{{ type.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Link</mat-label>
+        <input matInput formControlName="link" />
+      </mat-form-field>
+
+      <div class="error" *ngIf="error">
+        Please ensure all required fields are filled in and that there are no errors above.
+      </div>
+
+      <div class="buttons">
+        <button mat-raised-button color="primary" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+

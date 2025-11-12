@@ -1,0 +1,155 @@
+<section id="staff-skills-filter-panel">
+  <mat-form-field>
+    <mat-label>Search By Staff Name</mat-label>
+    <input matInput type="text" [ngModel]="staffNameSearchText$ | async" (ngModelChange)="onSearchChange($event)">
+  </mat-form-field>
+  @if (staffWithSkills) {
+    <section>
+      <mat-form-field>
+        <mat-label>Last modified before</mat-label>
+        <input 
+          matInput
+          [matDatepicker]="picker"
+          [max]="maxDate"
+          [ngModel]="searchDate$ | async"
+          (ngModelChange)="onDateSearchChange($event)" 
+          >
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-icon-button color="primary" type="button" class="leftComponent"
+              (click)="searchDate$.next(undefined)"
+              matTooltip="Clear Date Range"
+              matTooltipPosition="right">
+              <mat-icon>remove_circle_outline</mat-icon>
+      </button> 
+    </section>
+  }
+  @else {
+    <!-- table will not show Last Modified dropdown as there is no Last modified for staff with no skills -->
+  }
+  @if (loading$ | async) {
+    <app-loading-indicator></app-loading-indicator>
+  } 
+  @else {
+  <!-- not loading -->
+ }
+</section>
+@let selectedCompanyEntities = selectedCompanyEntities$ | async;
+@if (staffDetails$ | async; as staffDetails) {
+  @if (staffDetails.length > 0) {
+    <table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="staffDetails" matSort (matSortChange)="sortData($event)">
+      <ng-container matColumnDef="displayName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Name</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.displayName}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="upn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Staff Email</th>
+        <td mat-cell *matCellDef="let row">
+          @if (staffWithSkills && hasAttributeType) {
+          {{ row.upn }}
+          } @else if (staffWithSkills && !hasAttributeType) {
+            <a
+              [href]="
+                'mailto:' + row.upn +
+                '?subject=Please update your skills portfolio' +
+                '&body=Hi ' + row.displayName + ',%0D%0A%0D%0A' +
+                'Please add a ' + attributeType.canonicalName+  ' to your portfolio on The Hive to further showcase your talents.%0D%0A%0D%0A' +
+                'We will use this information to identify exciting opportunities within our client base whilst building your career at BBD.%0D%0A%0D%0A' +
+                'Please fill out your portfolio on the-hive:%0D%0A' +
+                'https://the-hive.bbd.co.za/skills/'">
+            {{ row.upn }}
+            </a>
+          } @else {
+            <a [href]="'mailto:' + row.upn +
+                              '?subject=Please fill out your skills portfolio' +
+                              '&body=Hi ' + row.displayName + ',%0D%0A%0D%0A' +
+                              'Please update your portfolio on The Hive.%0D%0A%0D%0A' +
+                              'This is where you can showcase your skills, qualifications, certifications, industry knowledge and unique qualities that YOU bring to BBD.%0D%0A%0D%0A' +
+                              'We will use this information to identify exciting opportunities within our client base whilst building your career at BBD.%0D%0A%0D%0A' +
+                              'Please fill out your portfolio on the-hive:%0D%0A' +
+                              'https://the-hive.bbd.co.za/skills/'">
+            {{ row.upn }}
+            </a>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="jobTitle">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>JobTitle</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.jobTitle}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.department}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="manager">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lead</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.manager}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="entityDescription">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Company entity</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.entityDescription}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastVisited">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last visited</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.lastVisited | date: 'dd/MM/YYYY'}}
+        </td>
+      </ng-container>
+
+      @if (staffWithSkills) {
+        <ng-container matColumnDef="lastModified">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last modified</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.lastModified | date: 'dd/MM/YYYY' }}
+          </td>
+        </ng-container>
+      }
+      @else {
+        <!-- table will not show Last Modified as it will always be empty for everyone who never used skills -->
+      }
+
+      <tr mat-header-row *matHeaderRowDef="skillsColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: skillsColumns;"></tr>
+    </table>
+    <mat-paginator #paginator
+      [length]="staffWithSkills ? (staffWhoHaveUsedCount$ | async) : (staffWhoHaveNotUsedCount$ | async)"
+      [pageIndex]="startIndex" [pageSize]="pageLength" [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+      [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+      [hidePageSize]="this.tableService.getHidePageSize()" (page)="pageChanged($event)">
+    </mat-paginator>
+  } @else if(errorMessage){
+    <p class="message">{{errorMessage}}. Please try refreshing the page, or
+      <a
+      [href]="'mailto:skills-support@bbd.co.za' +
+                  '?subject=Error on skills dashboard' +
+                  '&body=Hi,%0D%0A%0D%0A' +
+                  'I am getting an error when trying to ' + generateErrorContextMessage() ">
+      contact support
+      </a>if the issue persists.
+    </p>
+  }
+  @else{
+    <p class="message">No staff details to display</p>
+  }
+} @else if(selectedCompanyEntities && selectedCompanyEntities.length === 0) {
+  <p class="message">No company entities were selected, please select at least one</p>
+} @else {
+  <mat-spinner></mat-spinner>
+}

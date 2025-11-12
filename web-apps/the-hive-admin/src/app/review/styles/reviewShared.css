@@ -1,0 +1,161 @@
+:host {
+    --app-search-bar : #D9D9D9;
+    --app-selected-item : darkgray;
+    --app-overdue: #d90000;
+    --app-almost-overdue: #ff8c00;
+    --app-due-later: #b5e1a4;
+    --app-completed: #64b644;
+    --standard-gap: 1em;
+    --feedback-completed-status: rgb(19, 118, 19);
+    --staff-overview-container-maxheight: 60vh;
+    --row-problems: rgb(248, 108, 108);
+    --row-problems-hover: rgb(192, 91, 91);
+    --data-table-inline-padding: 8px;
+}
+
+#staff-overview-filter-panel {
+    display: flex;
+    gap: var(--standard-gap);
+    background-color: var(--app-search-bar);
+    padding-block: 0.5em;
+    padding-inline: 1.5em;
+    align-items: center;
+}
+
+.filterSearch mat-form-field, .staff-type {
+    margin-top: 1em;
+    font-size: small;
+}
+
+#reviewFilterPanel {
+    display: flex;
+    align-items: center;
+    gap: var(--standard-gap);
+}
+
+#reviewFilterPanel #leftFilterPanel {
+    flex: 1;
+    display: flex;
+    gap: var(--standard-gap);
+    align-items: baseline;
+}
+
+#leftFilterPanel .hr-representative {
+    margin-inline-start: auto;
+}
+
+#dueDateColorIndicator{
+    padding: 0.5em;
+    width: 70%;
+    border-radius: 5px;
+}
+.overdueColorIndicator{
+    background-color: var(--app-overdue);
+    color: white;
+}
+.dueSoonColorIndicator{
+    background-color: var(--app-almost-overdue);
+}
+.dueLaterColorIndicator{
+    background-color: var(--app-due-later);
+} 
+
+.completedColorIndicator {
+    background-color: var(--app-completed);
+}
+
+.dateRange{
+    display: flex;
+    align-items: baseline;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.noDataToDisplayLabel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 5em;
+    font-size: large;
+    color:gray;
+}
+
+#reviewFilterPanel{
+    background-color: var(--app-search-bar);
+    padding-block: 0.5em;
+    padding-inline: 1.5em;
+    align-items: center;
+}
+
+#leftFilterPanel mat-form-field{
+    margin-top: 0.5em;
+    font-size: small;
+}
+
+.dateRangePicker{
+    margin-left: 0.2em;
+}
+
+.statusContainer {
+    display: flex;
+    align-items: center; 
+    white-space: nowrap;
+  }
+
+.review-feedback-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--standard-gap)
+}
+
+.review-list {
+    flex: 1;
+}
+
+.feedback-list {
+    flex: 1;
+}
+
+@media only screen and (max-width: 1400px) {
+    /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+    #reviewFilterPanel mat-list-option{
+        font-size: smaller;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+  #reviewFilterPanel mat-list-option{
+        font-size: x-small;
+  }
+}
+
+.pending-feedback-status {
+    color: var(--primary-color);
+}
+
+.completed-feedback-status {
+   color: var(--feedback-completed-status);
+}
+
+.cancelled-feedback-status {
+    color: var(--app-cancel-button);
+}
+
+.highlight-problem {
+    background-color: var(--row-problems);
+}
+
+.highlight-problem:hover {
+    background-color: var(--row-problems-hover);
+}
+
+details {
+    cursor: pointer;
+}

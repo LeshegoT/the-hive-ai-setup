@@ -1,0 +1,94 @@
+<mat-tab-group #skillsSearchComponentTabGroup>
+  <mat-tab label="Talent search">
+<section class="component">
+  @let pagination = pagination$ | async;
+  <section class="skill-search-form-container">
+    <app-search-form class="search-form"
+      (peopleListUpdated)="setSearchResults($event)"
+      [pagination]="pagination"
+      (attributeFilterObjectUpdate)="updateAttributeFilters($event)">
+    </app-search-form>
+  </section>
+  @let listOfPeople = listOfPeople$ | async;
+  @let totalStaffCount = totalStaffCount$ | async;
+  @if(listOfPeople !== undefined){
+    <div id="report-buttons">
+      <button mat-raised-button type="button" color="primary" (click)="generateSummaryReport()" [disabled]="exportSummaryReport$">
+        @if(exportSummaryReport$){
+          <mat-spinner diameter="20"></mat-spinner>
+        }@else{
+          <!-- the export summary is not clicked therefore dont show the loading spinner -->
+        }
+        Export summary report
+      </button>
+      <button mat-raised-button type="button" color="primary" (click)="generateDetailedReport()" [disabled]="exportDetailedReport$">
+        @if(exportDetailedReport$){
+          <mat-spinner diameter="20"></mat-spinner>
+        }@else{
+          <!-- the export detailed report is not clicked therefore dont show the loading spinner -->
+        }
+        Export detailed report
+      </button>
+    </div>
+    @if(generateReportError){
+      <mat-error>
+        {{ generateReportError.message }}. Try refreshing the page, or
+        <a [href]="generateSupportEmail(generateReportError.message)">contact support</a> if the issue persists.
+      </mat-error>
+    } @else {
+      <!-- There is no error from report generation -->
+    }
+
+  }@else{
+    <!-- There is no one to report -->
+  }
+
+  @if(listOfPeople !== undefined && selectedUPN === undefined){
+    <section class="search-results-header">
+      <h3>Staff that match your search criteria:</h3>
+      <p class="search-result-total">
+          Results: <span class="count">{{ totalStaffCount }}</span>
+      </p>
+    </section>
+    <section class="people-card-container">
+      @for(person of listOfPeople | keyvalue; track person){
+        <user-skills-card [personInfo]="person.value" (selectUPN)="setSelectedUpn($event)"></user-skills-card>
+      }@empty{
+        <section class="none-found">
+          <p>No one found with those attributes</p>
+        </section>
+      }
+    </section>
+
+    @if(totalStaffCount > pagination.pageLength){
+      <mat-paginator
+        [length]="totalStaffCount"
+        [pageSize]="pagination.pageLength"
+        [pageIndex]="pagination.startIndex"
+        [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    }@else{
+
+    }
+
+  }@else{
+    <!-- the list of people has not be set, so we display nothing -->
+  }
+
+  <section class="search-by-person-container" [class.hidden-search-by-person-container]="!selectedUPN">
+    <app-search-by-person
+      [selectedUPN]="selectedUPN"
+      (goBack)="setSelectedUpn(undefined)">
+    </app-search-by-person>
+  </section>
+</section>
+</mat-tab>
+<mat-tab label="Search by staff member">
+  <app-search-by-person (goBack)="setSelectedUpn(undefined)">
+  </app-search-by-person>
+</mat-tab>
+<mat-tab label="RFP search">
+  <skills-rfp-search></skills-rfp-search>
+</mat-tab>
+</mat-tab-group>

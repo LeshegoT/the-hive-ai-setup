@@ -1,0 +1,24 @@
+<app-assignment-tracking-search-bar (emitFilterParameters)="updateFeedbackAssignmentData($event)"></app-assignment-tracking-search-bar>
+<app-staff-profile [selectedStaffMember]="selectedStaffMember">
+</app-staff-profile>
+<section class="container">
+    <section class="item" [class.loading] = "!assignmentTrackingData">
+        <app-assignment-tracking-list
+        *ngIf="assignmentTrackingData"
+        [assignmentTrackingData]="assignmentTrackingData"
+        [assignmentTrackingColumns]="assignmentTrackingColumns"
+        (selectedRow)="viewFeedbackAssignments($event)">
+        </app-assignment-tracking-list>
+        <mat-spinner *ngIf="!assignmentTrackingData"></mat-spinner>
+    </section>
+    <section class="item" id="feedbackList" [class.loading] = "!feedbackAssignments">
+            <app-feedback-list
+                *ngIf="feedbackAssignments && feedbackAssignments.length > 0"
+                [assignmentData]="feedbackAssignments"
+                [assignmentColumns]="feedbackAssignmentColumns"
+                [currentReviewUPN]="currentReviewUPN">
+            </app-feedback-list>
+            <label *ngIf="feedbackAssignments && feedbackAssignments.length < 0" class="noDataToDisplayLabel">There are no overdue feedback assignments</label>
+            <mat-spinner *ngIf="!feedbackAssignments"></mat-spinner>
+    </section>
+</section>

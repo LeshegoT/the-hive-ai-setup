@@ -1,0 +1,12 @@
+<app-review-list 
+    #reviewList
+    [reviewData]="reviewData"
+    [reviewColumns]="reviewColumns"
+    (actionButton)="markAsFinalized($event.review, $event.actionButton)" [actionButtonText]="markAsFinalizedButtonText"
+    [showArchiveButton]="true"
+    [actionButtonIconName]="actionButtonIconName"
+    [buttonsEnabled]="buttonsEnabled"
+    [showReviewMeetingMinutesButton]="true"
+    [showHrNotesButton]="true"
+    showDownloadReportButton="true">   
+</app-review-list>

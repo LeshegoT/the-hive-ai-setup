@@ -1,0 +1,11 @@
+.outstanding-assignments-count {
+    padding: var(--standard-padding);
+}
+
+#no-transgressors {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: large;
+    padding: var(--standard-padding);
+}

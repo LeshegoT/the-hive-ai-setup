@@ -1,0 +1,25 @@
+#card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--standard-padding);
+    gap: var(--standard-gap);
+}
+
+#export-button {
+    background: var(--header-color);
+    color: var(--app-button-text);
+}
+
+#title ,#message {
+    margin: 0;
+}
+
+.good {
+    color: green;
+}
+
+.error {
+    color: red;
+}

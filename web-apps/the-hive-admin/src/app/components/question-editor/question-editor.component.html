@@ -1,0 +1,28 @@
+<div [formGroup]="questionEditorGroup">
+  <ul class="question-list">
+    <li *ngFor="let question of questions; let i=index">
+      <div formArrayName="questionsArr">
+        <mat-expansion-panel id='answers-panel' expanded="true" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="centered-text">
+              <b>{{question.text}}</b>
+            </mat-panel-title>
+            <mat-panel-description class="centered-text">
+              Manage questions for the question {{question.text}}
+            </mat-panel-description>
+            <button mat-stroked-button color="error" class="delete-button" (click)="deleteQuestion(question)" type="button">Delete</button>
+          </mat-expansion-panel-header>
+          <question [question]="question" [parentFormGroup]="questionEditorGroup"></question>
+        </mat-expansion-panel>
+      </div>
+    </li>
+  </ul>
+  <mat-form-field class="form-input">
+    <mat-label>Question Text</mat-label>
+    <input matInput formControlName="questionText" />
+    <mat-hint align="end">Question text</mat-hint>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="addButton" (click)="addQuestion()" type="button">
+    Add Question
+  </button>
+</div>

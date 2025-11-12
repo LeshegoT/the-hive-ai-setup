@@ -1,0 +1,25 @@
+#no-users-with-skills-message {
+    text-align: center;
+}
+
+mat-panel-title {
+    gap: var(--standard-gap)
+}
+
+mat-expansion-panel-header {
+    gap: var(--standard-gap);
+}
+
+mat-expansion-panel mat-expansion-panel-header.ratified:not(.mat-expanded):hover {
+    background-color: var(--tertiary-color);
+}
+
+mat-expansion-panel-header.ratified,
+mat-expansion-panel-header.ratified.mat-expanded {
+    background-color: var(--tertiary-color);
+}
+
+#ratify-available-at-button {
+    color: var(--app-button-text);
+    background-color: var(--app-review-button);
+}

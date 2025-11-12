@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Hive</title>
+    <meta name="generator" content="PWA Starter Kit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="The Hive - BBD's continuous learning platform." />
+    <meta http-equiv="Content-Type" content="text/html">
+
+    <base href="/" />
+
+    <link rel="icon" href="images/thehive.ico" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-28875611-3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-28875611-3');
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+          'Segoe UI Symbol';
+        line-height: 1.6;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+    
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>Please enable JavaScript to view this website.</noscript>
+    Please wait while we refresh the application, click <a href="/">here</a> to
+    force reload.
+    <span class="hidden">
+      <%= htmlWebpackPlugin.options.info.buildTimeString %>(<%= htmlWebpackPlugin.options.info.buildTime %> ms)
+    </span>
+
+  </body>
+</html>

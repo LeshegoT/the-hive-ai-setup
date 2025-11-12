@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-title>
+    @if (qualificationNameControl !== undefined) {
+        <mat-card-header>
+          <mat-form-field id="new-qualification-name-form" appearance="fill">
+            <input 
+              matInput
+              type="text" 
+              [formControl]="qualificationNameControl" 
+              placeholder="Enter new name" 
+            />
+            <mat-error>Name cannot be empty</mat-error>
+          </mat-form-field>
+          <button class="edit-qualification-name-buttons" (click)="saveEdit()">
+            <mat-icon>check</mat-icon>
+          </button>
+          <button class="edit-qualification-name-buttons" (click)="cancelEdit()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card-header>
+    } @else {
+        {{ qualification.canonicalName }}
+        @if (qualification.needsRatification) {
+        <button class="edit-qualification-name-buttons" (click)="editQualificationName()">
+            <mat-icon>edit</mat-icon>
+        </button>
+      } @else {
+        <!-- Qualification has already been ratified-->
+      }
+    }
+    @if (qualification.needsRatification) {
+      <div class="button-container">
+        <button
+          id="ratify-qualification-button"
+          mat-raised-button
+          type="button"
+          (click)="ratifyQualification()"
+        >
+          Approve
+        </button>
+      </div>
+    } @else {
+      <!-- Qualification has already been ratified-->
+    } 
+  </mat-card-title>
+
+  @for (institution of qualification.institutions; track institution.institutionId){
+    <app-users-with-qualification-for-institution
+      [qualification]="qualification"
+      [institution]="institution"
+      [snackBarDuration]="snackBarDuration">
+    </app-users-with-qualification-for-institution>
+  }
+</mat-card>

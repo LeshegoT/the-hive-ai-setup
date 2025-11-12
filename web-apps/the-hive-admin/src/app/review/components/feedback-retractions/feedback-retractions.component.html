@@ -1,0 +1,14 @@
+<div id="selectComponentPanel">
+  <mat-form-field>
+    <mat-label>Select View</mat-label>
+    <mat-select [(value)]="selectedView">
+      <mat-option value="view-retracted-feedback">View Retracted Feedback</mat-option>
+      <mat-option value="retract-feedback-reason">Manage Retraction Reasons</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<ng-container [ngSwitch]="selectedView">
+  <app-view-retracted-feedback *ngSwitchCase="'view-retracted-feedback'"></app-view-retracted-feedback>
+  <app-retract-feedback-reason *ngSwitchCase="'retract-feedback-reason'"></app-retract-feedback-reason>
+  <ng-container *ngSwitchDefault>View Not Available</ng-container>
+</ng-container>

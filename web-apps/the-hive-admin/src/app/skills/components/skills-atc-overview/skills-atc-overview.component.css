@@ -1,0 +1,12 @@
+.graphs {
+  display: flex;
+  gap: var(--standard-gap);
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 1em;
+}
+
+mat-panel-title {
+  justify-content: center;
+}

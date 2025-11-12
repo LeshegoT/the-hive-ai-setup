@@ -1,0 +1,19 @@
+<article>
+    <h1 mat-dialog-title>Please ensure that the correct HR representatives are selected:</h1>
+    <mat-divider></mat-divider>
+    <section id="hrReps">
+            <form *ngFor="let repGroup of allReps" [formGroup]="repGroup.checkboxes"  class="reps">
+                <h2 mat-dialog-title>{{repGroup.heading}}</h2>
+                <mat-checkbox (click)="ngOnChanges()" *ngFor="let rep of repGroup.reps; let i = index" [formControlName]="rep">{{rep}}</mat-checkbox>
+            </form>
+    </section>
+    <section class="invalidMessage" *ngIf="minimalAmountOfRepsWarning !== ''">
+        <p>{{minimalAmountOfRepsWarning}}</p>
+        <button mat-button  type="submit" (click)="reviewsConfirmed()">Confirm Selection</button>
+    </section>
+    <mat-divider></mat-divider>
+    <section id="buttonGroup">
+        <button mat-button  type="submit" (click)="assignReviews()" cdkFocusInitial>{{ data.actionButtonText }}</button>
+        <button mat-button  id="closeButton" (click)="closeDialog()" color='accent'>Cancel</button>
+    </section> 
+</article>

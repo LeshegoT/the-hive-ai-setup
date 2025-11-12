@@ -1,0 +1,46 @@
+:host {
+    display: flex;
+}
+
+.card {
+    flex: 1;
+}
+
+.staff-contract-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: var(--standard-border-radius);
+}
+
+.staff-contract-form-date-fields {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.staff-contract-form-date-fields mat-form-field {
+    flex: 1;
+}
+
+.staff-contract-form-buttons {
+    display: flex;
+    gap: var(--standard-gap);
+    justify-content: right;
+}
+
+.active-review-alert-text {
+    border-radius: var(--standard-border-radius);
+    border: solid var(--standard-border-width)  var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--selected-row-background-colour);
+    padding: var(--standard-padding);
+}
+
+.alert-warning-text {
+    border-radius: var(--standard-border-radius);
+    border: solid var(--standard-border-width)  var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--selected-row-background-colour);
+    padding: var(--standard-padding);
+}

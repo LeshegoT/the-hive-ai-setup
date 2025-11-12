@@ -1,0 +1,59 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  height: 100%;
+}
+
+.todo-items {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-search-bar);
+
+  p {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--standard-gap);
+    margin: 0;
+    cursor: pointer;
+    background-color: var(--app-search-bar);
+    gap: var(--standard-gap);
+
+    .badge {
+      align-self: center;
+    }
+  }
+
+  p:hover, .selected {
+    background-color: var(--app-selected-item);
+  }
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.details-view {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+app-contract-review-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.contract-review-list {
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+}
+
+.contract-review-list section {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

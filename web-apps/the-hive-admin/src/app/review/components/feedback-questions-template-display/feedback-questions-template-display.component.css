@@ -1,0 +1,108 @@
+
+.shadowColumn{
+     background-color: rgba(128, 128, 128, 0.07);
+}
+
+td{
+    word-break: break-word;
+    padding: 0.5em;
+    vertical-align: baseline;
+}
+
+.exportButton{
+    float: right;
+}
+
+.xsmallColumn{
+    width: 5%;
+}
+
+.smallColumn{
+    width: 10%;
+}
+
+
+.mediumColumn{
+    width: 15%;
+}
+
+.largeColumn{
+    width: 50%;
+}
+
+.xlargeColumn{
+    width: 80%;
+}
+
+#taggedFeedback{
+    margin-bottom: 30px;
+}
+
+#feedbackContainer{
+    margin-bottom: 60px;
+}
+
+
+.notCompleteStatus{
+    color: var(--accent-color);
+}
+
+.commentType{
+    color: #2081C7;
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: small;
+}
+
+.comment{
+    margin-bottom: 1em;
+    color: gray;
+    font-size: small;
+}
+
+.questionName{
+    margin: 1em 0;
+    font-weight: bold;
+    display:block;
+}
+
+.questionSection{
+    border-bottom: 1px solid #edf2f5;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+
+.progressTotal {
+    background-color: #e7eaee;
+    border-radius: 2px;
+    height: 4px;
+    width: 20em;
+    margin-right: 1em;
+    align-self: center;
+}
+
+.precentageComplete {
+    border-radius: 2px;
+    height: 4px;
+    background-color: #2081C7;
+}
+
+.progressBar{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 0.5em;
+}
+
+.progressBar label{
+    font-weight: bold;
+}
+
+.progressBar label:nth-child(3){
+    font-weight: normal;
+    font-size: small;
+    margin-left: 1em;
+    color: gray;
+}

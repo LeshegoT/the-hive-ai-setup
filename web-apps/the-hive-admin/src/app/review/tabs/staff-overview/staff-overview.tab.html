@@ -1,0 +1,28 @@
+<app-staff-overview-search-bar (emitFilterParameters)="updateReviewData($event)"></app-staff-overview-search-bar>
+<section class="container">
+    <section class="item" [class.loading] = "!staffOverviewData">
+        <app-staff-overview-list
+        *ngIf="staffOverviewData"
+        [staffOverviewData]="staffOverviewData"
+        (selectedRow)="selectedStaff.set($event)"
+        (reloadStaffData)="reloadStaffOverviewData()">
+        </app-staff-overview-list>
+        <mat-spinner *ngIf="!staffOverviewData"></mat-spinner>
+    </section>
+    <section class="item" id="reviewList" [class.loading] = "!reviews">
+            <app-staff-overview-review-list
+                *ngIf="reviews"
+                [reviewData]="reviews">
+            </app-staff-overview-review-list>
+            <mat-spinner *ngIf="!reviews"></mat-spinner>
+
+            @if (selectedStaff()) {
+                <app-change-staff-to-contractor 
+                    [staff]="selectedStaff()"
+                    (staffTypeChanged)="selectedStaff.set(undefined)"
+                ></app-change-staff-to-contractor>
+            } @else {
+                <!-- No staff is selected to change to a contractor employee. -->
+            }
+    </section>
+</section>

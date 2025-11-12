@@ -1,0 +1,50 @@
+<main id="unit-corrections-page">
+  @let selectedStaffMember = selectedStaffMember$ | async;
+  @let staffMemberCorrection = staffMemberCorrection$ | async;
+  @if (selectedStaffMember && !staffMemberCorrection) {
+    <button mat-raised-button color="primary" type="button" (click)="closeUnitCorrectionDetails()" matTooltip='Go back'>
+      Back
+    </button>
+
+    <section class="profile-and-form-container">
+      <app-staff-profile [selectedStaffMember]="selectedStaffMember"></app-staff-profile>
+      <section class="unit-corrections-forms-container">
+        <app-unit-correction-form
+          [selectedStaffMember]="selectedStaffMember"
+          (unitCorrection)="handleStaffMemberCorrection($event)"
+        />
+        <app-job-title-correction-form
+          [selectedStaffMember]="selectedStaffMember"
+          (jobTitleCorrection)="handleStaffMemberCorrection($event)"
+        />
+        <app-office-correction-form
+          [selectedStaffMember]="selectedStaffMember"
+          (officeCorrection)="handleStaffMemberCorrection($event)"
+        />
+        <app-company-entity-correction-form
+          [selectedStaffMember]="selectedStaffMember"
+          (companyEntityCorrection)="handleStaffMemberCorrection($event)"
+        />
+      </section>
+
+    </section>
+
+    <button mat-raised-button color="primary" type="button" (click)="closeUnitCorrectionDetails()" matTooltip='Go back'>
+      Back
+    </button>
+  } @else if (staffMemberCorrection?.status === 'error') {
+    <app-error-card
+      class="unit-corrections-card error-card"
+      [title]="`Error correcting ${selectedStaffMember.displayName}'s ${staffMemberCorrection.correctionType}`"
+      [showRetry]="true"
+      (retry)="refreshUnitCorrectionPageForSelectedStaffMember()"
+    >
+      <p>Something went wrong when trying to update {{ selectedStaffMember.displayName }}'s {{ staffMemberCorrection.correctionType }}. Please try again or contact <a [href]="generateSupportEmail(staffMemberCorrection.errorMessage, staffMemberCorrection.correctionType)">The Hive Support</a></p>
+      <p>Error: {{ staffMemberCorrection.errorMessage }}</p>
+    </app-error-card>
+  } @else if (staffMemberCorrection?.status === 'pending') {
+    <mat-spinner></mat-spinner>
+  } @else {
+    <app-all-staff [actions]="staffTableActions" (selectedStaffMember)="selectedStaffMember$.next($event)"></app-all-staff>
+  }
+</main>

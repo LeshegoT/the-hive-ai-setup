@@ -1,0 +1,86 @@
+<div id="component">
+<app-title iconName="usage" title="Manage Order Item Status"></app-title>
+<mat-progress-bar mode="indeterminate" *ngIf="!this.orderItemData || !this.orderItemData.data"></mat-progress-bar>
+
+<app-staff-filter (selectStaff)="selectStaff()" searchLabel="Search Employee" searchType="search"></app-staff-filter>
+<button mat-raised-button color="primary" (click)="clearFilter()">Clear Filter</button>
+
+<table mat-table class="mat-elevation-z8 full-width-table" [dataSource]="orderItemData" matSort>
+    <ng-container matColumnDef="orderId">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Order ID</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.orderId }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="displayName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.displayName }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="itemName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Item</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.itemName }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="variantName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Variant</th>
+    <td mat-cell *matCellDef="let row">
+      <label *ngIf="row.variant">{{ row.variantName }}</label>
+      <label *ngIf="!row.variant">-</label>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="itemQuantity">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.itemQuantity }}
+    </td>
+  </ng-container>
+
+
+
+    <ng-container matColumnDef="orderDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Placed</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.orderDate | date}}
+    </td>
+  </ng-container>
+
+   <ng-container matColumnDef="city">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.city}}
+    </td>
+  </ng-container>
+
+    <ng-container matColumnDef="itemStatus">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+    <td mat-cell *matCellDef="let row">
+      <mat-form-field>
+        <mat-select [(value)]="row.orderItemStatusId" (selectionChange)="updateOrderItem(row)" >
+          <mat-option [value]="orderItemStatus.orderItemStatusId" *ngFor="let orderItemStatus of orderItemStatuses">
+            {{ orderItemStatus.shortDescription }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="orderItemColumns; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: orderItemColumns" [ngClass]="row.active ? 'activeRow' : ''"></tr>
+</table>
+
+<mat-paginator
+  #paginator
+  [length]="currentPageInfo.resultSetSize"
+  [pageIndex]="0"
+  [pageSize]="currentPageInfo.pageSize"
+  [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+  [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+  [hidePageSize]="this.tableService.getHidePageSize()"
+  (page)="pageChanged($event)"
+></mat-paginator>
+
+</div>

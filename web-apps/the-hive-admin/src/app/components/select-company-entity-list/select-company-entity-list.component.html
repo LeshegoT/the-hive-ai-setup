@@ -1,0 +1,12 @@
+<section>
+    <h3>Select company entity</h3>
+    <form [formGroup]="entityForm">
+        <fieldset>
+           <section *ngFor="let entity of companyEntities">
+                <mat-checkbox color='primary' [formControlName]="entity.companyEntityId.toString()">
+                    {{ entity.description }}
+                </mat-checkbox>
+            </section> 
+        </fieldset>
+    </form>
+</section>

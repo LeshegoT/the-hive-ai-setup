@@ -1,0 +1,39 @@
+mat-card {
+  flex: 1;
+  padding: var(--standard-padding);
+  gap: var(--standard-gap);
+}
+
+mat-card-title {
+  display: flex;
+  flex-direction: row;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: auto;
+  gap: var(--standard-gap);
+}
+
+#ratify-certification-button {
+  color: var(--app-button-text);
+  background-color: var(--app-review-button);
+}
+
+#reject-certification-button {
+  color: var(--app-button-text);
+  background-color: var(--accent-color);
+}
+
+.edit-certification-name-buttons {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#new-certification-name-form {
+  display: flex;
+  flex-direction: column;
+}

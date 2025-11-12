@@ -1,0 +1,20 @@
+<div [ngClass]="componentClass">
+    <app-title iconName="usage" title="Skills (HR)"></app-title>
+    <mat-tab-group>
+      <mat-tab label="Dashboard">
+        <ng-template matTabContent>
+          <skills-dashboard></skills-dashboard>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Edit names">
+        <ng-template matTabContent>
+          <app-manage-canonical-names></app-manage-canonical-names>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Pending Proof Validation" *ngIf="displayPendingProofTab">
+        <ng-template matTabContent>
+          <app-pending-proof></app-pending-proof>
+        </ng-template>
+      </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,57 @@
+<div id="reviewFilterPanel">
+        <div id="leftFilterPanel"> 
+            <h2>Search</h2>
+            <div class="filterSearch">
+                <mat-form-field appearance="outline">
+                    <mat-label>Search (requires atleast 3 characters)</mat-label>
+                    <input matInput (keyup)="onNonDateValueChange($event.target.value, $searchText)" placeholder="" />
+                </mat-form-field>
+            </div>
+            <div class="dateRange">
+                <mat-form-field appearance="outline" class="dateRangePicker">
+                    <mat-label>Review Date</mat-label>
+                    <input matInput [matDatepicker]="pickerFrom" [formControl]="filterForm.controls.searchDate">
+                    <mat-error>{{ getFormErrors(filterForm.controls.searchDate) }}</mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFrom></mat-datepicker>
+                </mat-form-field>
+                        
+                <button mat-icon-button color="primary" type="button" class="leftComponent"
+                        (click)="resetDateSelection()"
+                        [disabled] = "!this.filterParameters.date "
+                        matTooltip="Clear Date Range"
+                        matTooltipPosition="right">
+                            <mat-icon>remove_circle_outline</mat-icon>
+                </button> 
+            </div> 
+            <app-filter-drop-down-options
+                [control]="filterForm.controls.searchTypes" 
+                [options]="reviewTypes"
+                displayProperty="name"
+                label="Review Types"
+                (blurEvent)="onReviewTypeSelectionComplete()">
+            </app-filter-drop-down-options>    
+            @if (actionButtonHint) {
+                <select-company-entity (entitySelected)="onEntitySelection($event)"></select-company-entity>
+            } @else {
+                <!--Only show filter in upcoming reviews-->
+            }        
+            <mat-form-field appearance="outline" *ngIf="!actionButtonHint" class="hr-representative">
+                <mat-label>HR Representative</mat-label>
+                <mat-select [value]="$hrRepSearchUpn.value.toLowerCase()" (selectionChange)="onNonDateValueChange($event.value, $hrRepSearchUpn)">
+                    <mat-option [value]="upn.toLowerCase()" *ngFor="let upn of peopleOwningReviews">{{ upn }}</mat-option>
+                </mat-select>
+            </mat-form-field> 
+        </div>
+        <div *ngIf="actionButtonHint">
+            <button class="actionBtn" (click)=" actionButtonTask($event)" title="{{actionButtonHint}}">{{actionButtonText}}</button>     
+        </div>
+</div>
+<div class="chip-container">
+    @for(option of filterForm.controls.searchTypes.value; track option.id) {
+        <mat-chip [selectable]="true" [removable]="true" (removed)="removeSelectedReviewTypeOption(option)">
+            {{ option.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    }
+</div>

@@ -1,0 +1,41 @@
+.activity {
+  display: flex;
+  width: 100%;
+  margin-top: 0.2em;
+  flex-direction: column;
+}
+
+.activity .description {
+  flex: 1 1 auto;
+  min-width: 17em;
+  margin-top: 0em;
+}
+
+.activity .due-date {
+  flex: 1 0 auto;
+  min-width: 14em;
+  display: flex;
+  margin-top: 0em;
+}
+
+.activity .due-date .date {
+  flex: 1 0 auto;
+  margin-top: 0;
+}
+
+.activity .due-date .compulsory {
+  color: var(--app-primary-color);
+  flex: 1 0 auto;
+  min-width: 5em;
+  margin-top: 0;
+}
+
+@media (min-width: 460px) {
+  .activity {
+    flex-direction: row;
+  }
+
+  .activity .due-date .date {
+    min-width: 8em;
+  }
+}

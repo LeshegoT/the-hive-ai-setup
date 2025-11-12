@@ -1,0 +1,15 @@
+.qr-div {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  height:60vh;
+}
+
+h1 {
+  text-align: center;
+  padding-top: 20px;
+}
+
+h2 {
+  text-align: center;
+}

@@ -1,0 +1,138 @@
+{
+  "totalResults": 5,
+  "topResults": [
+    {
+      "attribute": "Java",
+      "aliases": ["Java", "jdk", "java 8"],
+      "tags": ["Programming language", "Object orientated programming"],
+      "fields": [
+        {
+          "name": "Experience level",
+          "type": "1-5",
+          "required": true
+        },
+        {
+          "name": "Last used",
+          "type": "year",
+          "required": true
+        },
+        {
+          "name": "Years of experience",
+          "type": "positive integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attribute": "javascript",
+      "aliases": ["Javascript", "Ecmascript", "ES"],
+      "tags": [
+        "Programming language",
+        "Object orientated programming",
+        "web",
+        "functional programming"
+      ],
+      "fields": [
+        {
+          "name": "Experience level",
+          "type": "1-5",
+          "required": true
+        },
+        {
+          "name": "Last used",
+          "type": "year",
+          "required": true
+        },
+        {
+          "name": "Years of experience",
+          "type": "positive integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attribute": "Java certificate",
+      "aliases": ["Java certificate", ""],
+      "tags": ["certification"],
+      "fields": [
+        {
+          "name": "Date achieved",
+          "type": "month",
+          "required": true
+        },
+        {
+          "name": "Expiry date",
+          "type": "month",
+          "required": true
+        },
+        {
+          "name": "Upload",
+          "type": "file",
+          "required": true
+        }
+      ]
+    },
+
+    {
+      "attribute": "Spring",
+      "aliases": ["Spring", "Spring Framework"],
+      "tags": ["web", "framework"],
+      "fields": [
+        {
+          "name": "Experience level",
+          "type": "1-5",
+          "required": true
+        },
+        {
+          "name": "Last used",
+          "type": "year",
+          "required": true
+        },
+        {
+          "name": "Years of experience",
+          "type": "positive integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attribute": "Spring Boot",
+      "aliases": ["Spring Boot", "Spring"],
+      "tags": ["web", "framework", "microservices"],
+      "fields": [
+        {
+          "name": "Experience level",
+          "type": "1-5",
+          "required": true
+        },
+        {
+          "name": "Last used",
+          "type": "year",
+          "required": true
+        },
+        {
+          "name": "Years of experience",
+          "type": "positive integer",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attribute": "Spring certificate",
+      "aliases": ["Spring certificate", "Spring", "Spring Boot"],
+      "tags": ["certification", "web", "framework"],
+      "fields": [
+        {
+          "name": "Date achieved",
+          "type": "month",
+          "required": true
+        },
+        {
+          "name": "Upload",
+          "type": "file",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

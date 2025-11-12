@@ -1,0 +1,47 @@
+.content {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+table {
+  width: 100%;
+}
+tr.detail-row {
+  height: 0;
+}
+.paginator {
+  background: #f5f5f5;
+}
+.mat-toolbar-row { 
+  justify-content: space-between; 
+} 
+.mat-toolbar {
+    margin-bottom: 5%;
+}
+tr.course-row:not(.expanded-course-row):hover {
+  background: whitesmoke;
+}
+tr.course-row:not(.expanded-course-row):active {
+  background: #efefef;
+}
+.course-row td {
+  border-bottom-width: 0;
+}
+.expanded-course-row {
+  background: #efefef;
+}
+.course-detail {
+  display: inline;
+  font-size: 16px;
+}
+.disp {
+  display: none;
+} 
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-paginator {
+  margin-left: auto;
+}

@@ -1,0 +1,86 @@
+<div id="unit-page">
+
+  <app-title iconName="usage" title="Manage Units"></app-title>
+    
+    <div id="filter-container">
+
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter(filter)" #filterInput [(ngModel)]="filter" />
+          <button
+            *ngIf="filter"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="filter = ''; applyFilter(filter)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <button
+            mat-raised-button 
+            color="{{ creating ? 'warn' : 'primary'}}"
+            type="button"
+            (click)="creating ? cancelCreate() : newUnit()"
+            matTooltipShowDelay="1000"
+        >
+        {{creating ? 'Cancel' : 'Add New Unit'}}
+        </button>
+    </div>
+
+    <div class="unit-detail"
+        *ngIf="creating">
+        <h3>Creating New Unit</h3>
+        <app-manage-units (onSave)="createUnit($event)" [unit]="newUnitValues"></app-manage-units>
+    </div>
+
+    <div class="mat-elevation-z8">
+        <table mat-table multiTemplateDataRows #table matSort matSortDirection="asc" [dataSource]="unitData" class="unit-table">
+            <ng-container matColumnDef="name">
+                <th class="head" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td class="content" mat-cell *matCellDef="let unit">
+                    {{ unit.name }}
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="description">
+                <th class="head" mat-header-cell *matHeaderCellDef>description</th>
+                <td class="content" mat-cell *matCellDef="let unit">   
+                    <section class="description">
+                        <label>{{ unit.description || '' }} </label>
+                        <mat-icon (click)="editUnitDescription(unit)" *ngIf="!unit.currentlyBeingEdited" matTooltip="Edit" matTooltipPosition="right" class="editIcon">edit</mat-icon>
+                        <input (keyup)="setNewDescription($event.target.value)" *ngIf="unit.currentlyBeingEdited" type="text" />    
+                        <mat-icon (click)="saveUnitDescription(unit)" *ngIf="unit.currentlyBeingEdited" matTooltip="Save" matTooltipPosition="right" class="saveIcon">check</mat-icon>
+                        <mat-icon (click)="cancelUnitDescription(unit)" *ngIf="unit.currentlyBeingEdited" matTooltip="Cancel" matTooltipPosition="right" class="cancelIcon">close</mat-icon>
+                    </section>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="actions">
+            <th class="head" mat-header-cell *matHeaderCellDef> Action </th>
+            <td class="content" mat-cell *matCellDef="let unit; let i = index"> 
+                <button mat-raised-button color="warn" (click)="deleteUnit(unit)" type="button" matTooltip="Delete Unit" matTooltipShowDelay="1000">
+                <mat-icon>delete_forever</mat-icon>
+                </button>
+            </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let unit; columns: columns">  </tr>
+       </table>
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <mat-paginator
+                    [pageSize]="this.tableService.getPageSize()"
+                    [pageSizeOptions]="this.tableService.getPageSizeOptions()"
+                    class="paginator"
+                    (page)="cancelCreate()"
+                    [showFirstLastButtons]="this.tableService.getShowFirstLastButtons()"
+                    [hidePageSize]="this.tableService.getHidePageSize()"
+                ></mat-paginator>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+</div>

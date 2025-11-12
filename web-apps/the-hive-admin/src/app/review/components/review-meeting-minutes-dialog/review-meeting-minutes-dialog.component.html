@@ -1,0 +1,68 @@
+<div class="main-content">
+    @let canAddUpdateMeetingMinutes = canAddOrUpdateMeetingMinutes();
+    @if (canAddUpdateMeetingMinutes) {
+        <h2>Add review meeting minutes for {{ data.review.displayName }}</h2>
+        <div class="note-alert">
+            <p class="warning">Warning:</p> 
+            <p class="warning-message">To maintain confidentiality, please refrain from including salary information!</p>
+        </div>
+    } @else {
+        <h2>Review meeting minutes for {{ data.review.displayName }}</h2>
+    }
+    <mat-form-field>
+        <mat-label>Meeting date</mat-label>
+        <input [formControl]="formValidation" [(ngModel)]="meetingMinutes.meetingTimeslot" matInput [matDatepicker]="pickerFrom" [readonly]="!canAddUpdateMeetingMinutes">
+        <mat-error>{{ getFormDateError() }}</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom" [disabled]="!canAddUpdateMeetingMinutes"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+    @if (canAddUpdateMeetingMinutes) {
+        <app-staff-filter (selectStaff)="addReviewMeetingAttendee()" [searchLabel]="searchLabel" [searchType]="searchType"></app-staff-filter>
+    } @else {
+        <!-- The dialog was opened in read-only mode, and the user shouldn't be able to add a meeting attendee -->
+    }
+    <table mat-table class="meeting-attendees" [dataSource]="reviewMeetingAttendees">
+        <ng-container matColumnDef="attendee" >
+            <th mat-header-cell *matHeaderCellDef >Attendees </th>
+            <td mat-cell *matCellDef="let row" >
+                {{ row.attendeeUPN }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="remove">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+                <button *ngIf="canAddUpdateMeetingMinutes" mat-mini-fab color="accent"  type="button" (click)="removeAttendee(row)" class="actionBtnSmall reviewActionButton">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    </table>
+
+    <textarea class="notes-input" placeholder="Meeting Notes" [formControl]="notes" matInput [maxlength]="maximumReviewMinutesNoteCharacters" [readonly]="!canAddUpdateMeetingMinutes"></textarea>
+    @if (canAddUpdateMeetingMinutes) {
+        <p class="remaining-meeting-notes-characters">{{remainingMeetingNotesCharacters$ | async}}</p>
+    } @else {
+        <!-- The dialog was opened in read-only mode, so we don’t show remaining characters since the user isn’t typing. -->
+    }
+    <section class="button-panel">
+        @if (!canAddUpdateMeetingMinutes) {
+            <button mat-button mat-dialog-close>Close</button>
+        } @else {
+            <button mat-button mat-dialog-close>Cancel</button>
+        }
+
+        @if (canAddUpdateMeetingMinutes) {
+            <button mat-button color='primary' (click)="saveReviewMeetingMinutes(notes.value, true)">Save</button>
+        } @else {
+            <!-- The dialog was opened in read-only mode, so we don't need to show the save button -->
+        }
+        
+        @if (data.options?.showSaveAndFinaliseButton === true) {
+            <button mat-button color='accent' (click)="saveReviewMeetingMinutes(notes.value, true, true)">Save & Finalise</button>
+        } @else {
+            <!-- The dialog was set not to show the 'Save & Finalise' button -->
+        }
+    </section>
+</div>

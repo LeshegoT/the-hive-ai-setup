@@ -1,0 +1,33 @@
+<section class="review-feedback-container">
+  <section class="review-list">
+    <app-review-list
+      [reviewData]="reviewData"
+      [reviewColumns]="reviewColumns"
+      (selectedRow)="fetchFeedbackAssignments($event.review)"
+      [isRowSelectable]="true"
+      [showHrNotesButton]="true"
+      (actionButton)="selectFeedbackProviders($event.review, $event.actionButton)"
+      [actionButtonText]="assignProvidersButtonText"
+      [actionButtonIconName]="actionButtonIconName"
+      [cancelButtonText]="cancelButtonText"
+      [buttonsEnabled]="buttonsEnabled"
+    ></app-review-list>
+  </section>
+  <section class="feedback-list">
+    <section [class.loading]="feedbackAssignments === undefined">
+      @if (feedbackAssignments !== undefined) { 
+        @if (feedbackAssignments.length > 0) {
+          <app-feedback-list
+            [assignmentData]="feedbackAssignments"
+            [assignmentColumns]="assignmentColumns"
+            [currentReviewUPN]="currentReviewUPN"
+          ></app-feedback-list>
+      } @else if(feedbackAssignments.length === 0) {
+        <label class="noDataToDisplayLabel">There are no reviews assigned</label>
+      } 
+    } @else {
+      <mat-spinner></mat-spinner>
+    }
+    </section>
+  </section>
+</section>

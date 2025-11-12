@@ -1,0 +1,60 @@
+<section class="left-panel" [formGroup]="searchFormGroup">
+  <h2>Search</h2>
+  <mat-form-field appearance="outline">
+    <mat-label>Search (requires at least 3 characters)</mat-label>
+    <input matInput formControlName="searchText" placeholder="" />
+  </mat-form-field>
+
+  <section>
+    <mat-form-field appearance="outline">
+      <mat-label>Contract Review Due Date</mat-label>
+      <input matInput [matDatepicker]="pickerFrom" formControlName="endDate" />
+      <mat-error>{{ getFormErrors(searchFormGroup.controls.endDate) }}</mat-error>
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+  </section>
+  
+  <mat-form-field appearance="outline">
+    <mat-label>Job Title</mat-label>
+    <mat-select formControlName="jobTitles" multiple>
+      @for (jobTitle of jobTitleList; track jobTitle) {
+      <mat-option [value]="jobTitle">{{jobTitle}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button
+      mat-icon-button
+      color="primary"
+      type="button"
+      (click)="resetSearchFilters()"
+      matTooltip="Clear filters"
+      matTooltipPosition="right"
+    >
+      <mat-icon>remove_circle_outline</mat-icon>
+  </button>
+
+  <select-company-entity (entitySelected)="onEntitySelection($event)"></select-company-entity>
+@if(showCreateAllRecommendationsButton) {
+  <button class="actionBtn create-all-recommendations-button" (click)="onCreateAllButtonClicked.emit()" title="Create all recommendations with randomised HR representatives">
+    Create All
+  </button>
+} @else {
+  <mat-form-field class="hr-dropdown" appearance="outline" [formGroup]="searchFormGroup">
+    <mat-label>HR Representative</mat-label>
+    <mat-select formControlName="hrRep">
+      @for(upn of (hrRepsWithContractRecommendations$ | async); track upn) {
+      <mat-option [value]="upn">{{ upn }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}
+</section>
+<section class="selected-filters">
+  @for(jobTitle of searchFormGroup.value.jobTitles; track jobTitle){
+    <mat-chip [selectable]="true" [removable]="true" (removed)="removeJobTitleFromList(jobTitle)">
+      {{jobTitle}}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+  }
+</section>

@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+  <mat-select [formControl]="selectedOffices" [compareWith]="compareOffices" multiple>
+      <mat-checkbox color = "primary"
+        [checked]="areAllOfficesSelected()"
+        (change)="toggleAllOfficeSelection()"
+        class="toggle-all-checkbox">
+        {{ toggleAllOfficeSelectionText }}
+      </mat-checkbox>
+    <mat-divider></mat-divider>
+    @for (office of offices; track office) {
+      <mat-option [value]="office">
+        {{ office.officeName }}
+      </mat-option>
+    }
+  </mat-select>
+  @if (selectedOffices.hasError('required') && selectedOffices.touched) {
+    <mat-error>An office must be selected.</mat-error>
+  } @else {
+    <!-- Nothing to show when validation passes -->
+  }
+</mat-form-field>

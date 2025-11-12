@@ -1,0 +1,78 @@
+#searchBar{
+    background-color: #D9D9D9;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.5em 2em;
+}
+
+#searchBar label{
+    font-weight: bold;
+    margin-top: 1.5em;
+}
+
+.filterSearch{
+    width: 20%;
+    margin-left: 1em;
+}
+
+.filterSearch mat-form-field {
+    width: 100%;
+}
+
+mat-form-field{
+    margin-top: 0.5em;
+    font-size: small;
+}
+
+#candidateAssessments{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1em ;
+}
+
+#candidateTable{
+    width: 70%;
+}
+
+.mat-mdc-row:hover{
+    cursor:pointer;
+    background-color: #F8F4F4;
+}
+
+.status{
+    font-weight: 600;
+}
+
+.status1{
+    color: var(--header-color);
+}
+
+.status2{
+    color: var(--secondary-color);
+}
+
+.status3{
+    color: var(--primary-color);
+}
+
+.status4{
+    color: var(--secondary-color);
+}
+
+.status5{
+    color: var(--primary-color);
+}
+
+.status6{
+    color: var(--accent-color);
+}
+
+.status7{
+    color: var(--tertiary-color);
+}
+
+.status8{
+    color: var(--accent-color);
+}

@@ -1,0 +1,12 @@
+<app-review-list
+  #reviewList
+  [reviewData]="reviewData"
+  [reviewColumns]="reviewColumns"
+  (actionButton)="downloadReport($event.review, $event.actionButton)"
+  [actionButtonText]="downloadReportButtonText"
+  [showHrNotesButton]="true"
+  [actionButtonIconName]="actionButtonIconName"
+  [showArchiveButton]="true"
+  [buttonsEnabled]="buttonsEnabled"
+  [showBackToInProgressButton]="true"
+></app-review-list>

@@ -1,0 +1,26 @@
+<div>
+  <app-title iconName="usage" title="Hero Details"></app-title>
+</div>
+<div *ngIf="hero$ | async as hero" class="hero">
+  <div>
+    <h2>
+      Hero: <span>{{ hero.heroUserPrincipleName }}</span>
+    </h2>
+    <strong>Last activity:</strong> {{ hero.lastHeroActivityDate | dateFormat }}
+  </div>
+</div>
+<div *ngIf="guide$ | async as guide" class="detail hero">
+  <h3>
+    Current Guide: <span><a href="guide/{{ encode(guide.userPrincipleName) }}">{{ guide.userPrincipleName }}</a></span>
+  </h3>
+  <div class="smaller"><strong>Specialisations:</strong> {{ guide.specialisations }}</div>
+  <div class="smaller">
+    <strong>Last activity:</strong> {{ guide.lastGuideActivityDate | dateFormat }}
+  </div>
+</div>
+<div class="detail">
+  <app-hero-quests [heroUPN$]="heroUPN$"></app-hero-quests>
+</div>
+<div class="detail">
+  <app-hero-messages [heroUPN$]="heroUPN$"></app-hero-messages>
+</div>

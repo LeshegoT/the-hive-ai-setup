@@ -1,0 +1,62 @@
+<mat-card appearance="outlined" class="card">
+    <mat-card-content>
+        <form class="staff-contract-form"
+            (ngSubmit)="changeStaffTypeOrRenewContract()"
+            [formGroup]="contractorForm">
+            @if(staff) {
+                <p>Change {{ staff.displayName }} to a contract employee.</p>
+
+                @if (staff.currentReview?.date) {
+                    <p class="active-review-alert-text">Cannot change {{ staff.displayName }} to a contract employee because they currently have an active review.</p>
+                } @else if(getContractDurationWarning()) {
+                    <p class="alert-warning-text">{{ getContractDurationWarning() }}</p>
+                } @else {
+                    <!-- The alert text and recommended duration is not displayed because the staff member doesn't have an active review. -->
+                }
+            }@else {
+                <p>Renew Contract for {{ contractRecommendation().displayName }}</p>
+                @if (getContractDurationWarning()) {
+                    <p class="alert-warning-text">{{ getContractDurationWarning() }}</p>
+                } @else {
+                    <!-- There is no warning to show. -->
+                }   
+            }                                                                                                                                                                                                                                                             
+            <section class="staff-contract-form-date-fields">
+                <mat-form-field appearance="outline">
+                    <mat-label>Start date</mat-label>
+                    @if(staff) {
+                        <input matInput formControlName="startDate" [matDatepicker]="startDatePicker">
+                    }@else {
+                        <input matInput formControlName="startDate" [matDatepicker]="startDatePicker" [min]="minimumStartDate">
+                    }
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-error>{{ getFormErrors(contractorForm.get('startDate')) }}</mat-error>
+                </mat-form-field>
+            
+                <mat-form-field appearance="outline">
+                    <mat-label>End date</mat-label>
+                    <input matInput formControlName="endDate" [min]="minimumEndDate" [matDatepicker]="endDatePicker">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error>{{ getFormErrors(contractorForm.get('endDate')) }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Contract review due date</mat-label>
+                  <input matInput formControlName="nextReviewDate" [matDatepicker]="nextReviewDatePicker">
+                  <mat-datepicker-toggle matSuffix [for]="nextReviewDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #nextReviewDatePicker></mat-datepicker>
+                  <mat-error>{{ getFormErrors(contractorForm.get('nextReviewDate')) }}</mat-error>
+                </mat-form-field>
+            </section>
+            <section class="staff-contract-form-buttons">
+                @if(cancelButtonClicked.observed) {
+                    <button mat-raised-button color="warn" (click)="onCancelClicked()">Cancel</button>
+                } @else {
+                    <!-- Do not show cancel button when parent is not interested in its click events -->
+                }
+                <button mat-raised-button color="primary" type="submit" [disabled]="contractorForm.invalid || (staff && staff.currentReview.date)">Save</button>
+            </section>
+        </form>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,12 @@
+.questions {
+  padding: 1em 1em;
+  border: solid 1px black;
+}
+
+.answer-input{
+  width: 60%;
+}
+
+.question-input{
+  width: 30%;
+}

@@ -1,0 +1,12 @@
+.multi-select-field {
+  width: 100%;
+}
+
+.mat-mdc-chip.selected-chip {
+  overflow: hidden;
+  background-color: var(--header-color);
+}
+
+.mat-mdc-chip p, .mat-mdc-chip button {
+  color: var(--background-color-light);
+}

@@ -1,0 +1,26 @@
+<mat-form-field class="search-bar" appearance="outline" >
+    <mat-label>Search</mat-label>
+    <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto"/>
+    <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="onSearchOptionSelected($event)">
+      @if(searchControl.touched && !institutionSearchResults){
+        <mat-option class="search-results-spinner-container">
+          <mat-spinner diameter="16"></mat-spinner>
+        </mat-option>
+      } @else{
+        @for (institution of institutionSearchResults; track institution) {
+          <mat-option [value]="institution.canonicalName">
+            {{ institution.canonicalName }}
+          </mat-option>
+        }
+      }
+    </mat-autocomplete>
+    @if (searchControl.hasError('minLength') && searchControl.touched) {
+      <mat-error>Please enter at least {{ minimumSearchCharacters }} characters.</mat-error>
+    } @else if (searchControl.hasError('noResults') && searchControl.touched) {
+      <mat-error>No matching institution found.</mat-error>
+    } @else {
+      <!-- The institution being searched for must be at least {{ minimumSearchCharacters }} characters long -->
+    }
+</mat-form-field>

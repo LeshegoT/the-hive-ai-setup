@@ -1,0 +1,12 @@
+table.mat-mdc-table {
+  width: 100%;
+  margin: 0.5rem;
+}
+
+th.mat-mdc-header-cell {
+  font-size: 1rem;
+}
+
+section app-title {
+  text-align: center;
+}

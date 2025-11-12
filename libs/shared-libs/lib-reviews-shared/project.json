@@ -1,0 +1,19 @@
+{
+  "name": "lib-reviews-shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-libs/lib-reviews-shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared-libs/lib-reviews-shared",
+        "main": "libs/shared-libs/lib-reviews-shared/src/index.ts",
+        "tsConfig": "libs/shared-libs/lib-reviews-shared/tsconfig.lib.json",
+        "assets": ["libs/shared-libs/lib-reviews-shared/*.md"]
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+
+<section *ngIf="feedback['review']">
+    <button mat-raised-button color="primary" class="exportButton" (click)="exportFeedbackReport()"><mat-icon>save_alt</mat-icon> Export Report</button>
+    <h3>Review due date: {{feedback.review.dueDate | date}}</h3>
+    <h4>HR Representative: {{feedback.review.assignedBy.displayName}}</h4>
+    <h4>Status: 
+        <label [ngClass]="feedback.review.status.toLowerCase() === 'completed' ? 'completedStatus' : 'notCompleteStatus'">{{feedback.review.status}}</label>
+    </h4>
+</section>
+<div class="mat-elevation-z8 full-width" id="feedbackContainer" *ngIf="feedback">
+<table mat-table [dataSource]="getData()" id="taggedFeedback" >
+        <ng-container matColumnDef="Author">
+        <th mat-header-cell *matHeaderCellDef class="smallColumn">Author</th>
+        <td mat-cell *matCellDef="let row" >
+            <b> {{ row.reviewer.displayName ? row.reviewer.displayName : row.reviewer.upn }} </b> 
+        </td>
+        </ng-container>
+
+        <ng-container matColumnDef="DateCreated" class="xsmallColumn">
+        <th mat-header-cell *matHeaderCellDef class="xsmallColumn">Date Completed</th>
+        <td mat-cell *matCellDef="let row" >
+               {{row.createdAt | date}}
+        </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Feedback" >
+        <th mat-header-cell *matHeaderCellDef class="largeColumn">Feedback</th>
+        <td mat-cell *matCellDef="let row" >
+            <ng-template [ngIf]="row.feedback !== undefined && row.feedback != []"  [ngIfElse]="historic" >
+                <span *ngFor="let response of row.feedback" class="questionSection">
+                    <label class="questionName">{{response.question.name}}</label>
+                    <section *ngIf="response.rating" class="progressBar">
+                        <div class="progressTotal">
+                            <div [style.width]="getPercentage(response.rating)" class="precentageComplete"></div>
+                        </div>
+                        <label>{{response.rating.score}}</label>
+                        <label>{{response.rating.description}}</label>
+                    </section>
+                    <section *ngIf="response.positiveComment">
+                        <label class="commentType">Positive Comment</label>
+                        <p class="comment">{{response.positiveComment}}</p>
+                    </section>
+                    <section *ngIf="response.constructiveComment">
+                        <label class="commentType">Constructive Comment</label>
+                        <p class="comment">{{response.constructiveComment}}</p>
+                    </section>
+                    <section *ngIf="response.generalComment">
+                        <label class="commentType">General Comment</label>
+                        <p class="comment">{{response.generalComment}}</p>
+                    </section>
+                </span>
+            </ng-template>
+            <ng-template #historic>
+                <label class="questionName" *ngIf="row.name">{{row.name}}</label>
+                <span *ngIf="row.tags">
+                    <section *ngFor="let tag of row.tags" class="progressBar">
+                        <div class="progressTotal">
+                            <div [style.width]="getPercentage(tag)" class="precentageComplete"></div>
+                        </div>
+                        <label>{{tag.score}}</label>
+                        <label>{{tag.name}}</label>
+                    </section>
+                </span>
+
+                <section *ngIf="row.positiveComment">
+                    <label class="commentType">Positive Comment</label>
+                    <p class="comment">{{row.positiveComment}}</p>
+                </section>
+                <section *ngIf="row.constructiveComment">
+                    <label class="commentType">Constructive Comment</label>
+                    <p class="comment">{{row.constructiveComment}}</p>
+                </section>
+                <section *ngIf="row.generalComment">
+                    <label class="commentType">General Comment</label>
+                    <p class="comment">{{row.generalComment}}</p>
+                </section>
+            </ng-template>
+
+
+            <section *ngIf="row.discussionPoints && row.discussionPoints.length != []">
+                <span *ngFor="let point of row.discussionPoints" class="questionSection">
+                    <section *ngIf="point.generalComment">
+                        <label class="questionName">{{point.question.name}}</label>
+                        <p class="comment">{{point.generalComment}}</p>
+                    </section>
+                </span>
+            </section>
+
+                    </td>
+        </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="tagColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: tagColumns"></tr>
+</table>
+
+</div>
+<mat-divider></mat-divider>

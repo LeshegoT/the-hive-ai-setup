@@ -1,0 +1,31 @@
+<section>
+    <skills-search-operator-selector [attributeType]="attributeType" (valueChange)="onOperatorSelected($event)"></skills-search-operator-selector>
+    @if(range){
+        <section class="range-container">
+            <section class="radio-button-section">
+                <label>Start:</label>
+                <mat-radio-group appearance="outline" id="input-container" color='primary' [formControl]="inputSelectedMin" aria-label="labelName" >
+                    <mat-radio-button *ngFor="let option of buttonValues" [value]="option">
+                        {{ option }}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </section>
+
+            <section>
+                <label>End:</label>
+                <mat-radio-group appearance="outline" id="input-container" color='primary' [formControl]="inputSelectedMax" aria-label="labelName" >
+                    <mat-radio-button *ngFor="let option of buttonValues" [value]="option">
+                        {{ option }}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </section>
+        </section>
+    }@else{
+        <mat-radio-group appearance="outline" id="input-container" color='primary' [formControl]="inputSelected" aria-label="labelName" >
+            <mat-radio-button *ngFor="let option of buttonValues" [value]="option">
+                {{ option }}
+            </mat-radio-button>
+        </mat-radio-group>
+    }
+    <mat-error>{{ errorMessage() }}</mat-error>
+</section>

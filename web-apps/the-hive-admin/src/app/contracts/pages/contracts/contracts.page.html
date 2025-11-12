@@ -1,0 +1,18 @@
+<div [ngClass]="componentClass">
+    <app-title iconName="usage" title="Contracts"></app-title>
+    <mat-tab-group>
+        <mat-tab label="To-do"> 
+            <app-contracts-to-do></app-contracts-to-do>
+        </mat-tab>
+        @if (hrDashboardEnabled) {
+            <mat-tab label="Dashboard"> 
+                <app-contracts-dashboard></app-contracts-dashboard>
+            </mat-tab>
+        } @else {
+            <!-- Do not display the Contracts Dashboard in production as it is not yet ready -->
+        }
+        <mat-tab label="Contracts Overview"> 
+            <app-contracts-overview></app-contracts-overview>
+        </mat-tab>
+    </mat-tab-group>
+</div>

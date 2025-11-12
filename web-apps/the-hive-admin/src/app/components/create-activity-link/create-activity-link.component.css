@@ -1,0 +1,11 @@
+.component {
+    padding: 0 10em;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.error {
+    color: red;
+}

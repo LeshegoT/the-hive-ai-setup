@@ -1,0 +1,38 @@
+<section id="staff-overview-filter-panel">
+    <h2>Search</h2>
+    <section class="filterSearch">
+        <app-staff-filter (selectStaff)="filterSearchText()" searchLabel="Search Staff Member" searchType="search">
+        </app-staff-filter>
+        <button mat-icon-button color="primary" type="button" class="leftComponent"
+            (click)="clearFilterSearchText()"
+            matTooltip="Clear search"
+            matTooltipPosition="right">
+                <mat-icon>remove_circle_outline</mat-icon>
+        </button> 
+    </section>
+
+    <mat-form-field class="staff-type" appearance="outline">
+        <mat-label>Staff</mat-label>
+        <mat-select (selectionChange)="staffTypeValueChange($event.value)">
+            <mat-option>All staff with and without reviews</mat-option>
+            <mat-option [value]="staffFilter.value" *ngFor="let staffFilter of staffFilters">{{ staffFilter.description }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="allStaffUnits.length > 0">
+        <mat-label>Search unit</mat-label>
+        <input type="text" matInput [matAutocomplete]="auto" [formControl]="unitFormControl" >
+        <mat-autocomplete 
+            #auto="matAutocomplete" 
+            (optionSelected)="filterStaffUnit($event.option.value)">
+            <mat-option *ngFor="let unit of filteredStaffUnits | async" [value]="unit">
+                {{unit}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <select-company-entity (entitySelected)="onCompanyEntitySelected($event)" [label]="'Filter by company entity'"></select-company-entity>
+
+</section>
+<app-staff-profile [selectedStaffMember]="selectedStaffMember">
+</app-staff-profile>

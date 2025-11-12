@@ -1,0 +1,15 @@
+<mat-form-field style="width: 100%;">
+  <input
+    matInput
+    type="text"
+    placeholder="Enter city or country"
+    [formControl]="residenceControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectSuggestion($event.option.value)">
+    <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
+      {{ suggestion.address.municipality || suggestion.address.countrySubdivision || suggestion.address.country }},
+      {{ suggestion.address.country }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

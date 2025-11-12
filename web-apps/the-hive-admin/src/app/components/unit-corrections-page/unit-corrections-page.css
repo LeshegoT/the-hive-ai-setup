@@ -1,0 +1,17 @@
+#unit-corrections-page {
+  padding: var(--standard-padding);
+}
+
+.error-card {
+  background-color: var(--warning-background-color);
+}
+
+.profile-and-form-container {
+  width: 100%;
+  margin-block: var(--standard-gap);
+}
+
+.unit-corrections-forms-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--responsive-card-size), 1fr));
+}

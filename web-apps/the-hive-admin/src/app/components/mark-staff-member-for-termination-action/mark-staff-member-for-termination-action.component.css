@@ -1,0 +1,32 @@
+.staff-member-terminated-chip {
+  display: inline-flex;
+  background-color: var(--error-message-color);
+  color: var(--app-button-text);
+  border-radius: 1rem;
+  vertical-align: middle;
+  align-items: center;
+  padding-inline: var(--standard-padding);
+  height: 100%;
+}
+
+.mark-for-termination-button {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.termination-datepicker-container {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--standard-gap);
+}
+
+.termination-datepicker {
+  min-width: min-content;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: var(--standard-gap);
+  align-items: flex-start;
+}
