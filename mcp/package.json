@@ -1,0 +1,47 @@
+{
+  "name": "@the-hive-guide/mcp-server",
+  "version": "0.1.0",
+  "description": "Guide MCP server",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "node dist/server/stdio.js",
+    "dev": "tsx src/server/stdio.ts",
+    "start:sse": "node dist/server/sse.js",
+    "dev:sse": "tsx src/server/sse.ts",
+    "inspector": "npx @modelcontextprotocol/inspector node dist/server/stdio.js",
+    "build": "tsc --project tsconfig.json",
+    "check:types": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --config ../../.prettierrc.json --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "mcp",
+    "guide",
+    "bedrock"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.931.0",
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "dotenv": "^16.4.5",
+    "mssql": "^11.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/mssql": "^9.1.8",
+    "@types/node": "^20.14.11",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.15.7",
+    "typescript": "^5.6.3"
+  }
+}
