@@ -2,98 +2,106 @@ const {
   BedrockAgentRuntimeClient,
   InvokeAgentCommand
 } = require("@aws-sdk/client-bedrock-agent-runtime");
-const { create_message } = require('../queries/message.queries');
-const queue = require('./queue');
+const { Client } = require("@modelcontextprotocol/sdk/client/index.js");
+const { StdioClientTransport } = require("@modelcontextprotocol/sdk/client/stdio.js");
 
 const AWS_REGION = process.env.AWS_REGION;
 const AGENT_ID = process.env.AGENT_ID;
 const AGENT_ALIAS_ID = process.env.AGENT_ALIAS_ID;
-const AI_GUIDE_UPN = 'ai.guide@the-hive.com';
 
-const ALLOWED_AI_MESSAGE_TYPES = process.env.ALLOWED_AI_MESSAGE_TYPES;
-
-// Initialize Bedrock Agent Runtime client
 let bedrockClient;
-if (AGENT_ID && AGENT_ALIAS_ID) {
-  try {
-    bedrockClient = new BedrockAgentRuntimeClient({
-      region: AWS_REGION,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        sessionToken: process.env.AWS_SESSION_TOKEN,
-      }
-    });
+let mcpClient;
 
-    console.log("AWS Bedrock AI Agent initialized.", {
-      region: AWS_REGION,
-      agentId: AGENT_ID,
-      agentAliasId: AGENT_ALIAS_ID
-    });
-  } catch (err) {
-    console.error("Failed to initialize Bedrock Agent:", err);
-  }
-} else {
-  console.warn("Bedrock AI disabled due to missing env variables.", {
-    hasAgentId: !!AGENT_ID,
-    hasAgentAliasId: !!AGENT_ALIAS_ID,
+// Initialize Bedrock client
+if (AGENT_ID && AGENT_ALIAS_ID) {
+  bedrockClient = new BedrockAgentRuntimeClient({
+    region: AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      sessionToken: process.env.AWS_SESSION_TOKEN,
+    }
   });
 }
 
-function containsAIMention(text) {
-  if (text) {
-    return /@ai\b/i.test(text);
-  } else {
-    return false;
-  }
-}
+// Initialize MCP client
+async function initMcpClient() {
+  if (mcpClient) return mcpClient;
 
-function removeAIMention(text) {
-  if (text) {
-    return text.replace(/@ai\s*/gi, '').trim();
-  } else {
-    return '';
-  }
-}
+  const transport = new StdioClientTransport({
+    command: "node",
+    args: ["mcp/dist/server/stdio.js"]
+  });
 
-function shouldAIRespond(text, messageTypeId, createdByUpn, heroUpn) {
-  return (
-    ALLOWED_AI_MESSAGE_TYPES.includes(messageTypeId) &&
-    bedrockClient &&
-    createdByUpn === heroUpn &&
-    text &&
-    text.trim().length > 0 &&
-    containsAIMention(text)
+  mcpClient = new Client(
+    { name: "ai-agent-mcp-client", version: "1.0.0" },
+    { capabilities: {} }
   );
+
+  await mcpClient.connect(transport);
+  console.log("MCP client connected");
+  
+  return mcpClient;
 }
 
-function decodeChunkBytes(bytes) {
+// Get user context via MCP
+async function getUserContext(userMessage) {
   try {
-    if (typeof TextDecoder !== 'undefined' && (bytes instanceof Uint8Array || bytes instanceof ArrayBuffer)) {
-      const td = new TextDecoder('utf-8');
-      return td.decode(bytes);
+    const client = await initMcpClient();
+    
+    // Get hero overview
+    const heroOverview = await client.callTool({
+      name: "hero_overview",
+      arguments: {
+        heroUpn: userMessage.createdByUpn
+      }
+    });
+
+    let context = "";
+    
+    if (heroOverview.content && heroOverview.content[0]) {
+      context += "USER CONTEXT:\n" + heroOverview.content[0].text + "\n\n";
     }
 
-    if (bytes && typeof bytes === 'object') {
-      const arr = Object.values(bytes);
-      return Buffer.from(arr).toString('utf8');
+    // Get recent quest messages if quest exists
+    if (userMessage.questId) {
+      const questMessages = await client.callTool({
+        name: "quest_messages",
+        arguments: {
+          questId: userMessage.questId,
+          maxMessages: 10
+        }
+      });
+
+      if (questMessages.content && questMessages.content[0]) {
+        context += "RECENT CONVERSATION:\n" + questMessages.content[0].text + "\n\n";
+      }
     }
 
-    return String(bytes);
-  } catch (err) {
-    console.warn('Failed to decode chunk bytes', { err: err.message });
-    return '';
+    // Get mission messages if applicable
+    if (userMessage.missionId) {
+      const missionMessages = await client.callTool({
+        name: "mission_messages",
+        arguments: {
+          missionId: userMessage.missionId,
+          maxMessages: 10
+        }
+      });
+
+      if (missionMessages.content && missionMessages.content[0]) {
+        context += "MISSION CONVERSATION:\n" + missionMessages.content[0].text + "\n\n";
+      }
+    }
+
+    return context;
+  } catch (error) {
+    console.error("Error getting user context from MCP:", error);
+    return ""; // Gracefully degrade if MCP fails
   }
 }
 
-// Sanitize sessionId to match Bedrock regex: [0-9a-zA-Z._:-]+
-function sanitizeSessionId(input) {
-  return input.replace(/[^0-9a-zA-Z._:-]/g, '_');
-}
-
-// ========== AI AGENT CALL ==========
-
-async function getAIResponse(text, userMessage) {
+// Enhanced getAIResponse with MCP context
+async function getAIResponseWithContext(text, userMessage) {
   if (!bedrockClient) {
     console.error('Bedrock client not initialized');
     return 'The AI Guide is currently offline. Please try again later.';
@@ -105,146 +113,93 @@ async function getAIResponse(text, userMessage) {
     return 'Hi! I\'m the AI Guide. How can I help you today?';
   }
 
-  let sessionId;
   try {
-    // Use stable session ID - sanitize to remove invalid characters
-    sessionId = sanitizeSessionId(`${userMessage.createdByUpn}-${userMessage.questId || 'general'}`);
+    // Get context from MCP
+    const userContext = await getUserContext(userMessage);
+    
+    // Combine user context with their question
+    const enrichedInput = userContext 
+      ? `${userContext}USER QUESTION:\n${cleanedText}`
+      : cleanedText;
 
-    console.log("Sending request to Bedrock Agent", {
+    const sessionId = sanitizeSessionId(
+      `${userMessage.createdByUpn}-${userMessage.questId || 'general'}`
+    );
+
+    console.log("Sending enriched request to Bedrock Agent", {
       cleanedTextLen: cleanedText.length,
-      sessionId,
-      agentId: AGENT_ID,
-      agentAliasId: AGENT_ALIAS_ID,
+      contextLen: userContext.length,
+      sessionId
     });
 
     const command = new InvokeAgentCommand({
       agentId: AGENT_ID,
       agentAliasId: AGENT_ALIAS_ID,
       sessionId,
-      inputText: cleanedText,
+      inputText: enrichedInput,
     });
 
     const response = await bedrockClient.send(command);
 
-    console.log("Response received, processing stream...");
-
-    const chunks = [];         // changed from let → const
-    const citations = [];      // changed from let → const
     let fullResponse = '';
-    let sawAnyOutput = false;
-
     for await (const event of response.completion) {
-      if (event.outputText && event.outputText.text) {
-        const part = event.outputText.text;
-        chunks.push(part);
-        fullResponse += part;
-        sawAnyOutput = true;
-      }
-      else if (event.chunk && event.chunk.bytes) {
+      if (event.outputText?.text) {
+        fullResponse += event.outputText.text;
+      } else if (event.chunk?.bytes) {
         const chunkText = decodeChunkBytes(event.chunk.bytes);
-        if (chunkText && chunkText.length) {
-          chunks.push(chunkText);
-          fullResponse += chunkText;
-          sawAnyOutput = true;
-        }
-      }
-
-      if (event.chunk && event.chunk.attribution && event.chunk.attribution.citations) {
-        try {
-          for (const c of event.chunk.attribution.citations) {
-            citations.push({
-              text: c?.generatedResponsePart?.textResponsePart?.text || null,
-              source: c?.retrievedReferences?.[0]?.location?.s3Location?.uri || null,
-            });
-          }
-        } catch (e) {
-          console.warn('Error parsing citations', { error: e.message });
-        }
+        if (chunkText) fullResponse += chunkText;
       }
     }
 
-    console.log("Stream processing complete", {
-      sawAnyOutput,
-      fullResponseLength: fullResponse.length,
-      chunksCount: chunks.length,
-    });
+    const cleanedResponse = fullResponse.replace(/\n\s+/g, ' ').trim();
 
-    const cleanedResponse = fullResponse.replace(/\n\s+/g, ' ').trim();  // changed let → const
-
-    if (!cleanedResponse && !sawAnyOutput) {
+    if (!cleanedResponse) {
       console.warn('Agent produced no output', { sessionId, cleanedText });
       return "I'm not entirely sure how to respond to that.";
     }
 
-    const finalResponse = cleanedResponse || "I'm not entirely sure how to respond to that.";
-
-    console.log("Successfully received response from Bedrock Agent", {
-      responseLength: finalResponse.length,
-      sessionId,
-      citationsCount: citations.length,
-    });
-
-    return finalResponse;
+    return cleanedResponse;
 
   } catch (err) {
-    console.log('Bedrock RAG Error:', {
-      message: err.message,
-      code: err.code,
-      statusCode: err.statusCode,
-      requestId: err.requestId,
-      stack: err.stack
-    });
+    console.error('Bedrock/MCP Error:', err);
     return 'Sorry, I encountered an error while trying to respond. Please try again later.';
   }
 }
 
-async function createAIReply(userMessage, userText) {
+// Helper functions from original code
+function removeAIMention(text) {
+  return text ? text.replace(/@ai\s*/gi, '').trim() : '';
+}
+
+function sanitizeSessionId(input) {
+  return input.replace(/[^0-9a-zA-Z._:-]/g, '_');
+}
+
+function decodeChunkBytes(bytes) {
   try {
-    console.log('Creating AI reply', {
-      userUpn: userMessage.createdByUpn,
-      questId: userMessage.questId,
-      missionId: userMessage.missionId
-    });
-
-    const aiResponseText = await getAIResponse(userText, userMessage);
-
-    const aiMessage = await create_message(
-      userMessage.messageTypeId,
-      userMessage.createdByUpn,
-      AI_GUIDE_UPN,
-      aiResponseText,
-      userMessage.questId,
-      userMessage.missionId,
-      userMessage.sideQuestId,
-      userMessage.courseId,
-      null,
-      null,
-      null,
-      'AI Guide Response',
-      null
-    );
-
-    const aiNotification = {
-      ...aiMessage,
-      questId: userMessage.questId,
-      missionId: userMessage.missionId,
-      courseId: userMessage.courseId,
-      sideQuestId: userMessage.sideQuestId,
-    };
-
-    queue.enqueue('notifications', aiNotification);
-
-  } catch (error) {
-    console.log('Failed to create AI response:', error);
+    if (typeof TextDecoder !== 'undefined' && (bytes instanceof Uint8Array || bytes instanceof ArrayBuffer)) {
+      return new TextDecoder('utf-8').decode(bytes);
+    }
+    if (bytes && typeof bytes === 'object') {
+      const arr = Object.values(bytes);
+      return Buffer.from(arr).toString('utf8');
+    }
+    return String(bytes);
+  } catch (err) {
+    console.warn('Failed to decode chunk bytes', { err: err.message });
+    return '';
   }
 }
 
+// Cleanup on process exit
+process.on('exit', async () => {
+  if (mcpClient) {
+    await mcpClient.close();
+  }
+});
+
 module.exports = {
-  shouldAIRespond,
-  createAIReply,
-  getAIResponse,
-  containsAIMention,
-  removeAIMention,
-  AI_GUIDE_UPN,
-  ALLOWED_AI_MESSAGE_TYPES
+  getAIResponseWithContext,
+  initMcpClient,
+  getUserContext
 };

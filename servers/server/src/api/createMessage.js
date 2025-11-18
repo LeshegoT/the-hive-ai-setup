@@ -56,7 +56,7 @@ module.exports = router.post(
     }
 
     if (shouldAIRespond(text, messageTypeId, createdByUpn, heroUpn)) {
-      logger.info('AI mention detected, triggering AI response', {
+      console.log('AI mention detected, triggering AI response', {
         heroUpn: createdByUpn,
         messageTypeId: messageTypeId,
         textPreview: text.substring(0, 50) + '...'
@@ -80,4 +80,3 @@ module.exports = router.post(
     }
   })
 );
- 
